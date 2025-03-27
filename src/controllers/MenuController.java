@@ -17,7 +17,7 @@ public class MenuController {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
     }
 
-    public void recibirDatos(model.User user) {
+    public void recibirDatos(model.Teacher user) {
         this.user.setText(user.name.toUpperCase());
         this.job.setText(user.role);
     }

@@ -14,10 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.User;
+import model.Teacher;
 
 public class LoginController {
-    ArrayList<User> users = new ArrayList<>();
+    ArrayList<Teacher> teachers = new ArrayList<>();
     @FXML private BorderPane rootPane;
     @FXML private TextField email;
     @FXML private PasswordField password;
@@ -31,8 +31,8 @@ public class LoginController {
 
     @FXML 
     public void handleJoinLogin() throws IOException {
-        users.add(new User("1095788069", "yesid", "cpinto5@udi.edu.co", "3112685855", "Alto", "yesid123", "Profesor"));
-        users.add(new User("1095788069", "carlos", "cpinto5@udi.edu.co", "3112685855", "Alto", "carlos123", "Personal Administrativo"));
+    	teachers.add(new Teacher("1095788069", "yesid", "cpinto5@udi.edu.co", "3112685855", "Alto", "yesid123", "Profesor"));
+    	teachers.add(new Teacher("1095788069", "carlos", "cpinto5@udi.edu.co", "3112685855", "Alto", "carlos123", "Personal Administrativo"));
 
         Email = email.getText();
         Password = password.getText();
@@ -42,7 +42,7 @@ public class LoginController {
             return;
         }
 
-        for (User userx : users) {
+        for (Teacher userx : teachers) {
             if (Email.equals(userx.email) && Password.equals(userx.password)) {
                 cambiarEscenaConDatos(userx);
                 return;
@@ -52,7 +52,7 @@ public class LoginController {
         this.AlertWindow("El correo o contraseña no es correcto.", "Verifique que todos los datos esten bien y vuelva a intentarlo.", AlertType.ERROR);
     }
 
-    private void cambiarEscenaConDatos(User userx) throws IOException {
+    private void cambiarEscenaConDatos(Teacher userx) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Menu.fxml"));
         Parent root = loader.load();
 
