@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="rootPane" prefHeight="398.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuController">
+    
+    <left>
+        <VBox alignment="TOP_LEFT" prefHeight="398.0" prefWidth="242.0" spacing="10" style="-fx-background-color: #787979; -fx-pref-width: 180px; -fx-padding: 15;">
+            <Label fx:id="user" focusTraversable="false" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+            <Label fx:id="job" style="-fx-font-size: 12px;" />
+            <Separator prefHeight="0.0" scaleY="0.5" />
+            <Label focusTraversable="false" text="Préstamos" />
+            <Label focusTraversable="false" text="Capacitación" />
+            <Label focusTraversable="false" text="Devoluciones" />
+         	<Separator prefWidth="176.0" scaleY="0.5" />
+            <Label focusTraversable="false" text="Encargados" />
+            <Label focusTraversable="false" text="Nosotros" />
+        </VBox>
+    </left>
+    
+    <center>
+        <VBox alignment="TOP_LEFT" prefHeight="559.0" prefWidth="1293.0" spacing="10" style="-fx-padding: 20;">
+            <Label focusTraversable="false" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="SALAS DISPONIBLES" />
+            <VBox fx:id="listaSalas" spacing="15" />
+         <TableView focusTraversable="false" prefHeight="200.0">
+           <columns>
+             <TableColumn prefWidth="75.0" text="C1" />
+             <TableColumn prefWidth="75.0" text="C2" />
+           </columns>
+         </TableView>
+        </VBox>
+    </center>
+</BorderPane>
