@@ -21,7 +21,7 @@ public class Main extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }// a
+    }
     public static void loadView(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
