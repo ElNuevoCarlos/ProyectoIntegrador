@@ -1,2 +1,0 @@
-# ProyectoIntegrador
-Proyecto Integrador
