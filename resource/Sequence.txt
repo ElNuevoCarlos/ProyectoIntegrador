@@ -1,0 +1,8 @@
+  1  CREATE TABLE USERTEACHER
+  2  (car VARCHAR(20) CONSTRAINT car_pk PRIMARY KEY,
+  3  name VARCHAR(50) CONSTRAINT name_user NOT NULL,
+  4  email VARCHAR(70) CONSTRAINT email_user NOT NULL,
+  5  phone VARCHAR(15) CONSTRAINT phone_user NOT NULL,
+  6  estate VARCHAR(50),
+  7  password VARCHAR(50) CONSTRAINT password_user NOT NULL,
+  8* role VARCHAR(50) CONSTRAINT role_user NOT NULL)

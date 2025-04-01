@@ -1,24 +1,32 @@
 package controllers;
 
+import data.SessionManager;
+import data.UserDataManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import model.User;
 
 public class MenuController {
 
     @FXML private BorderPane rootPane;
     @FXML private Label user, job;
-
-    // Me ayuda a poder quitarle el focus a los TextField -
-    // dandole click a cualquier parte del panel
+    
+	private UserDataManager userManager = UserDataManager.getInstance();
+	private SessionManager sessionManager = SessionManager.getInstance();
     
     @FXML 
     public void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
+        data();
     }
-
-    public void recibirDatos(model.Teacher user) {
-        this.user.setText(user.name.toUpperCase());
-        this.job.setText(user.role);
+    
+    public void data() {
+        this.user.setText(sessionManager.getName());
+        this.job.setText(sessionManager.getRole());
+    	for (User user : userManager.getUsers()) {
+    		System.out.println(user.name);
+    	}
     }
+    
 }

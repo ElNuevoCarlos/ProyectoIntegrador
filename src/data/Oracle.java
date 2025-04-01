@@ -3,16 +3,18 @@ package data;
 import java.sql.*;
 
 public class Oracle {
-	// SERVIDOR DE LA UDI
-	//private final String stringConexion = "jdbc:oracle:thin:@192.168.254.215:1521:orcl";
-	private final String stringConexion = "jdbc:oracle:thin:@localhost:1521:xe";
+	private final String host = "@localhost";
+	private final String service = "xe";
+	//private final String host = "192.168.254.215";
+	private final String port = "1521";
+	//private final String service = "orcl";
 
 	public Connection getConexionTeacher() {
 		Connection conexion = null;
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 
-			conexion = DriverManager.getConnection(stringConexion, "zoologico069","zoologico069");
+			conexion = DriverManager.getConnection(getConnection(), "TEACHER","TEACHER");
 		} catch (ClassNotFoundException e) {
 			System.out.println("No se encuentra el driver");
 		}
@@ -27,7 +29,7 @@ public class Oracle {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 
-			conexion = DriverManager.getConnection(stringConexion, "zoologico069","zoologico069");
+			conexion = DriverManager.getConnection(getConnection(), "ADMINISTRATIVE","ADMINISTRATIVE");
 		} catch (ClassNotFoundException e) {
 			System.out.println("No se encuentra el driver");
 		}
@@ -36,5 +38,8 @@ public class Oracle {
 			System.out.println("Error en la conexi�n");
 		}
 		return conexion;
+	}
+	public String getConnection() {
+		return "jdbc:oracle:thin:"+this.host+":"+this.port+":"+this.service;
 	}
 }
