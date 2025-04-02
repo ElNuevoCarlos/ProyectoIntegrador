@@ -1,9 +1,9 @@
 package data;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.User;
@@ -26,15 +26,13 @@ public class UserDataManager {
 	}
 	
 	public void loadData() throws SQLException {
-		Connection conexion = new Oracle().getConexionTeacher();
-
-		if(conexion != null){
-            String sql = "SELECT * FROM USERTEACHER";
-            PreparedStatement statement = conexion.prepareStatement(sql);
-            ResultSet rs = statement.executeQuery();
+		String sql = "SELECT * FROM USERTEACHER";
+		
+		try (Connection conexion = new Oracle().getConexionTeacher();
+				Statement statement = conexion.createStatement();
+				ResultSet rs = statement.executeQuery(sql)){
             
             while (rs.next()) {
-            	System.out.println("paso");
             	String card = rs.getString("CAR");
             	String name = rs.getString("NAME");
             	String email = rs.getString("EMAIL");
@@ -44,8 +42,8 @@ public class UserDataManager {
             	String role = rs.getString("ROLE");
                 users.add(new User(card, name, email, phone, estate, password, role));
             }
-		} else {
-			System.out.println("Conexi�n fallida");
-	    }
+		} catch (SQLException e) {
+            System.err.println("Error: "+e.getMessage());
+        }
 	}
 }

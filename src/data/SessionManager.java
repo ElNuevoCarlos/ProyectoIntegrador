@@ -22,8 +22,4 @@ public class SessionManager {
     public String getRole() {
         return role;
     }
-
-    public void logout() {
-        instance = null;
-    }
 }

@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import model.User;
 
-public class MenuController {
+public class MenuAdministrativeController {
 
     @FXML private BorderPane rootPane;
     @FXML private Label user, job;
@@ -24,9 +24,11 @@ public class MenuController {
     public void data() {
         this.user.setText(sessionManager.getName());
         this.job.setText(sessionManager.getRole());
+        /*
     	for (User user : userManager.getUsers()) {
-    		System.out.println(user.name);
+    		System.out.println(user.role);
     	}
+    	*/
     }
     
 }

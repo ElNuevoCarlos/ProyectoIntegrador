@@ -1,13 +1,8 @@
 package controllers;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import application.*;
-import data.Oracle;
+import java.io.IOException;
+import java.sql.SQLException;
 import data.SessionManager;
 import data.UserDataManager;
 import javafx.fxml.FXML;
@@ -26,14 +21,12 @@ public class LoginController {
     private UserDataManager userManager = UserDataManager.getInstance();
     private SessionManager sessionManager = SessionManager.getInstance();
     private String Email, Password;
-
-    @FXML 
-    public void initialize() {
+    
+    @FXML public void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
     }
 
-    @FXML 
-    public void handleJoinLogin() throws IOException, SQLException {
+    @FXML public void handleJoinLogin() throws IOException, SQLException {
         Email = email.getText();
         Password = password.getText();
 
@@ -45,11 +38,11 @@ public class LoginController {
         for (User userx : userManager.getUsers()) {
             if (Email.equals(userx.email) && Password.equals(userx.password)) {
             	sessionManager.setUser(userx.name, userx.role);
-                Main.loadView("/views/Menu.fxml");
+            	if (userx.role == "Profesor") Main.loadView("/views/MenuTeacher.fxml");
+            	else Main.loadView("/views/MenuAdministrative.fxml");
                 return;
             }
         }
-
         this.AlertWindow("El correo o contraseña no es correcto.", "Verifique que todos los datos esten bien y vuelva a intentarlo.", AlertType.ERROR);
     }
 

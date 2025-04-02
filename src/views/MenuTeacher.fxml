@@ -7,19 +7,19 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPane" prefHeight="398.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuController">
+<BorderPane fx:id="rootPane" prefHeight="398.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuTeacherController">
     
     <left>
-        <VBox alignment="TOP_LEFT" prefHeight="398.0" prefWidth="242.0" spacing="10" style="-fx-background-color: #787979; -fx-pref-width: 180px; -fx-padding: 15;">
-            <Label fx:id="user" focusTraversable="false" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
-            <Label fx:id="job" style="-fx-font-size: 12px;" />
+        <VBox alignment="TOP_LEFT" prefHeight="398.0" prefWidth="242.0" spacing="10" style="-fx-background-color: #037bfc; -fx-pref-width: 180px; -fx-padding: 15;">
+            <Label fx:id="user" focusTraversable="false" style="-fx-font-weight: bold; -fx-font-size: 14px;" textFill="WHITE" />
+            <Label fx:id="job" style="-fx-font-size: 12px;" textFill="WHITE" />
             <Separator prefHeight="0.0" scaleY="0.5" />
-            <Label focusTraversable="false" text="Préstamos" />
-            <Label focusTraversable="false" text="Capacitación" />
-            <Label focusTraversable="false" text="Devoluciones" />
+            <Label focusTraversable="false" text="Préstamos" textFill="WHITE" />
+            <Label focusTraversable="false" text="Capacitación" textFill="WHITE" />
+            <Label focusTraversable="false" text="Devoluciones" textFill="WHITE" />
          	<Separator prefWidth="176.0" scaleY="0.5" />
-            <Label focusTraversable="false" text="Encargados" />
-            <Label focusTraversable="false" text="Nosotros" />
+            <Label focusTraversable="false" text="Encargados" textFill="WHITE" />
+            <Label focusTraversable="false" text="Nosotros" textFill="WHITE" />
         </VBox>
     </left>
     
