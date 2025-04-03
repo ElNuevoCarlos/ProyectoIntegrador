@@ -13,4 +13,20 @@ public class User {
 		this.password = password;
 		this.role = role;
 	}
+
+    public String getName() {
+        return name;
+    }
+    public String getPassword() {
+        return password;
+    }
+	public String getEmail() {
+		return email;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public String getEstate() {
+		return estate;
+	}
 }

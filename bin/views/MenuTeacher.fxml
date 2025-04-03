@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -12,27 +14,34 @@
     
     <left>
         <VBox alignment="TOP_LEFT" prefHeight="398.0" prefWidth="242.0" spacing="10" style="-fx-background-color: #037bfc; -fx-pref-width: 180px; -fx-padding: 15;">
-            <Label fx:id="user" focusTraversable="false" style="-fx-font-weight: bold; -fx-font-size: 14px;" textFill="WHITE" />
-            <Label fx:id="job" style="-fx-font-size: 12px;" textFill="WHITE" />
-            <Separator prefHeight="0.0" scaleY="0.5" />
-            <Label focusTraversable="false" text="Préstamos" textFill="WHITE" />
-            <Label focusTraversable="false" text="Capacitación" textFill="WHITE" />
-            <Label focusTraversable="false" text="Devoluciones" textFill="WHITE" />
+         <ImageView fitHeight="52.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../resources/img/icono.jpg" />
+            </image>
+         </ImageView>
+            <Label fx:id="user" focusTraversable="false" style="-fx-font-weight: bold; -fx-font-size: 14px;" textFill="WHITE" translateX="60.0" translateY="-55.0" />
+            <Label fx:id="job" style="-fx-font-size: 12px;" textFill="WHITE" translateX="60.0" translateY="-60.0" />
+            <Separator prefHeight="0.0" scaleY="0.5" translateX="1.0" translateY="-40.0" />
+            <Label focusTraversable="false" style="-fx-text-fill: WHITE;" text="Préstamos" textFill="WHITE" translateY="-20.0" />
+            <Label focusTraversable="false" style="-fx-text-fill: WHITE;" text="Capacitación" textFill="WHITE" translateY="-20.0" />
+            <Label focusTraversable="false" style="-fx-text-fill: WHITE;" text="Devoluciones" textFill="WHITE" translateY="-20.0" />
          	<Separator prefWidth="176.0" scaleY="0.5" />
-            <Label focusTraversable="false" text="Encargados" textFill="WHITE" />
-            <Label focusTraversable="false" text="Nosotros s" textFill="WHITE" />
-         <Button focusTraversable="false" mnemonicParsing="false" style="-fx-background-color: #037bfc;" text="Cerrar Sesión" textFill="WHITE" />
+            <Label focusTraversable="false" style="-fx-text-fill: WHITE;" text="Encargados" textFill="WHITE" />
+            <Label focusTraversable="false" style="-fx-text-fill: WHITE;" text="Nosotros" textFill="WHITE" />
+         <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #1484f0; -fx-background-radius: 100px;" text="Cerrar Sesión" textAlignment="CENTER" textFill="WHITE" />
         </VBox>
     </left>
     
     <center>
-        <VBox alignment="TOP_LEFT" prefHeight="559.0" prefWidth="1293.0" spacing="10" style="-fx-padding: 20;">
+        <VBox fx:id="vbox" alignment="TOP_LEFT" prefHeight="559.0" prefWidth="1293.0" spacing="10" style="-fx-padding: 20;">
             <Label focusTraversable="false" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="SALAS DISPONIBLES" />
-            <VBox fx:id="listaSalas" spacing="15" />
-         <TableView focusTraversable="false" prefHeight="200.0">
+         <TableView fx:id="tableUsers" focusTraversable="false" prefHeight="200.0">
            <columns>
-             <TableColumn prefWidth="75.0" text="C1" />
-             <TableColumn prefWidth="75.0" text="C2" />
+             <TableColumn fx:id="name" prefWidth="112.0" text="Usuario" />
+               <TableColumn fx:id="email" prefWidth="112.0" text="Correo" />
+               <TableColumn fx:id="phone" prefWidth="112.0" text="Contacto" />
+               <TableColumn fx:id="estate" prefWidth="112.0" text="Estracto" />
+             <TableColumn fx:id="password" prefWidth="112.0" text="Contraseña" />
            </columns>
          </TableView>
         </VBox>
