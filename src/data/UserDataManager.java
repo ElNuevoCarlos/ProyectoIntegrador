@@ -22,6 +22,23 @@ public class UserDataManager {
 	public void addUser(User user) { 
 		users.add(user);
 	}
+	
+	public boolean verifyUser(String name) {
+        for (User userx : getUsers()) {
+            if (name.equals(userx.name)) {
+            	return true;
+            }
+        }
+        return false;
+	}
+	public User verifyPassword(String name, String password) {
+        for (User userx : getUsers()) {
+        	if (name.equals(userx.name) && password.equals(userx.password)) {
+            	return userx;
+            }
+        }
+        return null;
+	}
 	public void loadData() throws SQLException {
 		String sql = "SELECT * FROM USERTEACHER";
 		
