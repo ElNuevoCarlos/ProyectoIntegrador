@@ -9,25 +9,29 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User;
 
 public class LoginController {
     @FXML private BorderPane rootPane;
-    @FXML private TextField email;
+    @FXML private TextField username, passwordVisible;
+    @FXML private Text title;
     @FXML private PasswordField password;
-    @FXML private Button button;
-    
+    @FXML private Button button, passwordview, newAccount;
+    @FXML private Hyperlink hyperlink;
+     
     private UserDataManager userManager = UserDataManager.getInstance();
     private SessionManager sessionManager = SessionManager.getInstance();
-    private String Email, Password;
+    private String Username, Password;
     
-    @FXML public void initialize() {
+    @FXML void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
         
         //Para poder dar enter
-        email.setOnKeyPressed(event -> {
+        username.setOnKeyPressed(event -> {
             if (event.getCode().toString().equals("ENTER")) {
                 button.fire();
             }
@@ -40,51 +44,61 @@ public class LoginController {
             }
         });
     }
-    
-    @FXML public void handlePassword() {
-    	Password = password.getText();
-    	//System.out.println("handlePassword "+Password);
-    	handleVerify(Email, Password);
+    @FXML void handlePasswordView() {
+        if (password.isVisible()) {
+            password.setVisible(false);
+            passwordVisible.setDisable(true);
+            passwordVisible.setText(password.getText());
+            passwordVisible.setVisible(true);
+        } else {
+            password.setVisible(true);
+            passwordVisible.setVisible(false);
+        }
     }
     
-    @FXML public void handleEmail() {
-        Email = email.getText();
-        email.setVisible(false);
-        password.setVisible(true);
-        button.setText("Entrar");
-        button.setOnAction(event -> handlePassword());
+    @FXML void handleNewAccount() {
+
     }
     
-    public void handleVerify(String Email, String Password) {
-    	
-    	if (Email.isBlank() || Password.isBlank()) {
-            this.AlertWindow("Todos los campos deben llenarse.", null, AlertType.WARNING);
+    @FXML void handleName() {
+    	Username = username.getText();
+    	if (Username.isBlank()) {
+            this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
-		
-        for (User userx : userManager.getUsers()) {
-            if (Email.equals(userx.email) && Password.equals(userx.password)) {
-            	sessionManager.setUser(userx.name, userx.role);
-            	
-            	// CIERRA LA VENTANA ACTUAL
-                Stage currentStage = (Stage) rootPane.getScene().getWindow();
-                currentStage.close();
-                // CIERRA LA VENTANA ACTUAL
-                
-            	if (userx.role.equals("Profesor")) Main.loadView("/views/MenuTeacher.fxml");
-            	else Main.loadView("/views/MenuAdministrative.fxml");
-                return;
-            }
+    	if (userManager.verifyUser(Username)) {
+        	username.setVisible(false);
+            password.setVisible(true);
+            passwordview.setVisible(true);
+            newAccount.setVisible(false);
+            hyperlink.setText("¿Has olvidado tú contraseña?");
+            title.setText(Username);
+            button.setText("Entrar");
+            button.setOnAction(event -> handlePassword());
+    	} else this.AlertWindow(
+    			"El nombre no está registrado.", 
+    			"Verifique que el nombre es correcto.", 
+    			AlertType.ERROR);
+    }
+    @FXML void handlePassword() {
+    	Password = password.getText();
+    	if (Password.isBlank()) {
+            this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
+            return;
         }
-        email.setVisible(true);
-        password.setVisible(false);
-        email.setText("");
-        button.setText("Siguiente");
-        
-    	this.Email = "";
-    	this.Password = "";
-    	
-        this.AlertWindow("El correo o contraseña no es correcto.", "Verifique que todos los datos esten bien y vuelva a intentarlo.", AlertType.ERROR);
+		User account = userManager.verifyPassword(Username, Password);
+		if (account != null) {
+        	sessionManager.setUser(Username, account.role);
+        	// CIERRA LA VENTANA ACTUAL
+            Stage currentStage = (Stage) rootPane.getScene().getWindow();
+            currentStage.close();
+            // CIERRA LA VENTANA ACTUAL
+        	if (account.role.equals("Profesor")) Main.loadView("/views/MenuTeacher.fxml");
+        	else Main.loadView("/views/MenuAdministrative.fxml");
+		} else this.AlertWindow(
+    			null, 
+    			"La contraseña es incorrecta.", 
+    			AlertType.ERROR);
     }
     
     private void AlertWindow(String text, String content, AlertType type) {
