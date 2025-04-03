@@ -17,9 +17,9 @@
                   <Font name="MS UI Gothic" size="24.0" />
                </font>
             </Text>
-            <TextField fx:id="email" focusTraversable="false" layoutX="118.0" layoutY="79.0" prefHeight="34.0" prefWidth="177.0" promptText="Correo" />
-            <Button fx:id="join" layoutX="166.0" layoutY="174.0" mnemonicParsing="false" onAction="#handleJoinLogin" prefHeight="35.0" prefWidth="83.0" style="-fx-background-color: #037bfc;" text="Entrar" textFill="WHITE" />
-            <PasswordField fx:id="password" focusTraversable="false" layoutX="118.0" layoutY="128.0" prefHeight="30.0" prefWidth="178.0" promptText="Contraseña" />
+            <TextField fx:id="email" focusTraversable="false" layoutX="115.0" layoutY="109.0" prefHeight="34.0" prefWidth="177.0" promptText="Correo" />
+            <Button fx:id="button" layoutX="166.0" layoutY="174.0" mnemonicParsing="false" onAction="#handleEmail" prefHeight="35.0" prefWidth="83.0" style="-fx-background-color: #037bfc;" text="Siguiente" textFill="WHITE" />
+            <PasswordField fx:id="password" focusTraversable="false" layoutX="114.0" layoutY="109.0" prefHeight="34.0" prefWidth="178.0" promptText="Contraseña" visible="false" />
          </children>
       </Pane>
    </center>

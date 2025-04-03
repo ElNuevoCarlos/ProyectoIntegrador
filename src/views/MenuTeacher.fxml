@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -19,7 +20,8 @@
             <Label focusTraversable="false" text="Devoluciones" textFill="WHITE" />
          	<Separator prefWidth="176.0" scaleY="0.5" />
             <Label focusTraversable="false" text="Encargados" textFill="WHITE" />
-            <Label focusTraversable="false" text="Nosotros" textFill="WHITE" />
+            <Label focusTraversable="false" text="Nosotros s" textFill="WHITE" />
+         <Button focusTraversable="false" mnemonicParsing="false" style="-fx-background-color: #037bfc;" text="Cerrar Sesión" textFill="WHITE" />
         </VBox>
     </left>
     

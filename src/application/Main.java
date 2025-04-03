@@ -27,10 +27,13 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-    public static void loadView(String fxmlFile) {
+    @SuppressWarnings("exports")
+	public static void loadView(String fxmlFile, Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
-            rootLayout.setCenter(loader.load());
+            Scene newScene = new Scene(newRoot);
+            stage.setScene(newScene);
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
