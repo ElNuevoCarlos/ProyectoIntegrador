@@ -20,6 +20,7 @@
          	<Separator prefWidth="176.0" scaleY="0.5" />
             <Label focusTraversable="false" text="Encargados" textFill="WHITE" />
             <Label focusTraversable="false" text="Nosotros" textFill="WHITE" />
+         <Button focusTraversable="false" mnemonicParsing="false" style="-fx-background-color: #037bfc;" text="Cerrar Sesión" textFill="WHITE" />
         </VBox>
     </left>
     

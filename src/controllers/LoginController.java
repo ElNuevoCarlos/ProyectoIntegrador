@@ -24,6 +24,20 @@ public class LoginController {
     
     @FXML public void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
+        
+        //Para poder dar enter
+        email.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                button.fire();
+            }
+        });
+        
+      //Para poder dar enter
+        password.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                button.fire(); 
+            }
+        });
     }
     
     @FXML public void handlePassword() {

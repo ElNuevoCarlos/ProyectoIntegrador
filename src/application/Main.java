@@ -6,6 +6,7 @@ import data.UserDataManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 
@@ -21,20 +22,19 @@ public class Main extends Application {
             rootLayout = root.load();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+    		Image icon = new Image(getClass().getResourceAsStream("/resources/img/icono.jpg"));
+    		primaryStage.getIcons().add(icon);
             //primaryStage.setResizable(false);
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    @SuppressWarnings("exports")
-	public static void loadView(String fxmlFile, Stage stage) {
+
+	public static void loadView(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
-            BorderPane newRoot = loader.load();
-            Scene newScene = new Scene(newRoot);
-            stage.setScene(newScene);
-            stage.show();
+            rootLayout.setCenter(loader.load());
         } catch (Exception e) {
             e.printStackTrace();
         }

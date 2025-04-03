@@ -43,7 +43,7 @@ public class UserDataManager {
                 users.add(new User(card, name, email, phone, estate, password, role));
             }
 		} catch (SQLException e) {
-            System.err.println("Error: "+e.getMessage());
+            System.err.println(e.getMessage());
         }
 	}
 }
