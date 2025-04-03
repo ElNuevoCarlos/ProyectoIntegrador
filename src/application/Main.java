@@ -31,6 +31,7 @@ public class Main extends Application {
 	public static void loadView(String fxmlFile, Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
+            BorderPane newRoot = loader.load();
             Scene newScene = new Scene(newRoot);
             stage.setScene(newScene);
             stage.show();
