@@ -32,9 +32,17 @@ public class Main extends Application {
     }
 
 	public static void loadView(String fxmlFile) {
+		Stage secondStage = new Stage();
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
-            rootLayout.setCenter(loader.load());
+            
+            rootLayout = loader.load();
+            Scene scene = new Scene(rootLayout);
+            secondStage.setScene(scene);
+    		Image icon = new Image(Main.class.getResourceAsStream("/resources/img/icono.jpg"));
+    		secondStage.getIcons().add(icon);
+            secondStage.show();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

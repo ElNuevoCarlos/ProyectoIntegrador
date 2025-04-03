@@ -10,7 +10,6 @@ import model.User;
 
 public class UserDataManager {
 	private static UserDataManager instance;
-	
 	private ArrayList<User> users = new ArrayList<>();
 	
 	public static UserDataManager getInstance() {
@@ -20,11 +19,9 @@ public class UserDataManager {
 	public ArrayList<User> getUsers() {
 		return users;
 	}
-	
 	public void addUser(User user) { 
 		users.add(user);
 	}
-	
 	public void loadData() throws SQLException {
 		String sql = "SELECT * FROM USERTEACHER";
 		

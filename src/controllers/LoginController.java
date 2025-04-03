@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import model.User;
 
 public class LoginController {
@@ -42,7 +43,7 @@ public class LoginController {
     
     @FXML public void handlePassword() {
     	Password = password.getText();
-    	System.out.println("handlePassword "+Password);
+    	//System.out.println("handlePassword "+Password);
     	handleVerify(Email, Password);
     }
     
@@ -64,6 +65,12 @@ public class LoginController {
         for (User userx : userManager.getUsers()) {
             if (Email.equals(userx.email) && Password.equals(userx.password)) {
             	sessionManager.setUser(userx.name, userx.role);
+            	
+            	// CIERRA LA VENTANA ACTUAL
+                Stage currentStage = (Stage) rootPane.getScene().getWindow();
+                currentStage.close();
+                // CIERRA LA VENTANA ACTUAL
+                
             	if (userx.role.equals("Profesor")) Main.loadView("/views/MenuTeacher.fxml");
             	else Main.loadView("/views/MenuAdministrative.fxml");
                 return;

@@ -13,19 +13,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.User;
 
 public class MenuTeacherController {
-
     @FXML private BorderPane rootPane;
-    @FXML private Label user, job;
+    @FXML private Label user, role;
     @FXML private VBox vbox;
 
     @FXML private TableColumn<User, String> name;
-    @FXML private TableColumn<User, String> password;
     @FXML private TableColumn<User, String> email;
     @FXML private TableColumn<User, String> phone;
-    @FXML private TableColumn<User, String> estate;
     @FXML private TableView<User> tableUsers;
     
 	private UserDataManager userManager = UserDataManager.getInstance();
@@ -42,8 +40,6 @@ public class MenuTeacherController {
     	name.setCellValueFactory(new PropertyValueFactory<>("name"));
     	email.setCellValueFactory(new PropertyValueFactory<>("email"));
     	phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-    	estate.setCellValueFactory(new PropertyValueFactory<>("estate"));
-    	password.setCellValueFactory(new PropertyValueFactory<>("password"));
     	tableUsers.setItems(users);
     	
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
@@ -51,13 +47,25 @@ public class MenuTeacherController {
     }
     
     @FXML
+    void handleReport(ActionEvent event) {
+    	// CIERRA LA VENTANA ACTUAL
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+        currentStage.close();
+        // CIERRA LA VENTANA ACTUAL
+    	Main.loadView("/views/MenuReports.fxml");
+    }
+    @FXML
     void handleLogout(ActionEvent event) {
+    	// CIERRA LA VENTANA ACTUAL
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+        currentStage.close();
+        // CIERRA LA VENTANA ACTUAL
     	Main.loadView("/views/Login.fxml");
     }
   
     public void data() {
         this.user.setText(sessionManager.getName());
-        this.job.setText(sessionManager.getRole());
+        this.role.setText(sessionManager.getRole());
     }
     
 }
