@@ -23,7 +23,7 @@
             <Separator prefHeight="0.0" scaleY="0.5" translateX="1.0" translateY="-40.0" />
          <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleReport" prefHeight="30.0" prefWidth="126.0" style="-fx-background-color: #3095f8;" text="Reportar Problema" textAlignment="CENTER" textFill="WHITE" translateY="-20.0" />
          	<Separator prefWidth="176.0" scaleY="0.5" />
-         <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleLogout" prefHeight="30.0" prefWidth="126.0" style="-fx-background-color: ff1414;" text="Cerrar Sesión" textAlignment="CENTER" textFill="WHITE" translateY="100.0" />
+         <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleLogout" prefHeight="30.0" prefWidth="126.0" style="-fx-background-color: ff1414;" text="Cerrar Sesión" textAlignment="CENTER" textFill="WHITE" translateY="150.0" />
         </VBox>
     </left>
     

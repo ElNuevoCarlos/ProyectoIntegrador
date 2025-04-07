@@ -54,7 +54,7 @@ public class UserDataManager {
             	String estate = rs.getString("ESTATE");
             	String password = rs.getString("PASSWORD");
             	String role = rs.getString("ROLE");
-                users.add(new User(card, name, email, phone, estate, password, role));
+                addUser(new User(card, name, email, phone, estate, password, role));
             }
 		} catch (SQLException e) {
             System.err.println(e.getMessage());

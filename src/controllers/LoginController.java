@@ -57,7 +57,11 @@ public class LoginController {
     }
     
     @FXML void handleNewAccount() {
-
+    	// CIERRA LA VENTANA ACTUAL
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+        currentStage.close();
+        // CIERRA LA VENTANA ACTUAL
+        Main.loadView("/views/NewAccount.fxml");
     }
     
     @FXML void handleName() {

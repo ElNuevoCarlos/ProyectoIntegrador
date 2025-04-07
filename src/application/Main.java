@@ -35,7 +35,6 @@ public class Main extends Application {
 		Stage secondStage = new Stage();
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlFile));
-            
             rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);
             secondStage.setScene(scene);

@@ -10,24 +10,24 @@ import javafx.stage.Stage;
 
 public class MenuReportsController {
 	private SessionManager sessionManager = SessionManager.getInstance();
-	@FXML private BorderPane rootPaneTwo;
+	@FXML private BorderPane rootPane;
     @FXML private Label user, role;
     
     @FXML public void initialize() {
-        rootPaneTwo.setOnMouseClicked(event -> rootPaneTwo.requestFocus());
+        rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
         data();
     }
     
     @FXML void handleHall(ActionEvent event) {
     	// CIERRA LA VENTANA ACTUAL
-        Stage currentStage = (Stage) rootPaneTwo.getScene().getWindow();
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
         // CIERRA LA VENTANA ACTUAL
     	Main.loadView("/views/MenuTeacher.fxml");
     }
     @FXML void handleLogout(ActionEvent event) {
     	// CIERRA LA VENTANA ACTUAL
-        Stage currentStage = (Stage) rootPaneTwo.getScene().getWindow();
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
         // CIERRA LA VENTANA ACTUAL
     	Main.loadView("/views/Login.fxml");
