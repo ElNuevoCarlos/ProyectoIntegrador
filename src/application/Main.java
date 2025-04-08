@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
-// hola soy yesid
+
 public class Main extends Application {
 	private UserDataManager userManager = UserDataManager.getInstance();
     private static BorderPane rootLayout;
