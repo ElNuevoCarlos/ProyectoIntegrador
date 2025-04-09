@@ -43,7 +43,7 @@ public class UserDataManager {
 	public void loadData() throws SQLException {
 		String sql = "SELECT * FROM USERTEACHER";
 		
-		try (Connection conexion = new Oracle().getConexionTeacher();
+		try (Connection conexion = new DataBase().getConexionTeacher();
 				Statement statement = conexion.createStatement();
 				ResultSet rs = statement.executeQuery(sql)){
             

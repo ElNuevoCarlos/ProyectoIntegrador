@@ -23,17 +23,17 @@
                   </Text>
                   <TextField fx:id="username" focusTraversable="false" layoutX="21.0" layoutY="251.0" prefHeight="30.0" prefWidth="150.0" promptText="Usuario" />
                   <Button fx:id="newAccount" focusTraversable="false" layoutX="128.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleNewAccount" prefHeight="35.0" prefWidth="102.0" style="-fx-background-color: #037bfc;" text="Registrarse" textFill="WHITE" />
-                  <TextField fx:id="nombre" focusTraversable="false" layoutX="21.0" layoutY="84.0" prefHeight="30.0" prefWidth="150.0" promptText="Nombre" />
-                  <TextField fx:id="apellidos" focusTraversable="false" layoutX="185.0" layoutY="84.0" prefHeight="30.0" prefWidth="150.0" promptText="Apellidos" />
+                  <TextField fx:id="name" focusTraversable="false" layoutX="21.0" layoutY="84.0" prefHeight="30.0" prefWidth="150.0" promptText="Nombre" />
+                  <TextField fx:id="lastName" focusTraversable="false" layoutX="185.0" layoutY="84.0" prefHeight="30.0" prefWidth="150.0" promptText="Apellidos" />
                   <ComboBox fx:id="ti" focusTraversable="false" layoutX="20.0" layoutY="127.0" prefHeight="30.0" prefWidth="60.0" promptText="T.I" />
-                  <TextField fx:id="numIdentificacion" focusTraversable="false" layoutX="89.0" layoutY="127.0" prefHeight="30.0" prefWidth="248.0" promptText="Número de identificación" />
-                  <TextField fx:id="correo" focusTraversable="false" layoutX="185.0" layoutY="210.0" prefHeight="30.0" prefWidth="150.0" promptText="Correo institucional " />
-                  <TextField fx:id="telefono" focusTraversable="false" layoutX="21.0" layoutY="210.0" prefHeight="30.0" prefWidth="150.0" promptText="Telefono" />
+                  <TextField fx:id="numIdentification" focusTraversable="false" layoutX="89.0" layoutY="127.0" prefHeight="30.0" prefWidth="248.0" promptText="Número de identificación" />
+                  <TextField fx:id="email" focusTraversable="false" layoutX="185.0" layoutY="210.0" prefHeight="30.0" prefWidth="150.0" promptText="Correo institucional " />
+                  <TextField fx:id="phone" focusTraversable="false" layoutX="21.0" layoutY="210.0" prefHeight="30.0" prefWidth="150.0" promptText="Telefono" />
                   <TextField fx:id="pro_dep" focusTraversable="false" layoutX="21.0" layoutY="171.0" prefHeight="30.0" prefWidth="315.0" promptText="Programa o departamento" />
                   <TextField fx:id="password1" focusTraversable="false" layoutX="21.0" layoutY="291.0" prefHeight="30.0" prefWidth="150.0" promptText="Contraseña nueva" />
                   <TextField fx:id="password2" focusTraversable="false" layoutX="185.0" layoutY="291.0" prefHeight="30.0" prefWidth="150.0" promptText="Confirmar contraseña" />
                   <Hyperlink fx:id="login" focusTraversable="false" layoutX="114.0" layoutY="377.0" onAction="#handleLogin" text="¿Ya tienes una cuenta?" />
-                  <ComboBox fx:id="rol" focusTraversable="false" layoutX="185.0" layoutY="251.0" prefHeight="30.0" prefWidth="150.0" promptText="Seleccione su rol" />
+                  <ComboBox fx:id="role" focusTraversable="false" layoutX="185.0" layoutY="251.0" prefHeight="30.0" prefWidth="150.0" promptText="Seleccione su rol" />
                   <Text layoutX="135.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crea una cuenta" />
                </children>
             </Pane>

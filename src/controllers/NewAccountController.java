@@ -11,43 +11,50 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.User;
 
 public class NewAccountController {
-	@FXML private BorderPane rootPane;
-	@FXML private ComboBox<String> ti;
-	@FXML private ComboBox<String> rol;
+	@FXML 
+	private BorderPane rootPane;
+	
     @FXML
-    private TextField apellidos;
+    private TextField name;
+    
+    @FXML
+    private TextField lastName;
+    
+	@FXML 
+	private ComboBox<String> ti;
 
     @FXML
-    private TextField correo;
+    private TextField numIdentification;
+	
+    @FXML
+    private TextField pro_dep;
+    
+    @FXML
+    private TextField phone;
+    
+    @FXML
+    private TextField email;
 
     @FXML
-    private Hyperlink login;
-
-    @FXML
-    private Button newAccount;
-
-    @FXML
-    private TextField nombre;
-
-    @FXML
-    private TextField numIdentificacion;
+    private TextField username;
+    
+	@FXML 
+	private ComboBox<String> role;
 
     @FXML
     private TextField password1;
 
     @FXML
     private TextField password2;
+    
+    @FXML
+    private Hyperlink login;
 
     @FXML
-    private TextField pro_dep;
-
-    @FXML
-    private TextField telefono;
-
-    @FXML
-    private TextField username;
+    private Button newAccount;
 	
 	@FXML
 	public void initialize() {
@@ -60,44 +67,63 @@ public class NewAccountController {
 	    ObservableList<String> itemsRol = FXCollections.observableArrayList(
 	        "Docente", "Administrativo"
 	    );
-	    rol.setItems(itemsRol);
+	    role.setItems(itemsRol);
 	}
 	
-    private void mostrarAlerta(String titulo, String cabecera, String mensaje) {
+    private void showAlert(String title, String head, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titulo);
-        alert.setHeaderText(cabecera);
-        alert.setContentText(mensaje);
+        alert.setTitle(title);
+        alert.setHeaderText(head);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
 	@FXML void handleNewAccount() {
-		String Nombre = nombre.getText().trim();
-		String Apellidos = apellidos.getText().trim();
+		String Name = name.getText().trim();
+		String LastName = lastName.getText().trim();
 		String TI = ti.getValue() != null ? ti.getValue().trim() : "";
-		String NumIdentificacion = numIdentificacion.getText().trim();
+		String NumIdentification = numIdentification.getText().trim();
 		String Pro_dep = pro_dep.getText().trim();
-		String Telefono = telefono.getText().trim();
-		String Correo = correo.getText().trim();
+		String Phone = phone.getText().trim();
+		String Email = email.getText().trim();
 		String Username = username.getText().trim();
-		String Rol = rol.getValue() != null ? rol.getValue().trim() : "";
+		String Role = role.getValue() != null ? role.getValue().trim() : "";
 		String Password1 = password1.getText().trim();
 		String Password2 = password2.getText().trim();
 		
-        if (Nombre.isEmpty() || 
-        		Apellidos.isEmpty() || 
+        if (Name.isEmpty() || 
+        		LastName.isEmpty() || 
         		TI.isEmpty() || 
-        		NumIdentificacion.isEmpty() || 
+        		NumIdentification.isEmpty() || 
         		Pro_dep.isEmpty() || 
-        		Telefono.isEmpty() || 
-        		Correo.isEmpty() || 
+        		Phone.isEmpty() || 
+        		Email.isEmpty() || 
         		Username.isEmpty() || 
-        		Rol.isEmpty() || 
+        		Role.isEmpty() || 
         		Password1.isEmpty() || 
         		Password2.isEmpty()){
         	
-            mostrarAlerta("Error", "Campos vacíos", "Por favor, complete todos los campos.");
+        	showAlert("Error", "Campos vacíos", "Por favor, complete todos los campos.");
             return;
+        }
+        if (Password1.equals(Password2)) {
+        	String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$";
+        	if (!Password1.matches(regex)) {
+                showAlert("Formato inválido", "Contraseña insegura", 
+                        "La contraseña debe tener:\n" +
+                        "- Entre 8 y 20 caracteres\n" +
+                        "- Al menos una letra mayúscula\n" +
+                        "- Al menos una letra minúscula\n" +
+                        "- Al menos un número\n" +
+                        "- Al menos un carácter especial (@#$%^&+=!)");
+                    return;
+        	} else {
+        		String fullName = Name + " " + LastName;
+        		User newUser = new User(fullName, TI, NumIdentification, Pro_dep, Phone, Email, Username, Role, Password1);
+        	}
+        } else {
+        	showAlert("Error", "Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.");
+        	return;
         }
 	}
 	

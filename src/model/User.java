@@ -1,32 +1,55 @@
 package model;
 
 public class User {
-	public String card, name, email, phone, estate, password, role;
-	
-	public User(String card, String name, String email, String phone, String estate, String password, String role) {
+	public String fullName, TI, numIdentification, email, phone, pro_dep, username, password, role;
+	// falta definir el estado de la cuenta
+	public User(String fullName, String TI, String numIdentification, String email, String phone, String pro_dep, String username, String role, String password) {
 		super();
-		this.card = card;
-		this.name = name;
+		this.fullName = fullName;
+		this.TI = TI;
+		this.numIdentification = numIdentification;
 		this.email = email;
 		this.phone = phone;
-		this.estate = estate;
-		this.password = password;
+		this.pro_dep = pro_dep;
+		this.username = username;
 		this.role = role;
+		this.password = password;
+		
 	}
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
-    public String getPassword() {
-        return password;
-    }
-	public String getEmail() {
-		return email;
+    
+	public String getTI() {
+		return TI;
 	}
+	
+	public String getNumIdentification() {
+		return numIdentification;
+	}
+	
+    public String getEmail() {
+        return email;
+    }
+	
 	public String getPhone() {
 		return phone;
 	}
-	public String getEstate() {
-		return estate;
+    
+	public String getPro_dep() {
+		return pro_dep;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public String getRole() {
+		return role;
+	}
+	
+    public String getPassword() {
+        return password;
+    }
 }
