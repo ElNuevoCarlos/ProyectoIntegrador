@@ -11,11 +11,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/carlos/Herramientas/EclipsePortable/Data/workspace/ProyectoIntegrador_/src/resources/ojdbc11.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="src/resources/ojdbc11.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
