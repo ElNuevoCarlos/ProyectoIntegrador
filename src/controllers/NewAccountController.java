@@ -74,13 +74,13 @@ public class NewAccountController {
 	@FXML void handleNewAccount() {
 		String Nombre = nombre.getText().trim();
 		String Apellidos = apellidos.getText().trim();
-		String TI = ti.getValue();
+		String TI = ti.getValue() != null ? ti.getValue().trim() : "";
 		String NumIdentificacion = numIdentificacion.getText().trim();
 		String Pro_dep = pro_dep.getText().trim();
 		String Telefono = telefono.getText().trim();
 		String Correo = correo.getText().trim();
 		String Username = username.getText().trim();
-		String Rol = rol.getValue();
+		String Rol = rol.getValue() != null ? rol.getValue().trim() : "";
 		String Password1 = password1.getText().trim();
 		String Password2 = password2.getText().trim();
 		
