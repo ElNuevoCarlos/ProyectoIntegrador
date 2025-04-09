@@ -14,7 +14,7 @@ public class Oracle {
 		Connection conexion = null;
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
-			conexion = DriverManager.getConnection(getConnection(), "TEACHER","TEACHER");
+			conexion = DriverManager.getConnection(getConnection(), "TECHLEND","xmbW4xXdX87Ts0");
 		} catch (ClassNotFoundException e) {
 			System.out.println("No se encuentra el driver");
 		}
@@ -24,20 +24,7 @@ public class Oracle {
 		}
 		return conexion;
 	}
-	public Connection getConexionAdministrative() {
-		Connection conexion = null;
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			conexion = DriverManager.getConnection(getConnection(), "ADMINISTRATIVE","ADMINISTRATIVE");
-		} catch (ClassNotFoundException e) {
-			System.out.println("No se encuentra el driver");
-		}
-		catch(SQLException e){
-			//System.out.println(e);
-			System.out.println("Error en la conexi�n");
-		}
-		return conexion;
-	}
+
 	public String getConnection() {
 		return "jdbc:oracle:thin:@"+this.host+":"+this.port+":"+this.service;
 	}

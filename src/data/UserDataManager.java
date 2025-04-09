@@ -39,6 +39,7 @@ public class UserDataManager {
         }
         return null;
 	}
+	
 	public void loadData() throws SQLException {
 		String sql = "SELECT * FROM USERTEACHER";
 		
