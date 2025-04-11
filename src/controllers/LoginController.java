@@ -6,7 +6,6 @@ import application.*;
 import data.DataBase;
 import data.SessionManager;
 import data.UserDAO;
-import data.UserDataManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -17,7 +16,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.User;
 
 public class LoginController {
     @FXML private BorderPane rootPane;
@@ -27,10 +25,10 @@ public class LoginController {
     @FXML private Button button, passwordview, newAccount;
     @FXML private Hyperlink hyperlink;
      
-//    private UserDataManager userManager = UserDataManager.getInstance();
-//    private SessionManager sessionManager = SessionManager.getInstance();
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
+    
+	private SessionManager sessionManager = SessionManager.getInstance();
     private String Username, Password;
     
     @FXML void initialize() {
@@ -103,18 +101,18 @@ public class LoginController {
     	String role = verificationResult[1];
     	System.out.println(role);
 		if (verification.equals("Y")) {
+			
         	// CIERRA LA VENTANA ACTUAL
             Stage currentStage = (Stage) rootPane.getScene().getWindow();
             currentStage.close();
             // CIERRA LA VENTANA ACTUAL
+            sessionManager.setUser(Username, role);
             if (role.equals("DOCENTE") || role.equals("ADMINISTRATIVO")) {
-            	System.out.println("Docente o Administrativo");
             	Main.loadView("/views/TeacherAdmin.fxml");
             } else if (role.equals("ENCARGADO")) {
-            	System.out.println("encargado");
             	Main.loadView("/views/Manager.fxml");
-            } else if (role.equals("SUPERENCARGADO")) {
-            	System.out.println("Super Encargado");
+            } else {
+            	// Si no es ninguna, entonces es el superencargado
             	Main.loadView("/views/SuperManager.fxml");
             }
 		} else this.AlertWindow(

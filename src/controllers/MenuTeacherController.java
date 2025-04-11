@@ -1,8 +1,11 @@
 package controllers;
 
+import java.sql.Connection;
+
 import application.Main;
+import data.DataBase;
 import data.SessionManager;
-import data.UserDataManager;
+import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,14 +29,15 @@ public class MenuTeacherController {
     @FXML private TableColumn<User, String> phone;
     @FXML private TableView<User> tableUsers;
     
-	private UserDataManager userManager = UserDataManager.getInstance();
+    private Connection database = DataBase.getInstance().getConnection();
+    private UserDAO userDao = new UserDAO(database);
 	private SessionManager sessionManager = SessionManager.getInstance();
 
     @FXML 
     public void initialize() {
     	ObservableList<User> users = FXCollections.observableArrayList();
     	
-    	for (User user : userManager.getUsers()) {
+    	for (User user : userDao.fetch()) {
         	users.add(user);
     	}
 

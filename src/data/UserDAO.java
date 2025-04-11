@@ -116,7 +116,7 @@ public class UserDAO implements CRUD_operation<User, String>{
 		}
 		return new String[] {verification, role};
 	}
-
+	
 	@Override
 	public ArrayList<User> fetch() {
         ArrayList<User> users = new ArrayList<>();
