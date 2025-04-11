@@ -1,8 +1,10 @@
 package controllers;
 
+import java.sql.Connection;
+
 import application.*;
-import data.SessionManager;
-import data.UserDataManager;
+import data.DataBase;
+import data.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -23,8 +25,8 @@ public class LoginController {
     @FXML private Button button, passwordview, newAccount;
     @FXML private Hyperlink hyperlink;
      
-    private UserDataManager userManager = UserDataManager.getInstance();
-    private SessionManager sessionManager = SessionManager.getInstance();
+    private Connection database = DataBase.getInstance().getConnection();
+    private UserDAO userDao = new UserDAO(database);
     private String Username, Password;
     
     @FXML void initialize() {
@@ -70,7 +72,7 @@ public class LoginController {
             this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
-    	if (userManager.verifyUser(Username)) {
+    	if (userDao.verifyUser(Username)!= null) {
         	username.setVisible(false);
             password.setVisible(true);
             passwordview.setVisible(true);
@@ -80,8 +82,8 @@ public class LoginController {
             button.setText("Entrar");
             button.setOnAction(event -> handlePassword());
     	} else this.AlertWindow(
-    			"El nombre no está registrado.", 
-    			"Verifique que el nombre es correcto.", 
+    			"El usuario no está registrado.", 
+    			"Verifique que el usuario es correcto.", 
     			AlertType.ERROR);
     }
     @FXML void handlePassword() {

@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 import model.User;
 
 public class UserDAO {
@@ -26,37 +29,27 @@ public class UserDAO {
             // Insertamos la persona
             try (PreparedStatement pstmt = connection.prepareStatement(queryPersona, new String[] {"ID"})) {
                 pstmt.setString(1, user.getFullName());
-                System.out.println("NAME");
                 pstmt.setString(2, user.getTI());
-                System.out.println("TI");
                 pstmt.setString(3, user.getNumIdentification());
-                System.out.println("NUMID");
                 pstmt.setString(4, user.getEmail());
-                System.out.println("EMAIL");
                 pstmt.setString(5, user.getPhone());
-                System.out.println("PHONE");
                 pstmt.setString(6, user.getPro_dep());
-                System.out.println("PRO_DEP");
 
                 int rowsAffected = pstmt.executeUpdate();
-                System.out.println("UPDATE");
                 if (rowsAffected > 0) {
                     System.out.println("User inserted successfully.");
                 }
-                System.out.println("FUNCIONO");
 
                 // Recuperamos el ID generado para la persona
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
                     if (rs.next()) {
                         int idPersona = rs.getInt(1); // ID_PERSONA generado
-                        System.out.println("GENERADO");
                         // Ahora insertamos la cuenta, utilizando el ID_PERSONA
                         try (PreparedStatement pstmtCuenta = connection.prepareStatement(queryCuenta)) {
                             pstmtCuenta.setString(1, user.getUsername());
                             pstmtCuenta.setString(2, user.getPassword());
                             pstmtCuenta.setString(3, user.getRole());
                             pstmtCuenta.setInt(4, idPersona); // Usamos el ID de la persona
-                            System.out.println("DATOS CUENTA");
                             pstmtCuenta.executeUpdate();        
                             System.out.println("Account inserted successfully.");
                         }
@@ -92,5 +85,35 @@ public class UserDAO {
             }
         }
     }
-
+    
+	public String verifyUser(String user) {
+		String name = null;
+        String query = "SELECT p.NOMBRE_COMPLETO FROM PERSONA p, CUENTA c WHERE c.ID_PERSONA = p.ID AND c.USUARIO = ?";       
+        try (PreparedStatement pstmt = connection.prepareStatement(query)){
+        	pstmt.setString(1, user);
+        	ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("NOMBRE_COMPLETO");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return name; 
+	}
+	
+	public String verifyPassword(String user, String password) {
+		String verification = null;
+		String query = "SELECT CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION FROM CUENTA WHERE USUARIO = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, password);
+			pstmt.setString(2, user);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				verification = rs.getString("VERIFICATION");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+			return verification;
+	}
 }
