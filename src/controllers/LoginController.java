@@ -1,7 +1,11 @@
 package controllers;
 
+import java.sql.Connection;
+
 import application.*;
+import data.DataBase;
 import data.SessionManager;
+import data.UserDAO;
 import data.UserDataManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -23,8 +27,10 @@ public class LoginController {
     @FXML private Button button, passwordview, newAccount;
     @FXML private Hyperlink hyperlink;
      
-    private UserDataManager userManager = UserDataManager.getInstance();
-    private SessionManager sessionManager = SessionManager.getInstance();
+//    private UserDataManager userManager = UserDataManager.getInstance();
+//    private SessionManager sessionManager = SessionManager.getInstance();
+    private Connection database = DataBase.getInstance().getConnection();
+    private UserDAO userDao = new UserDAO(database);
     private String Username, Password;
     
     @FXML void initialize() {
@@ -70,13 +76,14 @@ public class LoginController {
             this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
-    	if (userManager.verifyUser(Username)) {
+    	String name = userDao.verifyUser(Username);
+    	if (name != null) {
         	username.setVisible(false);
             password.setVisible(true);
             passwordview.setVisible(true);
             newAccount.setVisible(false);
             hyperlink.setText("¿Has olvidado tú contraseña?");
-            title.setText(Username);
+            title.setText(name);
             button.setText("Entrar");
             button.setOnAction(event -> handlePassword());
     	} else this.AlertWindow(
@@ -90,15 +97,26 @@ public class LoginController {
             this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
-		User account = userManager.verifyPassword(Username, Password);
-		if (account != null) {
-        	sessionManager.setUser(Username, account.role);
+    	String[] verificationResult = userDao.verifyPassword(Username, Password);
+    	String verification = verificationResult[0];
+    	System.out.println(verification);
+    	String role = verificationResult[1];
+    	System.out.println(role);
+		if (verification.equals("Y")) {
         	// CIERRA LA VENTANA ACTUAL
             Stage currentStage = (Stage) rootPane.getScene().getWindow();
             currentStage.close();
             // CIERRA LA VENTANA ACTUAL
-        	if (account.role.equals("Profesor")) Main.loadView("/views/MenuTeacher.fxml");
-        	else Main.loadView("/views/MenuAdministrative.fxml");
+            if (role.equals("DOCENTE") || role.equals("ADMINISTRATIVO")) {
+            	System.out.println("Docente o Administrativo");
+            	Main.loadView("/views/TeacherAdmin.fxml");
+            } else if (role.equals("ENCARGADO")) {
+            	System.out.println("encargado");
+            	Main.loadView("/views/Manager.fxml");
+            } else if (role.equals("SUPERENCARGADO")) {
+            	System.out.println("Super Encargado");
+            	Main.loadView("/views/SuperManager.fxml");
+            }
 		} else this.AlertWindow(
     			null, 
     			"La contraseña es incorrecta.", 

@@ -57,7 +57,6 @@ public class UserDAO implements CRUD_operation<User, String>{
                 
                 // Si todo fue exitoso, confirmamos la transacción
                 connection.commit();
-                System.out.println("COMMIT");
 
             } catch (SQLException e) {
                 // Si ocurre algún error en las inserciones, revertimos todo
@@ -100,20 +99,22 @@ public class UserDAO implements CRUD_operation<User, String>{
         return name; 
 	}
 	
-	public String verifyPassword(String user, String password) {
+	public String[] verifyPassword(String user, String password) {
 		String verification = null;
-		String query = "SELECT CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION FROM CUENTA WHERE USUARIO = ?";
+		String role = null;
+		String query = "SELECT ROL, CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION FROM CUENTA WHERE USUARIO = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, password);
 			pstmt.setString(2, user);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
+				role = rs.getString("ROL");
 				verification = rs.getString("VERIFICATION");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-			return verification;
+		return new String[] {verification, role};
 	}
 
 	@Override
