@@ -1,6 +1,10 @@
 package controllers;
 
+import java.sql.Connection;
+
 import application.Main;
+import data.DataBase;
+import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -55,6 +59,9 @@ public class NewAccountController {
 
     @FXML
     private Button newAccount;
+    
+    private Connection database = DataBase.getInstance().getConnection();
+    private UserDAO userDao = new UserDAO(database);
 	
 	@FXML
 	public void initialize() {
@@ -65,7 +72,7 @@ public class NewAccountController {
 	    ti.setItems(itemsTI);
 
 	    ObservableList<String> itemsRol = FXCollections.observableArrayList(
-	        "Docente", "Administrativo"
+	        "DOCENTE", "ADMINISTRATIVO"
 	    );
 	    role.setItems(itemsRol);
 	}
@@ -120,6 +127,7 @@ public class NewAccountController {
         	} else {
         		String fullName = Name + " " + LastName;
         		User newUser = new User(fullName, TI, NumIdentification, Pro_dep, Phone, Email, Username, Role, Password1);
+        		userDao.save(newUser);
         	}
         } else {
         	showAlert("Error", "Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.");

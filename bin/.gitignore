@@ -1,7 +1,2 @@
-/application/
-/controllers/
 /data/
-/model/
-/module-info.class
-/resources/
-/views/
+/controllers/
