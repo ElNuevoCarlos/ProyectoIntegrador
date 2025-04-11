@@ -22,8 +22,7 @@ public class UserDAO implements CRUD_operation<User, String>{
         String queryCuenta = "INSERT INTO CUENTA (ID, USUARIO, PASSWORD, ROL, ID_PERSONA) VALUES (SEQ_CUENTA_ID.NEXTVAL, ?, ?, ?, ?)";
         
         try {
-            // Comenzamos una transacción
-            connection.setAutoCommit(false); // Desactivamos el autocommit
+            connection.setAutoCommit(false);
 
             // Insertamos la persona
             try (PreparedStatement pstmt = connection.prepareStatement(queryPersona, new String[] {"ID"})) {

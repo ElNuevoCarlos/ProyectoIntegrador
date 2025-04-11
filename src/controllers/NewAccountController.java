@@ -114,8 +114,7 @@ public class NewAccountController {
             return;
         }
         if (Password1.equals(Password2)) {
-        	String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$";
-        	if (!Password1.matches(regex)) {
+        	if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
                 showAlert("Formato inválido", "Contraseña insegura", 
                         "La contraseña debe tener:\n" +
                         "- Entre 8 y 20 caracteres\n" +
