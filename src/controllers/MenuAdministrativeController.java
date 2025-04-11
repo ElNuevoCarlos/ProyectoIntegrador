@@ -1,18 +1,15 @@
 package controllers;
 
 import data.SessionManager;
-import data.UserDataManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import model.User;
 
 public class MenuAdministrativeController {
 
     @FXML private BorderPane rootPane;
     @FXML private Label user, job;
     
-	private UserDataManager userManager = UserDataManager.getInstance();
 	private SessionManager sessionManager = SessionManager.getInstance();
     
     @FXML 

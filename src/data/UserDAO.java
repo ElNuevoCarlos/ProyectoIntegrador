@@ -6,10 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import model.User;
 
-public class UserDAO {
+public class UserDAO implements CRUD_operation<User, String>{
     private Connection connection;
 
     public UserDAO(Connection connection) {
@@ -115,5 +114,52 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 			return verification;
+	}
+
+	@Override
+	public ArrayList<User> fetch() {
+        ArrayList<User> users = new ArrayList<>();
+        String query = "SELECT * FROM PERSONA";
+        
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            
+            while (rs.next()) {
+                String fullName = rs.getString("fullName");
+                String TI = rs.getString("TI");
+                String numIdentification = rs.getString("numIdentification");
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                String pro_dep = rs.getString("pro_dep");
+                String username = rs.getString("username");
+                String role = rs.getString("role");
+                String password = rs.getString("password");
+                
+                User user = new User(fullName, TI, numIdentification, email, phone, pro_dep, username, role, password);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+	}
+
+	@Override
+	public void update(User entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean authenticate(String id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
