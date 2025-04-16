@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 public class LoginController {
     @FXML private BorderPane rootPane;
-    @FXML private TextField username, passwordVisible;
+    @FXML private TextField email, passwordVisible;
     @FXML private Text title;
     @FXML private PasswordField password;
     @FXML private Button button, passwordview, newAccount;
@@ -29,13 +29,14 @@ public class LoginController {
     private UserDAO userDao = new UserDAO(database);
     
 	private SessionManager sessionManager = SessionManager.getInstance();
-    private String Username, Password;
+    private String Email, Password, Name;
     
-    @FXML void initialize() {
+    @FXML 
+    public void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
         
         //Para poder dar enter
-        username.setOnKeyPressed(event -> {
+        email.setOnKeyPressed(event -> {
             if (event.getCode().toString().equals("ENTER")) {
                 button.fire();
             }
@@ -68,20 +69,36 @@ public class LoginController {
         Main.loadView("/views/NewAccount.fxml");
     }
     
-    @FXML void handleName() {
-    	Username = username.getText();
-    	if (Username.isBlank()) {
+    @FXML void handleMailRecovery() {
+        AlertWindow(
+                "¿Olvidaste tu correo?", 
+                "Para recuperar tu correo institucional:\n\n" +
+                "1. Visita la página:\nhttps://web.udi.edu.co/\n\n" +  // Primero la URL
+                "2. Haz clic en el botón \"Correo Institucional\".",  // Luego el botón
+                AlertType.INFORMATION
+            );
+    }
+    
+    @FXML void handleEmail() {
+    	Email = email.getText();
+    	if (Email.isBlank()) {
             this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
-    	String name = userDao.verifyUser(Username);
-    	if (name != null) {
-        	username.setVisible(false);
+    	Name = userDao.verifyUser(Email);
+    	if (Name != null) {
+        	email.setVisible(false);
             password.setVisible(true);
             passwordview.setVisible(true);
             newAccount.setVisible(false);
             hyperlink.setText("¿Has olvidado tú contraseña?");
-            title.setText(name);
+            sessionManager.setUser(Name, null, Email);
+            hyperlink.setOnAction(event -> {
+                Stage currentStage = (Stage) rootPane.getScene().getWindow();
+                currentStage.close();
+                Main.loadView("/views/PasswordRecovery.fxml");
+            });
+            title.setText(Name);
             button.setText("Entrar");
             button.setOnAction(event -> handlePassword());
     	} else this.AlertWindow(
@@ -95,7 +112,7 @@ public class LoginController {
             this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
-    	String[] verificationResult = userDao.verifyPassword(Username, Password);
+    	String[] verificationResult = userDao.verifyPassword(Email, Password);
     	String verification = verificationResult[0];
     	System.out.println(verification);
     	String role = verificationResult[1];
@@ -106,14 +123,20 @@ public class LoginController {
             Stage currentStage = (Stage) rootPane.getScene().getWindow();
             currentStage.close();
             // CIERRA LA VENTANA ACTUAL
-            sessionManager.setUser(Username, role);
-            if (role.equals("DOCENTE") || role.equals("ADMINISTRATIVO")) {
-            	Main.loadView("/views/TeacherAdmin.fxml");
-            } else if (role.equals("ENCARGADO")) {
-            	Main.loadView("/views/Manager.fxml");
-            } else {
-            	// Si no es ninguna, entonces es el superencargado
-            	Main.loadView("/views/SuperManager.fxml");
+            sessionManager.setUser(Name, role, Email);
+            switch (role) {
+            case "DOCENTE":
+            case "ADMINISTRATIVO":
+                Main.loadView("/views/TeacherAdmin.fxml");
+                break;
+            case "ENCARGADO":
+                Main.loadView("/views/Manager.fxml");
+                break;
+            case "SUPERENCARGADO":
+                Main.loadView("/views/SuperManager.fxml");
+                break;
+            default:
+                AlertWindow("Rol desconocido", "El rol \"" + role + "\" no es válido.", AlertType.ERROR);
             }
 		} else this.AlertWindow(
     			null, 

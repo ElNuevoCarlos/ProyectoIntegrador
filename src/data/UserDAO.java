@@ -17,9 +17,9 @@ public class UserDAO implements CRUD_operation<User, String>{
 
     public void save(User user) {
         // Definimos las queries para insertar en las tablas PERSONA y CUENTA
-        String queryPersona = "INSERT INTO PERSONA (ID, NOMBRE_COMPLETO, TIPO_IDENTIFICACION, NUMERO_IDENTIFICACION, CORREO_INSTITUCIONAL, TELEFONO, PROGRAMA_DEPARTAMENTO) " +
-                              "VALUES (SEQ_PERSONA_ID.NEXTVAL, ?, ?, ?, ?, ?, ?)";
-        String queryCuenta = "INSERT INTO CUENTA (ID, USUARIO, PASSWORD, ROL, ID_PERSONA) VALUES (SEQ_CUENTA_ID.NEXTVAL, ?, ?, ?, ?)";
+        String queryPersona = "INSERT INTO PERSONA (ID, NOMBRE_COMPLETO, TIPO_IDENTIFICACION, NUMERO_IDENTIFICACION, TELEFONO, PROGRAMA_DEPARTAMENTO) " +
+                              "VALUES (SEQ_PERSONA_ID.NEXTVAL, ?, ?, ?, ?, ?)";
+        String queryCuenta = "INSERT INTO CUENTA (ID, PASSWORD, ROL, ID_PERSONA, CORREO_INSTITUCIONAL) VALUES (SEQ_CUENTA_ID.NEXTVAL, ?, ?, ?, ?)";
         
         try {
             connection.setAutoCommit(false);
@@ -29,9 +29,8 @@ public class UserDAO implements CRUD_operation<User, String>{
                 pstmt.setString(1, user.getFullName());
                 pstmt.setString(2, user.getTI());
                 pstmt.setString(3, user.getNumIdentification());
-                pstmt.setString(4, user.getEmail());
-                pstmt.setString(5, user.getPhone());
-                pstmt.setString(6, user.getPro_dep());
+                pstmt.setString(4, user.getPhone());
+                pstmt.setString(5, user.getPro_dep());
 
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
@@ -44,10 +43,10 @@ public class UserDAO implements CRUD_operation<User, String>{
                         int idPersona = rs.getInt(1); // ID_PERSONA generado
                         // Ahora insertamos la cuenta, utilizando el ID_PERSONA
                         try (PreparedStatement pstmtCuenta = connection.prepareStatement(queryCuenta)) {
-                            pstmtCuenta.setString(1, user.getUsername());
-                            pstmtCuenta.setString(2, user.getPassword());
-                            pstmtCuenta.setString(3, user.getRole());
-                            pstmtCuenta.setInt(4, idPersona); // Usamos el ID de la persona
+                            pstmtCuenta.setString(1, user.getPassword());
+                            pstmtCuenta.setString(2, user.getRole());
+                            pstmtCuenta.setInt(3, idPersona);
+                            pstmtCuenta.setString(4, user.getEmail()); // Usamos el ID de la persona
                             pstmtCuenta.executeUpdate();        
                             System.out.println("Account inserted successfully.");
                         }
@@ -83,11 +82,11 @@ public class UserDAO implements CRUD_operation<User, String>{
         }
     }
     
-	public String verifyUser(String user) {
+	public String verifyUser(String email) {
 		String name = null;
-        String query = "SELECT p.NOMBRE_COMPLETO FROM PERSONA p, CUENTA c WHERE c.ID_PERSONA = p.ID AND c.USUARIO = ?";       
+        String query = "SELECT p.NOMBRE_COMPLETO FROM PERSONA p, CUENTA c WHERE c.ID_PERSONA = p.ID AND c.CORREO_INSTITUCIONAL = ?";       
         try (PreparedStatement pstmt = connection.prepareStatement(query)){
-        	pstmt.setString(1, user);
+        	pstmt.setString(1, email);
         	ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 name = rs.getString("NOMBRE_COMPLETO");
@@ -98,13 +97,13 @@ public class UserDAO implements CRUD_operation<User, String>{
         return name; 
 	}
 	
-	public String[] verifyPassword(String user, String password) {
+	public String[] verifyPassword(String email, String password) {
 		String verification = null;
 		String role = null;
-		String query = "SELECT ROL, CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION FROM CUENTA WHERE USUARIO = ?";
+		String query = "SELECT ROL, CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION FROM CUENTA WHERE CORREO_INSTITUCIONAL = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, password);
-			pstmt.setString(2, user);
+			pstmt.setString(2, email);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				role = rs.getString("ROL");
@@ -114,6 +113,19 @@ public class UserDAO implements CRUD_operation<User, String>{
 			e.printStackTrace();
 		}
 		return new String[] {verification, role};
+	}
+	
+	public boolean updatePassword(String email, String newPassword) {
+		String query = "UPDATE CUENTA SET PASSWORD = ? WHERE CORREO_INSTITUCIONAL = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, newPassword);
+			pstmt.setString(2, email);
+			int rowsAffected = pstmt.executeUpdate();
+			return rowsAffected > 0; 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	@Override
@@ -131,11 +143,10 @@ public class UserDAO implements CRUD_operation<User, String>{
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String pro_dep = rs.getString("pro_dep");
-                String username = rs.getString("username");
                 String role = rs.getString("role");
                 String password = rs.getString("password");
                 
-                User user = new User(fullName, TI, numIdentification, email, phone, pro_dep, username, role, password);
+                User user = new User(fullName, TI, numIdentification, email, phone, pro_dep, role, password);
                 users.add(user);
             }
         } catch (SQLException e) {

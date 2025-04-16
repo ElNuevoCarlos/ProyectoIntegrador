@@ -41,9 +41,6 @@ public class NewAccountController {
     
     @FXML
     private TextField email;
-
-    @FXML
-    private TextField username;
     
 	@FXML 
 	private ComboBox<String> role;
@@ -93,7 +90,6 @@ public class NewAccountController {
 		String Pro_dep = pro_dep.getText().trim();
 		String Phone = phone.getText().trim();
 		String Email = email.getText().trim();
-		String Username = username.getText().trim();
 		String Role = role.getValue() != null ? role.getValue().trim() : "";
 		String Password1 = password1.getText().trim();
 		String Password2 = password2.getText().trim();
@@ -105,13 +101,25 @@ public class NewAccountController {
         		Pro_dep.isEmpty() || 
         		Phone.isEmpty() || 
         		Email.isEmpty() || 
-        		Username.isEmpty() || 
         		Role.isEmpty() || 
         		Password1.isEmpty() || 
         		Password2.isEmpty()){
         	
         	showAlert("Error", "Campos vacíos", "Por favor, complete todos los campos.");
             return;
+        }
+        String regexEmail = "^[a-zA-Z0-9._%+-]+@udi\\.edu\\.co$";
+        if (!Email.matches(regexEmail)) {
+        	showAlert("Error", "Correo inválido", "El correo debe tener el formato usuario@udi.edu.co");
+        	return;
+        }
+        if (!NumIdentification.matches("\\d{6,10}")) {
+        	showAlert("Error", "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.");
+        	return;
+        }
+        if (!Phone.matches("\\d{10}")) {
+        	showAlert("Error", "Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.");
+        	return;
         }
         if (Password1.equals(Password2)) {
         	if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
@@ -125,7 +133,7 @@ public class NewAccountController {
                     return;
         	} else {
         		String fullName = Name + " " + LastName;
-        		User newUser = new User(fullName, TI, NumIdentification, Pro_dep, Phone, Email, Username, Role, Password1);
+        		User newUser = new User(fullName, TI, NumIdentification, Email, Phone, Pro_dep, Role, Password1);
         		userDao.save(newUser);
         	}
         } else {
