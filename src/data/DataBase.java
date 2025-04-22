@@ -17,7 +17,7 @@ public class DataBase {
 		try {
 			// Contraseña pc Yesid xmbW4xXdX87Ts0
 			// Contraseña pc Carlos TECHLEND
-			connection = DriverManager.getConnection(getConnectionString(), "TECHLEND", "xmbW4xXdX87Ts0");
+			connection = DriverManager.getConnection(getConnectionString(), "TECHLEND", "TECHLEND");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error connecting to the database.");

@@ -81,10 +81,10 @@ public class UserDAO implements CRUD_operation<User, String>{
             }
         }
     }
-    
+    // Aa1234567# CONTRASEÑA CPINTO5@UDI.EDU.CO
 	public String verifyUser(String email) {
 		String name = null;
-        String query = "SELECT p.NOMBRE_COMPLETO FROM PERSONA p, CUENTA c WHERE c.ID_PERSONA = p.ID AND c.CORREO_INSTITUCIONAL = ?";       
+        String query = "SELECT P.NOMBRE_COMPLETO FROM PERSONA P, CUENTA C WHERE C.ID_PERSONA = P.ID AND CORREO_INSTITUCIONAL = ?";       
         try (PreparedStatement pstmt = connection.prepareStatement(query)){
         	pstmt.setString(1, email);
         	ResultSet rs = pstmt.executeQuery();
