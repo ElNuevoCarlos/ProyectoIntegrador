@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -22,7 +23,8 @@ public class LoginController {
     @FXML private TextField email, passwordVisible;
     @FXML private Text title;
     @FXML private PasswordField password;
-    @FXML private Button button, passwordview, newAccount;
+    @FXML private Button button, newAccount;
+    @FXML private ImageView passwordview;
     @FXML private Hyperlink hyperlink;
      
     private Connection database = DataBase.getInstance().getConnection();
