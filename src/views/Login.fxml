@@ -34,7 +34,7 @@
                         <Image url="@../../resources/img/teacher.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="passwordview" fitHeight="26.0" fitWidth="18.0" layoutX="233.0" layoutY="235.0" onMouseClicked="#handlePasswordView" pickOnBounds="true" preserveRatio="true" styleClass="Loginbutton" visible="false">
+                  <ImageView fx:id="passwordview" fitHeight="26.0" fitWidth="18.0" layoutX="232.0" layoutY="235.0" onMouseClicked="#handlePasswordView" pickOnBounds="true" preserveRatio="true" styleClass="Loginbutton" visible="false">
                      <image>
                         <Image url="@../../resources/img/viewPassword.png" />
                      </image>
