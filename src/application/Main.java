@@ -18,7 +18,7 @@ public class Main extends Application {
             rootLayout = root.load();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-    		Image icon = new Image(getClass().getResourceAsStream("/img/icono.jpg"));
+    		Image icon = new Image(getClass().getResourceAsStream("/img/teacher.png"));
     		primaryStage.getIcons().add(icon);
             //primaryStage.setResizable(false);
             primaryStage.show();
@@ -34,7 +34,7 @@ public class Main extends Application {
             rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);
             secondStage.setScene(scene);
-    		Image icon = new Image(Main.class.getResourceAsStream("/img/icono.jpg"));
+    		Image icon = new Image(Main.class.getResourceAsStream("/img/teacher.png"));
     		secondStage.getIcons().add(icon);
             secondStage.show();
             
