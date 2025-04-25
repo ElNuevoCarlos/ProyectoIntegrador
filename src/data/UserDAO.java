@@ -16,75 +16,43 @@ public class UserDAO implements CRUD_operation<User, String>{
     }
 
     public void save(User user) {
-        // Definimos las queries para insertar en las tablas PERSONA y CUENTA
-        String queryPersona = "INSERT INTO PERSONA (ID, NOMBRE_COMPLETO, TIPO_IDENTIFICACION, NUMERO_IDENTIFICACION, TELEFONO, PROGRAMA_DEPARTAMENTO) " +
-                              "VALUES (SEQ_PERSONA_ID.NEXTVAL, ?, ?, ?, ?, ?)";
-        String queryCuenta = "INSERT INTO CUENTA (ID, PASSWORD, ROL, ID_PERSONA, CORREO_INSTITUCIONAL) VALUES (SEQ_CUENTA_ID.NEXTVAL, ?, ?, ?, ?)";
-        
-        try {
-            connection.setAutoCommit(false);
+    	String queryUsuario = "INSERT INTO USUARIO "
+    			+ "(ID, "
+    			+ "NOMBRE_COMPLETO, "
+    			+ "NUMERO_IDENTIFICACION, "
+    			+ "TIPO_IDENTIFICACION, "
+    			+ "CORREO_INSTITUCIONAL, "
+    			+ "PROGRAMA_DEPARTAMENTO, "
+    			+ "TELEFONO, "
+    			+ "ESTADO, "
+    			+ "ROL, "
+    			+ "PASSWORD) "+
+    						  "VALUES (SEQ_PERSONA_ID.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            // Insertamos la persona
-            try (PreparedStatement pstmt = connection.prepareStatement(queryPersona, new String[] {"ID"})) {
-                pstmt.setString(1, user.getFullName());
-                pstmt.setString(2, user.getTI());
-                pstmt.setString(3, user.getNumIdentification());
-                pstmt.setString(4, user.getPhone());
-                pstmt.setString(5, user.getPro_dep());
-
-                int rowsAffected = pstmt.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println("User inserted successfully.");
-                }
-
-                // Recuperamos el ID generado para la persona
-                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        int idPersona = rs.getInt(1); // ID_PERSONA generado
-                        // Ahora insertamos la cuenta, utilizando el ID_PERSONA
-                        try (PreparedStatement pstmtCuenta = connection.prepareStatement(queryCuenta)) {
-                            pstmtCuenta.setString(1, user.getPassword());
-                            pstmtCuenta.setString(2, user.getRole());
-                            pstmtCuenta.setInt(3, idPersona);
-                            pstmtCuenta.setString(4, user.getEmail()); // Usamos el ID de la persona
-                            pstmtCuenta.executeUpdate();        
-                            System.out.println("Account inserted successfully.");
-                        }
-                    }
-                }
-                
-                // Si todo fue exitoso, confirmamos la transacción
-                connection.commit();
-
-            } catch (SQLException e) {
-                // Si ocurre algún error en las inserciones, revertimos todo
-                connection.rollback();
-                System.out.println("Error occurred, transaction rolled back.");
-                e.printStackTrace();
-            }
-
-        } catch (SQLException e) {
-            // Si ocurre un error en la configuración de la transacción, revertimos y mostramos el error
-            try {
-                connection.rollback();
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-            System.out.println("Error with transaction setup, rolled back.");
-            e.printStackTrace();
-        } finally {
-            try {
-                // Restauramos el autoCommit a su valor original
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+	    	try (PreparedStatement pstmt = connection.prepareStatement(queryUsuario)) {
+				pstmt.setString(1, user.getNombre_completo());
+	            pstmt.setString(2, user.getNumero_identificacion());
+	            pstmt.setString(3, user.getTipo_identificacion());
+	            pstmt.setString(4, user.getCorreo_institucional());
+	            pstmt.setString(5, user.getPrograma_departamento());
+	            pstmt.setString(6, user.getTelefono());
+	            pstmt.setString(7, user.getEstado());
+	            pstmt.setString(8, user.getRol());
+	            pstmt.setString(9, user.getPassword());
+	
+	            int rowsAffected = pstmt.executeUpdate();
+	            if (rowsAffected > 0) {
+	                System.out.println("User inserted successfully.");
+	            }
+	    	} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    	
     }
     // Aa1234567# CONTRASEÑA CPINTO5@UDI.EDU.CO
 	public String verifyUser(String email) {
 		String name = null;
-        String query = "SELECT P.NOMBRE_COMPLETO FROM PERSONA P, CUENTA C WHERE C.ID_PERSONA = P.ID AND CORREO_INSTITUCIONAL = ?";       
+        String query = "SELECT NOMBRE_COMPLETO FROM USUARIO WHERE CORREO_INSTITUCIONAL = ?";       
         try (PreparedStatement pstmt = connection.prepareStatement(query)){
         	pstmt.setString(1, email);
         	ResultSet rs = pstmt.executeQuery();
@@ -116,7 +84,7 @@ public class UserDAO implements CRUD_operation<User, String>{
 	}
 	
 	public boolean updatePassword(String email, String newPassword) {
-		String query = "UPDATE CUENTA SET PASSWORD = ? WHERE CORREO_INSTITUCIONAL = ?";
+		String query = "UPDATE USUARIO SET PASSWORD = ? WHERE CORREO_INSTITUCIONAL = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, newPassword);
 			pstmt.setString(2, email);
@@ -131,22 +99,33 @@ public class UserDAO implements CRUD_operation<User, String>{
 	@Override
 	public ArrayList<User> fetch() {
         ArrayList<User> users = new ArrayList<>();
-        String query = "SELECT * FROM PERSONA";
+        String query = "SELECT * FROM USUARIO";
         
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
-            
+        	
             while (rs.next()) {
-                String fullName = rs.getString("fullName");
-                String TI = rs.getString("TI");
-                String numIdentification = rs.getString("numIdentification");
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                String pro_dep = rs.getString("pro_dep");
-                String role = rs.getString("role");
-                String password = rs.getString("password");
+                String nombre_completo = rs.getString("NOMBRE_COMPLETO");
+                String numero_identificacion = rs.getString("NUMERO_IDENTIFICACION");
+                String tipo_identificacion = rs.getString("TIPO_IDENTIFICACION");
+                String correo_institucional = rs.getString("CORREO_INSTITUCIONAL");
+                String programa_departamento = rs.getString("PROGRAMA_DEPARTAMENTO");
+                String telefono = rs.getString("TELEFONO");
+                String estado = rs.getString("ESTADO");
+                String rol = rs.getString("ROL");
+                String password = rs.getString("PASSWORD");
+                String id = rs.getString("ID");
                 
-                User user = new User(fullName, TI, numIdentification, email, phone, pro_dep, role, password);
+                User user = new User(nombre_completo, 
+                		numero_identificacion, 
+                		tipo_identificacion, 
+                		correo_institucional,
+                		programa_departamento,
+                		telefono,
+                		estado,
+                		rol,
+                		password,
+                		id);
                 users.add(user);
             }
         } catch (SQLException e) {

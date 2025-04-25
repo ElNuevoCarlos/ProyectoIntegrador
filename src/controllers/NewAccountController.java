@@ -18,44 +18,19 @@ import javafx.stage.Stage;
 import model.User;
 
 public class NewAccountController {
-	@FXML 
-	private BorderPane rootPane;
-	
-    @FXML
-    private TextField name;
-    
-    @FXML
-    private TextField lastName;
-    
-	@FXML 
-	private ComboBox<String> ti;
-
-    @FXML
-    private TextField numIdentification;
-	
-    @FXML
-    private TextField pro_dep;
-    
-    @FXML
-    private TextField phone;
-    
-    @FXML
-    private TextField email;
-    
-	@FXML 
-	private ComboBox<String> role;
-
-    @FXML
-    private TextField password1;
-
-    @FXML
-    private TextField password2;
-    
-    @FXML
-    private Hyperlink login;
-
-    @FXML
-    private Button newAccount;
+	@FXML private BorderPane rootPane;
+    @FXML private TextField name;
+    @FXML private TextField lastName;
+	@FXML private ComboBox<String> ti;
+    @FXML private TextField numIdentification;
+    @FXML private TextField pro_dep;
+    @FXML private TextField phone;
+    @FXML private TextField email;
+	@FXML private ComboBox<String> role;
+    @FXML private TextField password1;
+    @FXML private TextField password2;
+    @FXML private Hyperlink login;
+    @FXML private Button newAccount;
     
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
@@ -132,8 +107,8 @@ public class NewAccountController {
                         "- Al menos un carácter especial (@#$%^&+=!)");
                     return;
         	} else {
-        		String fullName = Name + " " + LastName;
-        		User newUser = new User(fullName, TI, NumIdentification, Email, Phone, Pro_dep, Role, Password1);
+        		String fullName = Name +" "+ LastName;
+        		User newUser = new User(fullName, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, "A");
         		userDao.save(newUser);
         	}
         } else {
