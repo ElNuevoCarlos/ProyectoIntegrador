@@ -37,14 +37,12 @@ public class LoginController {
     public void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
         
-        //Para poder dar enter
         email.setOnKeyPressed(event -> {
             if (event.getCode().toString().equals("ENTER")) {
                 button.fire();
             }
         });
         
-      //Para poder dar enter
         password.setOnKeyPressed(event -> {
             if (event.getCode().toString().equals("ENTER")) {
                 button.fire(); 
@@ -75,8 +73,8 @@ public class LoginController {
         AlertWindow(
                 "¿Olvidaste tu correo?", 
                 "Para recuperar tu correo institucional:\n\n" +
-                "1. Visita la página:\nhttps://web.udi.edu.co/\n\n" +  // Primero la URL
-                "2. Haz clic en el botón \"Correo Institucional\".",  // Luego el botón
+                "1. Visita la página:\nhttps://web.udi.edu.co/\n\n" +
+                "2. Haz clic en el botón \"Correo Institucional\".",  
                 AlertType.INFORMATION
             );
     }
@@ -100,7 +98,7 @@ public class LoginController {
                 currentStage.close();
                 Main.loadView("/views/PasswordRecovery.fxml");
             });
-            title.setText(Name);
+            button.setLayoutX(button.getLayoutX() - 60);
             button.setText("Entrar");
             button.setOnAction(event -> handlePassword());
     	} else this.AlertWindow(
@@ -127,18 +125,19 @@ public class LoginController {
             // CIERRA LA VENTANA ACTUAL
             sessionManager.setUser(Name, role, Email);
             switch (role) {
-            case "DOCENTE":
-            case "ADMINISTRATIVO":
-                Main.loadView("/views/TeacherAdmin.fxml");
-                break;
-            case "ENCARGADO":
-                Main.loadView("/views/Manager.fxml");
-                break;
-            case "SUPERENCARGADO":
-                Main.loadView("/views/SuperManager.fxml");
-                break;
-            default:
-                AlertWindow("Rol desconocido", "El rol \"" + role + "\" no es válido.", AlertType.ERROR);
+            	case "DOCENTE":
+            		//
+            	case "ADMINISTRATIVO":
+            		Main.loadView("/views/TeacherAdmin.fxml");
+            		break;
+            	case "ENCARGADO":
+            		Main.loadView("/views/Manager.fxml");
+                	break;
+            	case "SUPERENCARGADO":
+            		Main.loadView("/views/SuperManager.fxml");
+            		break;
+            	default:
+            		AlertWindow("Rol desconocido", "El rol \"" + role + "\" no es válido.", AlertType.ERROR);
             }
 		} else this.AlertWindow(
     			null, 

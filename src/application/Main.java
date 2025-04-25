@@ -20,7 +20,7 @@ public class Main extends Application {
             primaryStage.setScene(scene);
     		Image icon = new Image(getClass().getResourceAsStream("/img/teacher.png"));
     		primaryStage.getIcons().add(icon);
-            //primaryStage.setResizable(false);
+            primaryStage.setResizable(false);
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

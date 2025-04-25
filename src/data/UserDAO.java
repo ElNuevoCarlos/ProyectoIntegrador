@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import model.User;
 
 public class UserDAO implements CRUD_operation<User, String>{
@@ -42,7 +45,7 @@ public class UserDAO implements CRUD_operation<User, String>{
 	
 	            int rowsAffected = pstmt.executeUpdate();
 	            if (rowsAffected > 0) {
-	                System.out.println("User inserted successfully.");
+	                this.AlertWindow(null, "Cuenta creada con éxito", AlertType.INFORMATION);
 	            }
 	    	} catch (SQLException e) {
 				e.printStackTrace();
@@ -68,7 +71,7 @@ public class UserDAO implements CRUD_operation<User, String>{
 	public String[] verifyPassword(String email, String password) {
 		String verification = null;
 		String role = null;
-		String query = "SELECT ROL, CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION FROM CUENTA WHERE CORREO_INSTITUCIONAL = ?";
+		String query = "SELECT ROL, CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION FROM USUARIO WHERE CORREO_INSTITUCIONAL = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, password);
 			pstmt.setString(2, email);
@@ -152,4 +155,11 @@ public class UserDAO implements CRUD_operation<User, String>{
 		// TODO Auto-generated method stub
 		return false;
 	}
+    private void AlertWindow(String text, String content, AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(null);
+        alert.setHeaderText(text);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 }

@@ -16,7 +16,7 @@
    <center>
       <VBox prefHeight="378.0" prefWidth="471.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="356.0" prefWidth="338.0">
+            <Pane prefHeight="382.0" prefWidth="347.0">
                <children>
                   <Text fx:id="title" fill="#037bfc" layoutX="168.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingreso">
                      <font>
@@ -34,7 +34,7 @@
                         <Image url="@../../resources/img/teacher.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="passwordview" fitHeight="27.0" fitWidth="30.0" layoutX="261.0" layoutY="228.0" onMouseClicked="#handlePasswordView" pickOnBounds="true" preserveRatio="true" styleClass="Loginbutton" visible="false">
+                  <ImageView fx:id="passwordview" fitHeight="26.0" fitWidth="18.0" layoutX="233.0" layoutY="235.0" onMouseClicked="#handlePasswordView" pickOnBounds="true" preserveRatio="true" styleClass="Loginbutton" visible="false">
                      <image>
                         <Image url="@../../resources/img/viewPassword.png" />
                      </image>
