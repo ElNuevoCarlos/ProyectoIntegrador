@@ -12,16 +12,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jakarta.mail-2.0.1.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jakarta.activation-2.0.1.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/javafx-sdk-23.0.2/lib/javafx.media.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -63,6 +53,16 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/javafx-sdk-23.0.2/lib/javafx.graphics.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/EclipsePortable/Data/workspace/ProyectoIntegrador/lib/jakarta.activation-2.0.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/EclipsePortable/Data/workspace/ProyectoIntegrador/lib/jakarta.mail-2.0.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
