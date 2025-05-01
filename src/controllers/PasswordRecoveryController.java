@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 
 public class PasswordRecoveryController {
 	@FXML private BorderPane rootPane;
-	@FXML private Text title, name, emailText, text1;
+	@FXML private Text title, name, codeSend, text1;
 	@FXML private TextField code, newPassword, confirmPassword;
 	@FXML private Button button;
 	@FXML private Hyperlink forward, returnLogin; 
@@ -43,7 +43,6 @@ public class PasswordRecoveryController {
 		this.Name = SessionManager.getInstance().getName();
 		this.Email = SessionManager.getInstance().getEmail();
 		name.setText(Name);
-		emailText.setText(Email);
 	}
 	
 	@FXML
@@ -60,12 +59,9 @@ public class PasswordRecoveryController {
 	    // Primero actualizamos la interfaz
 	    code.setVisible(true);
 	    forward.setVisible(true);
-	    name.setTextAlignment(TextAlignment.LEFT);
-	    name.setLayoutX(20);
-	    name.setLayoutY(60);
-	    name.setWrappingWidth(200);
-	    name.setText("Comprueba si has recibido en el correo electrónico un mensaje con tu código de 6 dígitos.");
-	    text1.setText("Hemos enviado el código a:");
+	    name.setVisible(false);
+	    codeSend.setVisible(true);
+	    text1.setText("Hemos enviado el código a\n"+Email);
 	    returnLogin.setVisible(false);
 	    title.setText("Introduce el código de seguridad");
 	    button.setText("Continuar");
@@ -102,7 +98,6 @@ public class PasswordRecoveryController {
 	@FXML
 	void handleRestore() {
 		text1.setVisible(false);
-		emailText.setVisible(false);
 		forward.setVisible(false);
 		code.setVisible(false);
 		title.setText("Elige una contraseña nueva");
