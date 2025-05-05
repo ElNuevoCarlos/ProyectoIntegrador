@@ -19,13 +19,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LoginController {
-    @FXML private BorderPane rootPane;
-    @FXML private TextField email, passwordVisible;
     @FXML private Text title;
-    @FXML private PasswordField password;
-    @FXML private Button button, newAccount;
-    @FXML private ImageView passwordview;
     @FXML private Hyperlink hyperlink;
+    @FXML private BorderPane rootPane;
+    @FXML private PasswordField password;
+    @FXML private ImageView passwordview;
+    @FXML private Button button, newAccount;
+    @FXML private TextField email, passwordVisible;
      
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
@@ -91,7 +91,7 @@ public class LoginController {
             password.setVisible(true);
             passwordview.setVisible(true);
             newAccount.setVisible(false);
-            hyperlink.setText("¿Has olvidado tú contraseña?");
+            hyperlink.setText("¿Acaso has olvidado tú contraseña?");
             sessionManager.setUser(Name, null, Email);
             hyperlink.setOnAction(event -> {
                 Stage currentStage = (Stage) rootPane.getScene().getWindow();
@@ -122,22 +122,19 @@ public class LoginController {
         	// CIERRA LA VENTANA ACTUAL
             Stage currentStage = (Stage) rootPane.getScene().getWindow();
             currentStage.close();
-            // CIERRA LA VENTANA ACTUAL
+            // CIERRA LA VENTANA ACTUAL 
+            if (Name.length() > 12) Name = Name.substring(0, 12)+"...";
             sessionManager.setUser(Name, role, Email);
             switch (role) {
-            	case "DOCENTE":
-            		//
-            	case "ADMINISTRATIVO":
-            		Main.loadView("/views/TeacherAdmin.fxml");
-            		break;
             	case "ENCARGADO":
-            		Main.loadView("/views/Manager.fxml");
+            		
+            		Main.loadView("/views/Manager/Manager.fxml");
                 	break;
             	case "SUPERENCARGADO":
             		Main.loadView("/views/SuperManager.fxml");
             		break;
             	default:
-            		AlertWindow("Rol desconocido", "El rol \"" + role + "\" no es válido.", AlertType.ERROR);
+            		Main.loadView("/views/Manager.fxml");
             }
 		} else this.AlertWindow(
     			null, 

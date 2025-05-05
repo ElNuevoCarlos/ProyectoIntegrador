@@ -9,8 +9,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="rootPane" prefHeight="377.0" prefWidth="347.0" stylesheets="@../../resources/application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
    <center>
@@ -18,25 +16,20 @@
          <children>
             <Pane prefHeight="382.0" prefWidth="347.0">
                <children>
-                  <Text fx:id="title" fill="#037bfc" layoutX="168.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingreso">
-                     <font>
-                        <Font name="MS UI Gothic" size="24.0" />
-                     </font>
-                  </Text>
-                  <TextField fx:id="email" focusTraversable="false" layoutX="78.0" layoutY="224.0" prefHeight="38.0" prefWidth="194.0" promptText="Correo institucional" styleClass="login" />
-                  <Button fx:id="button" contentDisplay="CENTER" focusTraversable="false" layoutX="178.0" layoutY="289.0" mnemonicParsing="false" onAction="#handleEmail" prefHeight="35.0" prefWidth="96.0" style="-fx-background-color: #037bfc;" styleClass="Loginbutton" text="Siguiente" textFill="WHITE" />
-                  <PasswordField fx:id="password" focusTraversable="false" layoutX="77.0" layoutY="224.0" prefHeight="34.0" prefWidth="178.0" promptText="Contraseña" visible="false" />
-                  <TextField fx:id="passwordVisible" focusTraversable="false" layoutX="78.0" layoutY="224.0" prefHeight="34.0" prefWidth="177.0" visible="false" />
-                  <Hyperlink fx:id="hyperlink" focusTraversable="false" layoutX="73.0" layoutY="265.0" onAction="#handleMailRecovery" text="¿Olvidaste tu correo institucional?" />
-                  <Button fx:id="newAccount" focusTraversable="false" layoutX="64.0" layoutY="289.0" mnemonicParsing="false" onAction="#handleNewAccount" prefHeight="35.0" prefWidth="102.0" style="-fx-background-color: #037bfc;" styleClass="Loginbutton" text="Crear cuenta " textFill="WHITE" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="92.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/img/teacher.png" />
-                     </image>
-                  </ImageView>
+                  <TextField fx:id="email" focusTraversable="false" layoutX="81.0" layoutY="223.0" prefHeight="38.0" prefWidth="194.0" promptText="Correo institucional" styleClass="login" />
+                  <Button fx:id="button" contentDisplay="CENTER" focusTraversable="false" layoutX="182.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleEmail" prefHeight="35.0" prefWidth="96.0" style="-fx-background-color: #037bfc;" styleClass="Loginbutton" text="Siguiente" textFill="WHITE" />
+                  <PasswordField fx:id="password" focusTraversable="false" layoutX="80.0" layoutY="223.0" prefHeight="38.0" prefWidth="181.0" promptText="Contraseña" visible="false" />
+                  <TextField fx:id="passwordVisible" focusTraversable="false" layoutX="81.0" layoutY="223.0" prefHeight="39.0" prefWidth="180.0" visible="false" />
+                  <Hyperlink fx:id="hyperlink" focusTraversable="false" layoutX="70.0" layoutY="262.0" onAction="#handleMailRecovery" text="¿Olvidaste tu correo institucional?" />
+                  <Button fx:id="newAccount" focusTraversable="false" layoutX="63.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleNewAccount" prefHeight="35.0" prefWidth="102.0" style="-fx-background-color: #037bfc;" styleClass="Loginbutton" text="Crear cuenta " textFill="WHITE" />
                   <ImageView fx:id="passwordview" fitHeight="26.0" fitWidth="18.0" layoutX="232.0" layoutY="235.0" onMouseClicked="#handlePasswordView" pickOnBounds="true" preserveRatio="true" styleClass="Loginbutton" visible="false">
                      <image>
                         <Image url="@../../resources/img/viewPassword.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="99.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/img/user.png" />
                      </image>
                   </ImageView>
                </children>
