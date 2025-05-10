@@ -15,8 +15,6 @@ public class DataBase {
 
 	private DataBase() {
 		try {
-			// Contraseña pc Yesid xmbW4xXdX87Ts0
-			// Contraseña pc Carlos TECHLEND
 			connection = DriverManager.getConnection(getConnectionString(), "TECHLEND", "xmbW4xXdX87Ts0");
 		} catch (SQLException e) {
 			e.printStackTrace();
