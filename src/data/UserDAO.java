@@ -93,7 +93,8 @@ public class UserDAO implements CRUD_operation<User, String>{
 	public String[] verifyPassword(String email, String password) {
 		String verification = null;
 		String role = null;
-		String query = "SELECT ROL, CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION FROM USUARIO WHERE CORREO_INSTITUCIONAL = ?";
+		long id = -1;
+		String query = "SELECT ROL, CASE WHEN PASSWORD = ? THEN 'Y' ELSE 'N'  END AS VERIFICATION, ID FROM USUARIO WHERE CORREO_INSTITUCIONAL = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, password);
 			pstmt.setString(2, email);
@@ -101,11 +102,12 @@ public class UserDAO implements CRUD_operation<User, String>{
 			if (rs.next()) {
 				role = rs.getString("ROL");
 				verification = rs.getString("VERIFICATION");
+				id = rs.getLong("ID");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return new String[] {verification, role};
+		return new String[] {verification, role, String.valueOf(id)};
 	}
 	
 	public boolean updatePassword(String email, String newPassword) {
