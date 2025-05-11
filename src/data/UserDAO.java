@@ -68,6 +68,28 @@ public class UserDAO implements CRUD_operation<User, String>{
         return name; 
 	}
 	
+	public String[] otherData(String email) {
+		String query = "SELECT * FROM USUARIO WHERE CORREO_INSTITUCIONAL = ?";
+		
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, email);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+                String numIdentification = rs.getString("NUMERO_IDENTIFICACION");
+                String ti = rs.getString("TIPO_IDENTIFICACION");
+				String password = rs.getString("PASSWORD");
+                String pro_dep = rs.getString("PROGRAMA_DEPARTAMENTO");
+                String phone = rs.getString("TELEFONO");
+                
+                return new String[] {numIdentification, ti, password, pro_dep, phone};
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}  
+
+	
 	public String[] verifyPassword(String email, String password) {
 		String verification = null;
 		String role = null;
