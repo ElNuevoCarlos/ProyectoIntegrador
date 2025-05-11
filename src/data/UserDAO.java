@@ -124,7 +124,7 @@ public class UserDAO implements CRUD_operation<User, String>{
 	@Override
 	public ArrayList<User> fetch() {
         ArrayList<User> users = new ArrayList<>();
-        String query = "SELECT * FROM USUARIO WHERE ESTADO = 'ACTIVA'";
+        String query = "SELECT * FROM USUARIO";
         
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
@@ -139,7 +139,7 @@ public class UserDAO implements CRUD_operation<User, String>{
                 String estado = rs.getString("ESTADO");
                 String rol = rs.getString("ROL");
                 String password = rs.getString("PASSWORD");
-                String id = rs.getString("ID");
+                long id = rs.getLong("ID");
                 
                 User user = new User(nombre_completo, 
                 		numero_identificacion, 

@@ -92,7 +92,6 @@ public class LoginController {
             passwordview.setVisible(true);
             newAccount.setVisible(false);
             hyperlink.setText("¿Acaso has olvidado tú contraseña?");
-            sessionManager.setUser(Name, null, Email);
             hyperlink.setOnAction(event -> {
                 Stage currentStage = (Stage) rootPane.getScene().getWindow();
                 currentStage.close();
@@ -114,26 +113,25 @@ public class LoginController {
         }
     	String[] verificationResult = userDao.verifyPassword(Email, Password);
     	String verification = verificationResult[0];
-    	System.out.println(verification);
     	String role = verificationResult[1];
-    	System.out.println(role);
+    	long id = Long.parseLong(verificationResult[2]);
 		if (verification.equals("Y")) {
 			
         	// CIERRA LA VENTANA ACTUAL
             Stage currentStage = (Stage) rootPane.getScene().getWindow();
             currentStage.close();
-            // CIERRA LA VENTANA ACTUAL 
-            if (Name.length() > 12) Name = Name.substring(0, 12)+"...";
-            sessionManager.setUser(Name, role, Email);
+            // CIERRA LA VENTANA ACTUAL
+            sessionManager.setUser(id, Name, role, Email);
             switch (role) {
             	case "ENCARGADO":
-            		Main.loadView("/views/Manager.fxml");
+            		
+            		Main.loadView("/views/Manager/Manager.fxml");
                 	break;
             	case "SUPERENCARGADO":
             		Main.loadView("/views/SuperManager.fxml");
             		break;
             	default:
-            		Main.loadView("/views/Manager.fxml");
+            		Main.loadView("/views/TeacherAdmin.fxml");
             }
 		} else this.AlertWindow(
     			null, 
