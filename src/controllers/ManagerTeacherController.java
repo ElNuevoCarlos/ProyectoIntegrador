@@ -72,6 +72,7 @@ public class ManagerTeacherController {
     @FXML public void añadir() {
     	
     }
+    
     @FXML public void actualizar() {
     	User user = tableTeachers.getSelectionModel().getSelectedItem();
     	if (user == null) {
