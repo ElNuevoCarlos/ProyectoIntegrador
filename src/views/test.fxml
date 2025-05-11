@@ -97,7 +97,7 @@
                   <Image url="@../../resources/img/closeSession.png" />
                </image>
             </ImageView>
-            <Text fx:id="username1" fill="WHITE" onMouseClicked="#goToBack" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Cerrar Sesión" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="16">
+            <Text fill="WHITE" onMouseClicked="#goToBack" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Cerrar Sesión" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="16">
                <font>
                   <Font name="Calibri Light Italic" size="16.0" />
                </font>
