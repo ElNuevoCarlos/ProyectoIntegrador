@@ -2,11 +2,12 @@ package model;
 
 public class User {
 	public String nombre_completo, numero_identificacion, tipo_identificacion, 
-	correo_institucional, programa_departamento, telefono, estado, rol, password, id;
+	correo_institucional, programa_departamento, telefono, estado, rol, password;
+	public Long id;
 	
 	public User(String nombre_completo, String numero_identificacion, String tipo_identificacion, 
 			String correo_institucional, String programa_departamento, 
-			String telefono, String estado, String rol, String password, String id) {
+			String telefono, String estado, String rol, String password, Long id) {
 		super();
 		this.nombre_completo = nombre_completo;
 		this.numero_identificacion = numero_identificacion;
