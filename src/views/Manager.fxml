@@ -2,8 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.effect.MotionBlur?>
 <?import javafx.scene.image.Image?>
@@ -208,24 +206,6 @@
                <GridPane.margin>
                   <Insets top="190.0" />
                </GridPane.margin>
-            </Text>
-            <TableView fx:id="tableTeachers" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.columnSpan="7" GridPane.rowIndex="4" GridPane.rowSpan="4">
-              <columns>
-                <TableColumn fx:id="nombre" prefWidth="75.0" text="Nombre " />
-                <TableColumn fx:id="correo" prefWidth="75.0" text="Correo" />
-                  <TableColumn fx:id="rol" prefWidth="75.0" text="Rol" />
-                  <TableColumn fx:id="programa" prefWidth="75.0" text="Programa" />
-                  <TableColumn fx:id="identificacion" prefWidth="75.0" text="Identificación" />
-                  <TableColumn fx:id="contacto" prefWidth="75.0" text="Contacto" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lista de docentes registrados en el sistema" textAlignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="2">
-               <font>
-                  <Font name="Calibri Light Italic" size="20.0" />
-               </font>
             </Text>
          </children>
       </GridPane>

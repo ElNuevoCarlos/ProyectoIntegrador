@@ -34,7 +34,7 @@
 }
 
 .Managerbutton {
--fx-background-color: linear-gradient(to bottom, #292f56, #1e4572);
+-fx-background-color: #037bfc;
 -fx-text-fill: white;
 -fx-padding: 10px;
 -fx-pref-width: 100px;
@@ -59,5 +59,5 @@
 }
 
 .button:hover {
--fx-background-color: #005c8b;
+-fx-background-color: #037bfc;
 }

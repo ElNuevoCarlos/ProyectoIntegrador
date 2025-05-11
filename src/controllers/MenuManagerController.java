@@ -60,25 +60,9 @@ public class MenuManagerController {
     }
     @FXML
     public void teachers() {
-    	menuTechLend.setVisible(false);
-    	menuImage.setVisible(false);
-    	
-    	tableTeachers.setVisible(true);
-    	
-		ObservableList<User> teacher = FXCollections.observableArrayList();
-		
-		for (User docente : userDao.fetch()) {
-			teacher.add(docente);
-		}
-		
-		nombre.setCellValueFactory(new PropertyValueFactory<>("nombre_completo"));
-		correo.setCellValueFactory(new PropertyValueFactory<>("correo_institucional"));
-		rol.setCellValueFactory(new PropertyValueFactory<>("rol"));
-		programa.setCellValueFactory(new PropertyValueFactory<>("programa_departamento"));
-		identificacion.setCellValueFactory(new PropertyValueFactory<>("numero_identificacion"));
-		contacto.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-		
-		tableTeachers.setItems(teacher);
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+        currentStage.close();
+		Main.loadView("/views/test.fxml");
     }
     
     @FXML public void goToBack() {

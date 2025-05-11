@@ -102,7 +102,7 @@ public class UserDAO implements CRUD_operation<User, String>{
 	@Override
 	public ArrayList<User> fetch() {
         ArrayList<User> users = new ArrayList<>();
-        String query = "SELECT * FROM USUARIO";
+        String query = "SELECT * FROM USUARIO WHERE ESTADO = 'ACTIVA'";
         
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
@@ -139,15 +139,31 @@ public class UserDAO implements CRUD_operation<User, String>{
 	}
 
 	@Override
-	public void update(User entity) {
-		// TODO Auto-generated method stub
-		
+	public void update(User user) {
+	    String sql = "UPDATE USUARIO SET NOMBRE_COMPLETO = ?, CORREO_INSTITUCIONAL = ?, PROGRAMA_DEPARTAMENTO = ?, TELEFONO = ?, ROL = ?, PASSWORD = ? WHERE NUMERO_IDENTIFICACION = ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+	        pstmt.setString(1, user.getNombre_completo());
+	        pstmt.setString(2, user.getCorreo_institucional());
+	        pstmt.setString(3, user.getPrograma_departamento());
+	        pstmt.setString(4, user.getTelefono());
+	        pstmt.setString(5, user.getRol());
+	        pstmt.setString(6, user.getPassword());
+	        pstmt.setString(7, user.getNumero_identificacion());
+	        pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
+		String sql = "DELETE USUARIO WHERE NUMERO_IDENTIFICACION = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, id);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
