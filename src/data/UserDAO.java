@@ -68,26 +68,28 @@ public class UserDAO implements CRUD_operation<User, String>{
         return name; 
 	}
 	
-	public String[] otherData(String email) {
-		String query = "SELECT * FROM USUARIO WHERE CORREO_INSTITUCIONAL = ?";
-		
-		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-			pstmt.setString(1, email);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-                String numIdentification = rs.getString("NUMERO_IDENTIFICACION");
-                String ti = rs.getString("TIPO_IDENTIFICACION");
-				String password = rs.getString("PASSWORD");
-                String pro_dep = rs.getString("PROGRAMA_DEPARTAMENTO");
-                String phone = rs.getString("TELEFONO");
-                
-                return new String[] {numIdentification, ti, password, pro_dep, phone};
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}  
+	public ArrayList<String> otherData(String email) {
+	    String query = "SELECT * FROM USUARIO WHERE CORREO_INSTITUCIONAL = ?";
+	    ArrayList<String> data = new ArrayList<>();
+
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, email);
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            data.add(rs.getString("NUMERO_IDENTIFICACION"));
+	            data.add(rs.getString("TIPO_IDENTIFICACION"));
+	            data.add(rs.getString("PASSWORD"));
+	            data.add(rs.getString("PROGRAMA_DEPARTAMENTO"));
+	            data.add(rs.getString("TELEFONO"));
+	            return data;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return data; // devuelve una lista vacía si no se encuentra nada o hay error
+	}
+
 
 	
 	public String[] verifyPassword(String email, String password) {
@@ -164,20 +166,24 @@ public class UserDAO implements CRUD_operation<User, String>{
 
 	@Override
 	public void update(User user) {
-	    String sql = "UPDATE USUARIO SET NOMBRE_COMPLETO = ?, CORREO_INSTITUCIONAL = ?, PROGRAMA_DEPARTAMENTO = ?, TELEFONO = ?, ROL = ?, PASSWORD = ? WHERE NUMERO_IDENTIFICACION = ?";
-	    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-	        pstmt.setString(1, user.getNombre_completo());
-	        pstmt.setString(2, user.getCorreo_institucional());
-	        pstmt.setString(3, user.getPrograma_departamento());
-	        pstmt.setString(4, user.getTelefono());
-	        pstmt.setString(5, user.getRol());
-	        pstmt.setString(6, user.getPassword());
-	        pstmt.setString(7, user.getNumero_identificacion());
-	        pstmt.executeUpdate();
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+		String query = "UPDATE USUARIO SET NOMBRE_COMPLETO = ?, CORREO_INSTITUCIONAL = ?, TIPO_IDENTIFICACION = ?, NUMERO_IDENTIFICACION = ?, PASSWORD = ?, PROGRAMA_DEPARTAMENTO = ?, TELEFONO = ?, ROL = ? WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, user.getNombre_completo());
+			pstmt.setString(2, user.getCorreo_institucional());
+			pstmt.setString(3, user.getTipo_identificacion());
+			pstmt.setString(4, user.getNumero_identificacion());
+			pstmt.setString(5, user.getPassword());
+			pstmt.setString(6, user.getPrograma_departamento());
+			pstmt.setString(7, user.getTelefono());
+			pstmt.setString(8, user.getRol());
+			pstmt.setLong(9, user.getId());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
 	}
+	
+	
 
 	@Override
 	public void delete(String id) {
