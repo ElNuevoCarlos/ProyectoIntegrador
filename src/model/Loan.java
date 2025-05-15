@@ -3,36 +3,36 @@ package model;
 import java.sql.Date;
 
 public class Loan {
-    private long id, idHall, idUser, idEquipment;
+    private Long id, idHall, idUser, idEquipment;
     private Date startTime, endTime;
-    private String software, type;
+    private String specs, type, state;
 
-    public Loan(long id, long idHall, long idUser, long idEquipment, 
-                Date startTime, Date endTime, String software, String type) {
-        super();
+    public Loan(Long id, Long idHall, Long idUser, Long idEquipment, 
+                Date startTime, Date endTime, String specs, String type, String state) {
         this.id = id;
         this.idHall = idHall;
         this.idUser = idUser;
         this.idEquipment = idEquipment;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.software = software;
+        this.specs = specs;
         this.type = type;
+        this.state = state;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public long getIdHall() {
+    public Long getIdHall() {
         return idHall;
     }
 
-    public long getIdUser() {
+    public Long getIdUser() {
         return idUser;
     }
 
-    public long getIdEquipment() {
+    public Long getIdEquipment() {
         return idEquipment;
     }
 
@@ -44,12 +44,17 @@ public class Loan {
         return endTime;
     }
 
-    public String getSoftware() {
-        return software;
+    public String getSpecs() {
+        return specs;
     }
 
     public String getType() {
         return type;
     }
+    
+    public String getState() {
+    	return state;
+    }
 }
+
 

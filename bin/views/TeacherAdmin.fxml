@@ -18,17 +18,15 @@
 
 <BorderPane fx:id="rootPane" prefHeight="560.0" prefWidth="945.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuTeacherController">
    <center>
-      <GridPane fx:id="grip" prefHeight="522.0" prefWidth="894.0" BorderPane.alignment="CENTER">
+      <GridPane fx:id="grip" prefHeight="522.0" prefWidth="894.0" visible="false" BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.60003662109375" minWidth="10.0" prefWidth="17.60002441406249" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.6000274658203" minWidth="10.0" prefWidth="172.0000122070313" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.60003662109375" minWidth="10.0" prefWidth="44.59999694824219" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.6000274658203" minWidth="10.0" prefWidth="184.60000305175782" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.19996337890626" minWidth="10.0" prefWidth="157.39998779296877" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.59997558593756" minWidth="10.0" prefWidth="43.800036621093795" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="227.8" minWidth="10.0" prefWidth="149.60000000000002" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="244.59995117187498" minWidth="10.0" prefWidth="193.60000000000002" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="8.599951171874977" prefWidth="15.999975585937477" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="244.59995117187498" minWidth="10.0" prefWidth="166.00002441406252" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="8.599951171874977" prefWidth="31.5999755859375" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -50,117 +48,119 @@
             <RowConstraints maxHeight="132.80002441406248" minHeight="10.0" prefHeight="56.00002441406252" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane fx:id="pane" prefHeight="558.0" prefWidth="200.0" style="-fx-background-color: #8679c2;" GridPane.columnSpan="2" GridPane.rowSpan="17">
-               <children>
-                  <ImageView fx:id="myLoansImage" fitHeight="87.0" fitWidth="114.0" layoutX="41.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/img/prestamo.png" />
-                     </image>
-                  </ImageView>
-                  <Separator fx:id="separator1" layoutX="-5.0" layoutY="173.0" prefHeight="3.0" prefWidth="190.0" />
-                  <Separator fx:id="separator2" layoutX="-2.0" layoutY="299.0" prefHeight="5.0" prefWidth="184.0" />
-                  <ImageView fx:id="requestConsultImage" fitHeight="89.0" fitWidth="97.0" layoutX="41.0" layoutY="319.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/img/persona-de-libre-dedicacion.png" />
-                     </image>
-                  </ImageView>
-                  <Text fx:id="myLoans" layoutX="30.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mis prestamos" textAlignment="CENTER">
-                     <font>
-                        <Font name="Candara Light" size="18.0" />
-                     </font>
-                  </Text>
-                  <Text layoutX="72.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-                  <Text fx:id="requestConsult" layoutX="18.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Solicitar/Consultar" textAlignment="CENTER">
-                     <font>
-                        <Font name="Candara Light" size="18.0" />
-                     </font>
-                  </Text>
-                  <Hyperlink fx:id="editUser" focusTraversable="false" layoutX="54.0" layoutY="103.0" onAction="#handleEditUser" text="Hyperlink" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font name="Candara Light" size="14.0" />
-                     </font>
-                  </Hyperlink>
-                  <ImageView fx:id="userImage" fitHeight="99.0" fitWidth="97.0" layoutX="35.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/img/user.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="closeSession" fitHeight="26.0" fitWidth="27.0" layoutX="5.0" layoutY="524.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../resources/img/cerrar-sesion.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </Pane>
-            <Label fx:id="nameText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Nombre completo" visible="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <Label fx:id="nameText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Nombre completo" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font>
             </Label>
-            <TextField fx:id="name" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="3" />
-            <Label fx:id="numIdentificationText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Numero de identificación" visible="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <TextField fx:id="name" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="3" />
+            <Label fx:id="numIdentificationText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Numero de identificación" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="emailText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Correo institucional" visible="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+            <Label fx:id="emailText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Correo institucional" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="pro_depText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Programa o departamento" visible="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
+            <Label fx:id="pro_depText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Programa o departamento" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="password1Text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Contraseña" visible="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
+            <Label fx:id="password1Text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Contraseña" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font>
             </Label>
-            <TextField fx:id="numIdentification" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="213.0" visible="false" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-            <TextField fx:id="email" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="7" />
-            <TextField fx:id="pro_dep" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="9" />
-            <TextField fx:id="password1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="11" />
-            <Label fx:id="password2Text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Confirmar contraseña" visible="false" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="13">
+            <TextField fx:id="numIdentification" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="213.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+            <TextField fx:id="email" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="7" />
+            <TextField fx:id="pro_dep" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="9" />
+            <TextField fx:id="password1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="11" />
+            <Label fx:id="password2Text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Confirmar contraseña" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="13">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font>
             </Label>
-            <TextField fx:id="password2" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="13" />
-            <Button fx:id="save" alignment="CENTER" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSave" prefHeight="52.0" prefWidth="294.0" text="Guardar" textAlignment="CENTER" visible="false" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="15">
+            <TextField fx:id="password2" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="13" />
+            <Button fx:id="save" alignment="CENTER" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSave" prefHeight="52.0" prefWidth="294.0" text="Guardar" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="15">
                <font>
                   <Font name="Candara Light" size="20.0" />
                </font>
             </Button>
-            <Label fx:id="tiText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Tipo de identificación" visible="false" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <Label fx:id="tiText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Tipo de identificación" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="roleText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Rol" translateX="-3.0" visible="false" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
+            <Label fx:id="roleText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Rol" translateX="-3.0" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="phoneText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Telefono" visible="false" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="13">
+            <Label fx:id="phoneText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" text="Telefono" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="13">
                <font>
                   <Font name="Candara Light" size="15.0" />
                </font></Label>
-            <TextField fx:id="phone" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="7" GridPane.rowIndex="13" />
-            <ImageView fitHeight="61.0" fitWidth="215.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.columnSpan="6" GridPane.rowIndex="1">
+            <TextField fx:id="phone" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="5" GridPane.rowIndex="13" />
+            <ImageView fitHeight="61.0" fitWidth="215.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../resources/img/logo.png" />
                </image>
             </ImageView>
-            <Label fx:id="title" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="350.0" text="EDITAR DATOS PERSONALES" textAlignment="CENTER" visible="false" GridPane.columnIndex="4" GridPane.columnSpan="3" GridPane.rowIndex="2">
+            <Label fx:id="title" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="350.0" text="EDITAR DATOS PERSONALES" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="2">
                <font>
                   <Font name="Candara Light" size="20.0" />
                </font>
             </Label>
-            <ComboBox fx:id="ti" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" visible="false" GridPane.columnIndex="7" GridPane.rowIndex="5" />
-            <ComboBox fx:id="role" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" visible="false" GridPane.columnIndex="7" GridPane.rowIndex="11" />
+            <ComboBox fx:id="ti" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <ComboBox fx:id="role" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="5" GridPane.rowIndex="11" />
          </children>
       </GridPane>
    </center>
+   <left>
+      <Pane fx:id="pane" prefHeight="558.0" prefWidth="200.0" style="-fx-background-color: #8679c2;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="myLoansImage" fitHeight="87.0" fitWidth="114.0" layoutX="41.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/img/prestamo.png" />
+               </image>
+            </ImageView>
+            <Separator fx:id="separator1" layoutX="-5.0" layoutY="173.0" prefHeight="3.0" prefWidth="190.0" />
+            <Separator fx:id="separator2" layoutX="-2.0" layoutY="299.0" prefHeight="5.0" prefWidth="184.0" />
+            <ImageView fx:id="requestConsultImage" fitHeight="89.0" fitWidth="97.0" layoutX="41.0" layoutY="319.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/img/persona-de-libre-dedicacion.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="myLoans" layoutX="30.0" layoutY="287.0" onMouseClicked="#handleMyLoans" strokeType="OUTSIDE" strokeWidth="0.0" text="Mis prestamos" textAlignment="CENTER">
+               <font>
+                  <Font name="Candara Light" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="72.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <Text fx:id="requestConsult" layoutX="18.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Solicitar/Consultar" textAlignment="CENTER">
+               <font>
+                  <Font name="Candara Light" size="18.0" />
+               </font>
+            </Text>
+            <Hyperlink fx:id="editUser" focusTraversable="false" layoutX="54.0" layoutY="103.0" onAction="#handleEditUser" text="Hyperlink" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Candara Light" size="14.0" />
+               </font>
+            </Hyperlink>
+            <ImageView fx:id="userImage" fitHeight="99.0" fitWidth="97.0" layoutX="35.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/img/user.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="closeSession" fitHeight="26.0" fitWidth="27.0" layoutX="5.0" layoutY="524.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/img/cerrar-sesion.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </left>
 </BorderPane>

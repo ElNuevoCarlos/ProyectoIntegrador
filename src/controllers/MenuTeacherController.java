@@ -1,6 +1,8 @@
 package controllers;
 
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import data.DataBase;
@@ -10,6 +12,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -17,16 +20,21 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import model.Loan;
 import model.User;
+
 
 public class MenuTeacherController {
 	@FXML
@@ -52,6 +60,21 @@ public class MenuTeacherController {
 	private ComboBox<String> ti, role;
 	@FXML
 	private Button save;
+	
+	
+	@FXML 
+	private TableView<Loan> table;
+	@FXML 
+	private TableColumn<Loan, Integer> id;
+	@FXML 
+	private TableColumn<Loan, String> hall;
+	@FXML 
+	private TableColumn<Loan, Date> startTime;
+	@FXML 
+	private TableColumn<Loan, Date> endTime;
+	@FXML 
+	private TableColumn<Loan, String> state;
+	
 	private Connection database = DataBase.getInstance().getConnection();
 	private UserDAO userDao = new UserDAO(database);
 	private SessionManager sessionManager = SessionManager.getInstance();
@@ -127,33 +150,34 @@ public class MenuTeacherController {
 
 	@FXML
 	void handleEditUser() {
+		grip.setVisible(true);
 		ObservableList<String> itemsTi = FXCollections.observableArrayList("CC", "CE");
 		ti.setItems(itemsTi);
 		ObservableList<String> itemsRole = FXCollections.observableArrayList("DOCENTE", "ADMINISTRATIVO");
 		role.setItems(itemsRole);
 		otherData = userDao.otherData(sessionManager.getEmail());
-		nameText.setVisible(true);
-		numIdentificationText.setVisible(true);
-		tiText.setVisible(true);
-		emailText.setVisible(true);
-		phoneText.setVisible(true);
-		roleText.setVisible(true);
-		pro_depText.setVisible(true);
-		password1Text.setVisible(true);
-		password2Text.setVisible(true);
-		title.setVisible(true);
-
-		name.setVisible(true);
-		numIdentification.setVisible(true);
-		ti.setVisible(true);
-		email.setVisible(true);
-		phone.setVisible(true);
-		role.setVisible(true);
-		pro_dep.setVisible(true);
-		password1.setVisible(true);
-		password2.setVisible(true);
-
-		save.setVisible(true);
+//		nameText.setVisible(true);
+//		numIdentificationText.setVisible(true);
+//		tiText.setVisible(true);
+//		emailText.setVisible(true);
+//		phoneText.setVisible(true);
+//		roleText.setVisible(true);
+//		pro_depText.setVisible(true);
+//		password1Text.setVisible(true);
+//		password2Text.setVisible(true);
+//		title.setVisible(true);
+//
+//		name.setVisible(true);
+//		numIdentification.setVisible(true);
+//		ti.setVisible(true);
+//		email.setVisible(true);
+//		phone.setVisible(true);
+//		role.setVisible(true);
+//		pro_dep.setVisible(true);
+//		password1.setVisible(true);
+//		password2.setVisible(true);
+//
+//		save.setVisible(true);
 		name.setText(sessionManager.getName());
 		numIdentification.setText(otherData.get(0));
 		ti.setValue(otherData.get(1));
@@ -282,4 +306,18 @@ public class MenuTeacherController {
 		ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
 		return result == ButtonType.OK;
 	}
+	
+    private void cargarGrid(String archivoFXML) {
+        try {
+            GridPane nuevoGrid = FXMLLoader.load(getClass().getResource(archivoFXML));
+            rootPane.setCenter(nuevoGrid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    public void handleMyLoans(MouseEvent event) {
+        cargarGrid("/views/MyLoans.fxml");
+    }
 }
