@@ -108,7 +108,7 @@ public class NewAccountController {
                     return;
         	} else {
         		String fullName = Name +" "+ LastName;
-        		User newUser = new User(fullName, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, 0);
+        		User newUser = new User(fullName, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, null);
         		userDao.save(newUser);
         	}
         } else {

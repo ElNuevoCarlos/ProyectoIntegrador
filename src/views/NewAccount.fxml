@@ -32,7 +32,7 @@
                   <TextField fx:id="password1" focusTraversable="false" layoutX="21.0" layoutY="291.0" prefHeight="30.0" prefWidth="150.0" promptText="Contraseña nueva" />
                   <TextField fx:id="password2" focusTraversable="false" layoutX="185.0" layoutY="291.0" prefHeight="30.0" prefWidth="150.0" promptText="Confirmar contraseña" />
                   <Hyperlink fx:id="login" focusTraversable="false" layoutX="114.0" layoutY="377.0" onAction="#handleLogin" text="¿Ya tienes una cuenta?" />
-                  <ComboBox fx:id="role" focusTraversable="false" layoutX="185.0" layoutY="210.0" prefHeight="30.0" prefWidth="150.0" promptText="Seleccione su rol" />
+                  <ComboBox fx:id="role" editable="true" focusTraversable="false" layoutX="185.0" layoutY="210.0" prefHeight="30.0" prefWidth="150.0" promptText="Seleccione su rol" />
                   <Text layoutX="135.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crea una cuenta" />
                </children>
             </Pane>

@@ -4,10 +4,12 @@
 	-fx-alignment: center;
 }
 
-.label {
--fx-font-size: 12px;
--fx-font-weight: bold;
+.table-view.tabla-centrada .table-cell {
+    -fx-alignment: center;
 }
+
+
+
 .login {
 -fx-background-color: white;
 -fx-border-color: #9ACBD0;

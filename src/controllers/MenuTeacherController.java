@@ -61,20 +61,6 @@ public class MenuTeacherController {
 	@FXML
 	private Button save;
 	
-	
-	@FXML 
-	private TableView<Loan> table;
-	@FXML 
-	private TableColumn<Loan, Integer> id;
-	@FXML 
-	private TableColumn<Loan, String> hall;
-	@FXML 
-	private TableColumn<Loan, Date> startTime;
-	@FXML 
-	private TableColumn<Loan, Date> endTime;
-	@FXML 
-	private TableColumn<Loan, String> state;
-	
 	private Connection database = DataBase.getInstance().getConnection();
 	private UserDAO userDao = new UserDAO(database);
 	private SessionManager sessionManager = SessionManager.getInstance();
