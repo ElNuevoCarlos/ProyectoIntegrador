@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import application.Main;
 import data.DataBase;
 import data.Filter;
 import data.LoanDAO;
@@ -22,6 +23,7 @@ import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -105,7 +107,31 @@ public class MyLoansController {
     ObservableList<LoanTable> Loans = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize() {
+    public void initialize() {  	
+    	tableLoan.setRowFactory(tv -> {
+    	    TableRow<LoanTable> row = new TableRow<>();
+
+    	    row.setOnMouseClicked(event -> {
+    	        if (!row.isEmpty()) {
+    	            LoanTable loan = row.getItem();
+
+    	            if (event.getClickCount() == 2) {
+    	                // Doble clic
+    	            	Main.cargarGrid("/views/ModifyLoan.fxml", Main.rootLayout);
+    	            	Main.datoGlobal = loan;
+    	            } else {
+    	                // Clic simple
+    	                if (row.isSelected()) {
+    	                    tableLoan.getSelectionModel().clearSelection();
+    	                } else {
+    	                    tableLoan.getSelectionModel().select(loan);
+    	                }
+    	            }
+    	        }
+    	    });
+
+    	    return row;
+    	});
     }
     
     @FXML
@@ -206,6 +232,23 @@ public class MyLoansController {
         LocalDate start = startInterval.getValue();
         LocalDate end = endInterval.getValue();
         StringBuilder query = new StringBuilder();
+        if (start != null) {
+            if (end != null) {
+                query.append(" AND (TRUNC(p.FECHA_INICIO) BETWEEN TO_DATE('")
+                     .append(start)
+                     .append("', 'YYYY-MM-DD') AND TO_DATE('")
+                     .append(end)
+                     .append("', 'YYYY-MM-DD'))");
+            } else {
+                query.append(" AND TRUNC(p.FECHA_INICIO) = TO_DATE('")
+                     .append(start)
+                     .append("', 'YYYY-MM-DD')");
+            }
+        } else if (end != null) {
+            query.append(" AND TRUNC(p.FECHA_FIN) = TO_DATE('")
+                 .append(end)
+                 .append("', 'YYYY-MM-DD')");
+        }
     	if(!typeText.isVisible()) { 
             String building = buildingText.getText().trim();
             String flat = flatText.getText().trim();
@@ -222,12 +265,6 @@ public class MyLoansController {
             if (!state.isEmpty()) {
                 query.append(" AND p.ESTADO = '").append(state).append("'");
             }
-            if (start != null) {
-                query.append(" AND p.FECHA_INICIO = '").append(start).append("'");
-            }
-            if (end != null) {
-                query.append(" AND p.FECHA_FIN = '").append(end).append("'");
-            }
             if (query.length() > 0) {
             	fillTable(loanDAO.MyLoansView(sessionManager.getId(), true, query),  "SALA", "UBICACION");
             } 
@@ -242,12 +279,6 @@ public class MyLoansController {
             }
             if (!state.isEmpty()) {
                 query.append(" AND p.ESTADO = '").append(state).append("'");
-            }
-            if (start != null) {
-                query.append(" AND p.FECHA_INICIO = '").append(start).append("'");
-            }
-            if (end != null) {
-                query.append(" AND p.FECHA_FIN = '").append(end).append("'");
             }
             if (query.length() > 0) {
             	fillTable(loanDAO.MyLoansView(sessionManager.getId(), false, query),  "DISPOSITIVO", "TIPO DISPOSITIVO");

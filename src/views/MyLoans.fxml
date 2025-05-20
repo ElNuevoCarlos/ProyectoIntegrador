@@ -33,15 +33,16 @@
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="25.4" minHeight="10.0" prefHeight="25.4" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="59.39999618530273" minHeight="10.0" prefHeight="53.79999008178711" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="45.0" minHeight="3.4000038146972713" prefHeight="27.2" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="59.39999618530273" minHeight="10.0" prefHeight="55.99999084472656" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="45.0" minHeight="3.4000038146972713" prefHeight="27.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="60.999999999999986" minHeight="7.000009155273432" prefHeight="18.20000610351562" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="27.2" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="256.9999755859375" minHeight="0.0" prefHeight="51.20000000000002" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="335.4000396728516" minHeight="10.0" prefHeight="87.6" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="335.4000396728516" minHeight="10.0" prefHeight="26.800006103515614" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="417.99998779296874" minHeight="10.0" prefHeight="98.79997558593749" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="321.8000091552734" minHeight="10.0" prefHeight="56.4000244140625" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="38.59999389648439" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="256.9999755859375" minHeight="0.0" prefHeight="34.600006103515625" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="335.4000396728516" minHeight="10.0" prefHeight="96.60000610351562" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="335.4000396728516" minHeight="10.0" prefHeight="26.199993896484386" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="417.99998779296874" minHeight="10.0" prefHeight="91.00000610351566" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="321.8000091552734" minHeight="10.0" prefHeight="51.60001220703123" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="321.8000091552734" minHeight="10.0" prefHeight="41.00002441406252" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="321.8000091552734" minHeight="10.0" prefHeight="96.80002441406253" vgrow="SOMETIMES" />
   </rowConstraints>
   <children>
@@ -70,7 +71,7 @@
             <Image url="@../../resources/img/salas.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tableLoan" focusTraversable="false" prefHeight="84.0" prefWidth="521.0" styleClass="tabla-centrada" visible="false" GridPane.columnIndex="3" GridPane.columnSpan="9" GridPane.rowIndex="6" GridPane.rowSpan="4">
+      <TableView fx:id="tableLoan" focusTraversable="false" prefHeight="84.0" prefWidth="521.0" styleClass="tabla-centrada" visible="false" GridPane.columnIndex="3" GridPane.columnSpan="9" GridPane.rowIndex="6" GridPane.rowSpan="5">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="44.00000077486038" text="ID" />
             <TableColumn fx:id="startTimeColumn" prefWidth="135.0" text="HORA INICIO" />
@@ -121,7 +122,7 @@
             </ContextMenu>
          </contextMenu></TextField>
       <Button fx:id="filterButton" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFilter" prefHeight="57.0" prefWidth="114.0" text="Filtrar" visible="false" GridPane.columnIndex="11" GridPane.rowIndex="2" GridPane.rowSpan="3" />
-      <TextField fx:id="typeText" focusTraversable="false" promptText="TIPO" visible="false" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2">
+      <TextField fx:id="typeText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="TIPO" visible="false" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2">
          <contextMenu>
             <ContextMenu fx:id="menuType">
               <items>
