@@ -57,12 +57,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Brayan Lizcano/Documents/Integrador/lib/jakarta.activation-2.0.1.jar">
+	<classpathentry kind="lib" path="lib/jakarta.activation-2.0.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Brayan Lizcano/Documents/Integrador/lib/jakarta.mail-2.0.1.jar">
+	<classpathentry kind="lib" path="lib/jakarta.mail-2.0.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
