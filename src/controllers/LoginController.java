@@ -125,7 +125,7 @@ public class LoginController {
             switch (role) {
             	case "ENCARGADO":
             		
-            		Main.loadView("/views/Manager/Manager.fxml");
+            		Main.loadView("/views/Manager.fxml");
                 	break;
             	case "SUPERENCARGADO":
             		Main.loadView("/views/SuperManager.fxml");
