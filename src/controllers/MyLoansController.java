@@ -43,10 +43,7 @@ public class MyLoansController {
     private TableColumn<LoanTable, Loan> idColumn;
 
     @FXML 
-    private TableColumn<LoanTable, Timestamp> startTimeColumn;
-
-    @FXML 
-    private TableColumn<LoanTable, Timestamp> endTimeColumn;
+    private TableColumn<LoanTable, Timestamp> dateColumn;
     
     @FXML 
     private TableColumn<LoanTable, String> nameColumn;
@@ -155,8 +152,7 @@ public class MyLoansController {
 			Loans.add(loanView);
 		}
 		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-		startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-		endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+		dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		locationColumn.setCellValueFactory(new PropertyValueFactory<>("locationType"));
 		stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
@@ -234,20 +230,16 @@ public class MyLoansController {
         StringBuilder query = new StringBuilder();
         if (start != null) {
             if (end != null) {
-                query.append(" AND (TRUNC(p.FECHA_INICIO) BETWEEN TO_DATE('")
+                query.append(" AND (TRUNC(p.FECHA) BETWEEN TO_DATE('")
                      .append(start)
                      .append("', 'YYYY-MM-DD') AND TO_DATE('")
                      .append(end)
                      .append("', 'YYYY-MM-DD'))");
             } else {
-                query.append(" AND TRUNC(p.FECHA_INICIO) = TO_DATE('")
+                query.append(" AND TRUNC(p.FECHA) = TO_DATE('")
                      .append(start)
                      .append("', 'YYYY-MM-DD')");
             }
-        } else if (end != null) {
-            query.append(" AND TRUNC(p.FECHA_FIN) = TO_DATE('")
-                 .append(end)
-                 .append("', 'YYYY-MM-DD')");
         }
     	if(!typeText.isVisible()) { 
             String building = buildingText.getText().trim();
