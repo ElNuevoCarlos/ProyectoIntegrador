@@ -4,14 +4,13 @@ import java.sql.Timestamp;
 
 public class LoanTable {
     private Long id;
-    private Timestamp startTime, endTime;
+    private Timestamp date;
     private String name, locationType, state;
     
-    public LoanTable(Long id, String name, Timestamp startTime, Timestamp endTime, String locationType, String state) {
+    public LoanTable(Long id, String name, Timestamp date, String locationType, String state) {
         this.id = id;
         this.name = name;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.date = date;
         this.locationType = locationType;
         this.state = state;
     }
@@ -24,13 +23,10 @@ public class LoanTable {
     	return name;
     }
 
-    public Timestamp getStartTime() {
-        return startTime;
+    public Timestamp getDate() {
+        return date;
     }
 
-    public Timestamp getEndTime() {
-        return endTime;
-    }
 
     public String getLocationType() {
         return locationType;

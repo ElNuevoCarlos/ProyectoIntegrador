@@ -23,12 +23,12 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
         String query;
 
         if (type) {
-            query = "SELECT p.ID, s.NOMBRE, p.FECHA_INICIO, p.FECHA_FIN, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO "
+            query = "SELECT p.ID, s.NOMBRE, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO "
                   + "FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
                   + "JOIN UBICACION u ON s.ID_UBICACION = u.ID "
                   + "WHERE p.ID_USUARIO = ?" + second;
         } else {
-            query = "SELECT p.ID, e.NOMBRE, p.FECHA_INICIO, p.FECHA_FIN, e.TIPO_DISPOSITIVO, p.ESTADO "
+            query = "SELECT p.ID, e.NOMBRE, p.FECHA, e.TIPO_DISPOSITIVO, p.ESTADO "
                   + "FROM PRESTAMO p JOIN EQUIPO e ON p.ID_EQUIPO = e.ID "
                   + "WHERE p.ID_USUARIO = ?" + second;
         }
@@ -39,12 +39,11 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
             while (rs.next()) {
                 Long id = rs.getLong(1);
                 String name = rs.getString(2);
-                Timestamp startTime = rs.getTimestamp(3);
-                Timestamp endTime = rs.getTimestamp(4);
-                String fifthCol = rs.getString(5); // LOCALIZACION o TIPO_DISPOSITIVO
-                String state = rs.getString(6);
+                Timestamp date = rs.getTimestamp(3);
+                String fifthCol = rs.getString(4); // LOCALIZACION o TIPO_DISPOSITIVO
+                String state = rs.getString(5);
 
-                LoanTable loanView = new LoanTable(id, name, startTime, endTime, fifthCol, state);
+                LoanTable loanView = new LoanTable(id, name, date,fifthCol, state);
                 loansView.add(loanView);
             }
         } catch (SQLException e) {

@@ -11,7 +11,7 @@
 
 <BorderPane fx:id="rootPane" prefHeight="560.0" prefWidth="1057.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuTeacherController">
    <left>
-      <Pane fx:id="pane" prefHeight="558.0" prefWidth="200.0" style="-fx-background-color: #8679c2;" BorderPane.alignment="CENTER">
+      <Pane fx:id="pane" prefHeight="558.0" prefWidth="200.0" style="-fx-background-color: #037bfc;" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="myLoansImage" fitHeight="87.0" fitWidth="114.0" layoutX="41.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
                <image>
