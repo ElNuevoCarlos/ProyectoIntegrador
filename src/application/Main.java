@@ -17,8 +17,7 @@ public class Main extends Application {
 	public static Object datoGlobal;
 	public static Pane pane;
 	public static BorderPane rootLayout;
-    @SuppressWarnings("exports")
-	@Override
+
     public void start(Stage primaryStage) throws SQLException {
         try {
             FXMLLoader root = new FXMLLoader(getClass().getResource("/views/Login.fxml"));
