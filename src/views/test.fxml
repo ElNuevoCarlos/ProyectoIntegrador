@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="rootPane" stylesheets="@../../resources/application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManagerTeacherController">
+<BorderPane fx:id="rootPane" prefHeight="510.0" prefWidth="884.0" stylesheets="@../../resources/application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManagerTeacherController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -54,7 +55,6 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #037bfc;" GridPane.columnSpan="3" GridPane.rowSpan="17" />
             <TableView fx:id="tableTeachers" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.columnSpan="10" GridPane.rowIndex="5" GridPane.rowSpan="5">
               <columns>
                 <TableColumn fx:id="nombre" prefWidth="75.0" text="Nombre" />
@@ -76,12 +76,53 @@
                   <Font name="Calibri Light Italic" size="20.0" />
                </font>
             </Text>
-            <ImageView fitHeight="72.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+            <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar, eliminar o agregar un nuevo docente al sistema, debe darle click al boton correspondiente en la parte superior de esté mensaje" textAlignment="CENTER" wrappingWidth="338.36181640625" GridPane.columnIndex="8" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
+         </children>
+      </GridPane>
+   </center>
+   <left>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #037bfc;" GridPane.columnSpan="3" GridPane.rowSpan="17" />
+            <Text fill="WHITE" onMouseClicked="#goToBack" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Cerrar Sesión" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="16">
+               <font>
+                  <Font name="Calibri Light Italic" size="16.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="25.0" fitWidth="25.0" onMouseClicked="#goToBack" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" GridPane.halignment="LEFT" GridPane.rowIndex="16">
+               <image>
+                  <Image url="@../../resources/img/closeSession.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="72.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" translateX="5.0" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../resources/img/account.png" />
                </image>
             </ImageView>
-            <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar, eliminar o agregar un nuevo docente al sistema, debe darle click al boton correspondiente en la parte superior de esté mensaje" textAlignment="CENTER" wrappingWidth="338.36181640625" GridPane.columnIndex="8" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
             <Text fx:id="username" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Carlos Pinto" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font name="Calibri Light Italic" size="15.0" />
@@ -92,17 +133,6 @@
                   <Font name="Calibri Light" size="15.0" />
                </font>
             </Text>
-            <ImageView fitHeight="25.0" fitWidth="25.0" onMouseClicked="#goToBack" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" GridPane.halignment="LEFT" GridPane.rowIndex="16">
-               <image>
-                  <Image url="@../../resources/img/closeSession.png" />
-               </image>
-            </ImageView>
-            <Text fill="WHITE" onMouseClicked="#goToBack" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Cerrar Sesión" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="16">
-               <font>
-                  <Font name="Calibri Light Italic" size="16.0" />
-               </font>
-            </Text>
-            <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2" />
             <ImageView fitHeight="66.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" GridPane.rowIndex="4">
                <image>
                   <Image url="@../../resources/img/teachers.png" />
@@ -113,12 +143,16 @@
                   <Font name="Calibri Light Italic" size="15.0" />
                </font>
             </Text>
-            <Text fx:id="role1" fill="#c6c6c6" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona los docentes" translateY="25.0" wrappingWidth="76.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+            <Text fx:id="role1" fill="#c6c6c6" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona los docentes" translateY="25.0" wrappingWidth="76.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BASELINE">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Text>
+            <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2" />
          </children>
       </GridPane>
-   </center>
+   </left>
 </BorderPane>
