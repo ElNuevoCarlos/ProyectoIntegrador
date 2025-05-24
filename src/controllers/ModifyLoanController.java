@@ -1,26 +1,49 @@
 package controllers;
 
+import application.Main;
 import javafx.fxml.FXML;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import model.LoanTable;
 
 public class ModifyLoanController {
 	@FXML
-	private Spinner<Integer> hourSpinner;
+	private DatePicker date;
 
 	@FXML
-	private Spinner<Integer> minuteSpinner;
-
+	private TextArea specs;
+	
+	@FXML
+	private ListView<String> blocks;
+	
+	@FXML
+	private TextField name;
+	
+	@FXML
+	private TextField building;
+	
+	@FXML
+	private TextField flat;
+	
+	@FXML
+	private TextField capacity;
+	
+	LoanTable loan;
+	
 	@FXML
 	public void initialize() {
-	    // Rango de horas: 0 a 23
-	    SpinnerValueFactory<Integer> hourFactory =
-	        new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 12); // Valor inicial: 12
-	    hourSpinner.setValueFactory(hourFactory);
-
-	    // Rango de minutos: 0 a 59
-	    SpinnerValueFactory<Integer> minuteFactory =
-	        new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0); // Valor inicial: 0
-	    minuteSpinner.setValueFactory(minuteFactory);
+	    Object dato = Main.datoGlobal;
+	    if (dato instanceof LoanTable) {
+	    	loan = (LoanTable) dato;
+	    }
+	    String[] partsLocation = loan.getLocationType().split("-");
+	    date.setValue(loan.getDate());
+	    specs.setText(loan.getSpecs());
+		name.setText(loan.getName());
+		building.setText(partsLocation[0].trim());
+		flat.setText(partsLocation[1].trim());
+		capacity.setText(String.valueOf(loan.getCapacity()));
 	}
 }

@@ -1,18 +1,21 @@
 package model;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class LoanTable {
     private Long id;
-    private Timestamp date;
-    private String name, locationType, state;
+    private LocalDate date;
+    private String name, locationType, state, specs;
+    private int capacity;
     
-    public LoanTable(Long id, String name, Timestamp date, String locationType, String state) {
+    public LoanTable(Long id, String name, LocalDate date, String locationType, String state, String specs, int capacity) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.locationType = locationType;
         this.state = state;
+        this.specs = specs;
+        this.capacity = capacity;
     }
 
     public Long getId() {
@@ -23,7 +26,7 @@ public class LoanTable {
     	return name;
     }
 
-    public Timestamp getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -34,5 +37,13 @@ public class LoanTable {
 
     public String getState() {
         return state;
+    }
+    
+    public String getSpecs() {
+    	return specs;
+    }
+    
+    public int getCapacity() {
+    	return capacity;
     }
 }
