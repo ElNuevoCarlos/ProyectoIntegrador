@@ -121,6 +121,7 @@ public class LoginController {
             Stage currentStage = (Stage) rootPane.getScene().getWindow();
             currentStage.close();
             // CIERRA LA VENTANA ACTUAL
+            
             sessionManager.setUser(id, Name, role, Email);
             switch (role) {
             	case "ENCARGADO":

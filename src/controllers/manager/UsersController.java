@@ -31,7 +31,7 @@ import model.User;
 
 public class UsersController {
     @FXML private BorderPane rootPane;
-    @FXML private Text username, role, menuTechLend;
+    @FXML private Text menuTechLend;
     @FXML private ImageView menuImage;
     @FXML private TableView<User> tableTeachers;
     @FXML private TableColumn<User, String> nombre;
@@ -80,11 +80,14 @@ public class UsersController {
     		
     	}
     }
-    
+
     @FXML public void sanciones() {
     	User user = selectUser();
+    	user = new User(user.getNombre_completo(), user.getNumero_identificacion(), user.getTipo_identificacion(),
+    			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
+    			user.getRol(), user.getPassword(), user.getId());
     	if (user != null) {
-    		
+    		Main.cargarGrid("/views/Manager/Sanction.fxml", rootPane);
     	}
     }
     
