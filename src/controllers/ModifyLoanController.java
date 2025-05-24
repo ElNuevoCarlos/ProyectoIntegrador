@@ -1,6 +1,13 @@
 package controllers;
 
+import java.sql.Connection;
+import java.util.ArrayList;
+
 import application.Main;
+import data.DataBase;
+import data.LoanDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
@@ -32,12 +39,20 @@ public class ModifyLoanController {
 	
 	LoanTable loan;
 	
+	private Connection database = DataBase.getInstance().getConnection();
+	private LoanDAO loanDAO = new LoanDAO(database);
+	
 	@FXML
 	public void initialize() {
 	    Object dato = Main.datoGlobal;
 	    if (dato instanceof LoanTable) {
 	    	loan = (LoanTable) dato;
 	    }
+	    ArrayList<String> blocksArray = loanDAO.hallBlocks(loan.getId());
+	    System.out.println(blocksArray);
+	    ObservableList<String> observableList = FXCollections.observableArrayList(blocksArray);
+	    System.out.println(observableList);
+	    blocks.setItems(observableList);
 	    String[] partsLocation = loan.getLocationType().split("-");
 	    date.setValue(loan.getDate());
 	    specs.setText(loan.getSpecs());

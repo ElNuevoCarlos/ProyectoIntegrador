@@ -57,7 +57,25 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 
         return loansView;
     }
+	
+	
+	public ArrayList<String> hallBlocks(long idLoan) {
+		ArrayList<String> blocks = new ArrayList<>();
+		String query = "SELECT b.HORA_INICIO, b.HORA_FIN FROM BLOQUE b \r\n"
+				+ "WHERE b.ID IN (SELECT pb.ID_BLOQUE FROM PRESTAMO_BLOQUE pb WHERE pb.ID_PRESTAMO = ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setLong(1, idLoan);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String block = rs.getTimestamp(1) + " " + rs.getTimestamp(2);
+                blocks.add(block);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        return blocks;
+	}
     
 	@Override
 	public void save(Loan entity) {

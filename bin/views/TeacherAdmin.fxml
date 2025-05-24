@@ -31,7 +31,7 @@
                </font>
             </Text>
             <Text layoutX="72.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-            <Text fx:id="requestConsult" layoutX="18.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Solicitar/Consultar" textAlignment="CENTER">
+            <Text fx:id="requestConsult" layoutX="18.0" layoutY="430.0" onMouseClicked="#handleRequestConsultation" strokeType="OUTSIDE" strokeWidth="0.0" text="Solicitar/Consultar" textAlignment="CENTER">
                <font>
                   <Font name="Candara Light" size="18.0" />
                </font>

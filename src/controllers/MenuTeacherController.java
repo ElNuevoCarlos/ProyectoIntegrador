@@ -109,7 +109,12 @@ public class MenuTeacherController {
 	}
 	
     @FXML
-    public void handleMyLoans(MouseEvent event) {
+    void handleMyLoans(MouseEvent event) {
     	Main.cargarGrid("/views/MyLoans.fxml", rootPane);
+    }
+    
+    @FXML
+    void handleRequestConsultation() {
+    	Main.cargarGrid("/views/RequestConsultation.fxml", rootPane);
     }
 }

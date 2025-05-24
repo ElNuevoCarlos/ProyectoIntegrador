@@ -29,7 +29,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import model.Loan;
 import model.LoanTable;
 
 public class MyLoansController {
@@ -40,7 +39,7 @@ public class MyLoansController {
     private TableView<LoanTable> tableLoan;
 
     @FXML 
-    private TableColumn<LoanTable, Loan> idColumn;
+    private TableColumn<LoanTable, Long> idColumn;
 
     @FXML 
     private TableColumn<LoanTable, Timestamp> dateColumn;

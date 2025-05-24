@@ -71,7 +71,7 @@
             <Image url="@../../resources/img/salas.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tableLoan" focusTraversable="false" prefHeight="84.0" prefWidth="521.0" styleClass="tabla-centrada" GridPane.columnIndex="3" GridPane.columnSpan="9" GridPane.rowIndex="6" GridPane.rowSpan="5">
+      <TableView fx:id="tableLoan" focusTraversable="false" prefHeight="84.0" prefWidth="521.0" styleClass="tabla-centrada" visible="false" GridPane.columnIndex="3" GridPane.columnSpan="9" GridPane.rowIndex="6" GridPane.rowSpan="5">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="44.00000077486038" text="ID" />
           <TableColumn fx:id="nameColumn" prefWidth="91.199951171875" text="SALA" />
