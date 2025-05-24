@@ -57,7 +57,7 @@ public class User {
 		return password;
 	}
 
-	public Long  getId() {
+	public Long getId() {
 		return id;
 	}
 

@@ -121,10 +121,11 @@ public class LoginController {
             Stage currentStage = (Stage) rootPane.getScene().getWindow();
             currentStage.close();
             // CIERRA LA VENTANA ACTUAL
+            
             sessionManager.setUser(id, Name, role, Email);
             switch (role) {
             	case "ENCARGADO":
-            		Main.loadView("/views/Manager/testTwo.fxml");
+            		Main.loadView("/views/Manager/Menu.fxml");
                 	break;
             	case "SUPERENCARGADO":
             		Main.loadView("/views/SuperManager.fxml");
