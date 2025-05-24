@@ -55,6 +55,7 @@ public class Main extends Application {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    
     public static void cargarGrid(String archivoFXML, BorderPane rootPane) {
         try {
             GridPane nuevoGrid = FXMLLoader.load(Main.class.getResource(archivoFXML));

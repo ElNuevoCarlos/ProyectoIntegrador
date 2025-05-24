@@ -114,8 +114,8 @@ public class MyLoansController {
 
     	            if (event.getClickCount() == 2) {
     	                // Doble clic
-    	            	Main.cargarGrid("/views/ModifyLoan.fxml", Main.rootLayout);
     	            	Main.datoGlobal = loan;
+    	            	Main.cargarGrid("/views/ModifyLoan.fxml", Main.rootLayout);
     	            } else {
     	                // Clic simple
     	                if (row.isSelected()) {
