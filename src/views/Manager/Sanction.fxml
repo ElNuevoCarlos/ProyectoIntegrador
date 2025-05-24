@@ -54,7 +54,7 @@
             <Image url="@../../../resources/img/login.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tableTeachers" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="5" GridPane.rowSpan="5">
+      <TableView fx:id="tableSanctions" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="5" GridPane.rowSpan="5">
          <columns>
             <TableColumn fx:id="tipo_sancion" prefWidth="75.0" text="Sanción" />
             <TableColumn fx:id="descripcion" prefWidth="75.0" text="Descripción" />
