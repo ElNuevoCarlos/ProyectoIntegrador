@@ -124,7 +124,7 @@ public class LoginController {
             sessionManager.setUser(id, Name, role, Email);
             switch (role) {
             	case "ENCARGADO":
-            		Main.loadView("/views/Manager/testTwo.fxml");
+            		Main.loadView("/views/Manager/Menu.fxml");
                 	break;
             	case "SUPERENCARGADO":
             		Main.loadView("/views/SuperManager.fxml");
