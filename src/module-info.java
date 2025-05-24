@@ -9,6 +9,7 @@ module Integrador {
 
     opens model to javafx.base;
     opens controllers to javafx.fxml;
+    opens controllers.manager to javafx.fxml;
 
     exports application;
     exports controllers;

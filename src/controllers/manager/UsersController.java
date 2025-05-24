@@ -1,11 +1,10 @@
-package controllers;
+package controllers.manager;
 
 import java.sql.Connection;
 import java.util.Optional;
 
 import application.Main;
 import data.DataBase;
-import data.SessionManager;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +29,7 @@ import javafx.stage.Stage;
 import model.User;
 
 
-public class ManagerTeacherController {
+public class UsersController {
     @FXML private BorderPane rootPane;
     @FXML private Text username, role, menuTechLend;
     @FXML private ImageView menuImage;
@@ -46,18 +45,12 @@ public class ManagerTeacherController {
   
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
-	private SessionManager sessionManager = SessionManager.getInstance();
+
 
     @FXML public void initialize() {
-        rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
-        
-    	username.setText(sessionManager.getName());
-    	role.setText(sessionManager.getRole());
-    	 /*
-        
 		ObservableList<User> teacher = FXCollections.observableArrayList();
 		
-		for (User docente : userDao.fetch()) {
+		for (User docente : userDao.fetch()) { 
 			teacher.add(docente);
 		}
 		
@@ -69,7 +62,7 @@ public class ManagerTeacherController {
 		contacto.setCellValueFactory(new PropertyValueFactory<>("telefono"));
 		
 		tableTeachers.setItems(teacher);
-		*/
+
     }
     @FXML public void docentes() {
     	Main.cargarGrid("/views/Manager/Manager.fxml", rootPane);
