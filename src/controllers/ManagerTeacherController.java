@@ -48,12 +48,12 @@ public class ManagerTeacherController {
     private UserDAO userDao = new UserDAO(database);
 	private SessionManager sessionManager = SessionManager.getInstance();
 
-    @FXML public void initialize() { 
+    @FXML public void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
-        /*
         
     	username.setText(sessionManager.getName());
     	role.setText(sessionManager.getRole());
+    	 /*
         
 		ObservableList<User> teacher = FXCollections.observableArrayList();
 		

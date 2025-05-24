@@ -55,7 +55,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TableView fx:id="tableTeachers" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="12" GridPane.rowIndex="5" GridPane.rowSpan="5">
+            <TableView fx:id="tableTeachers" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="5" GridPane.rowSpan="5">
               <columns>
                 <TableColumn fx:id="nombre" prefWidth="75.0" text="Nombre" />
                 <TableColumn fx:id="correo" prefWidth="75.0" text="Correo" />
@@ -69,14 +69,14 @@
                </columnResizePolicy>
             </TableView>
             <Button focusTraversable="false" mnemonicParsing="false" onAction="#actualizar" styleClass="Managerbutton" text="Actualizar" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-            <Button focusTraversable="false" mnemonicParsing="false" onAction="#eliminar" style="-fx-background-color: RED;" styleClass="Managerbutton" text="Eliminar" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-            <Button focusTraversable="false" mnemonicParsing="false" onAction="#añadir" style="-fx-background-color: GREEN;" styleClass="Managerbutton" text="Añadir" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lista de docentes registrados en el sistema" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#eliminar" style="-fx-background-color: RED;" styleClass="Managerbutton" text="Eliminar" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#añadir" style="-fx-background-color: GREEN;" styleClass="Managerbutton" text="Añadir" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lista de docentes registrados en el sistema" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
                   <Font name="Calibri Light Italic" size="20.0" />
                </font>
             </Text>
-            <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar, eliminar o agregar un nuevo docente al sistema, debe darle click al boton correspondiente en la parte superior de esté mensaje" textAlignment="CENTER" wrappingWidth="338.36181640625" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
+            <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar, eliminar o agregar un nuevo docente al sistema, debe darle click al boton correspondiente en la parte superior de esté mensaje" textAlignment="CENTER" wrappingWidth="338.36181640625" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
          </children>
       </GridPane>
    </center>
