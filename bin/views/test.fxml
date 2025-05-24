@@ -17,7 +17,7 @@
 
 <BorderPane fx:id="rootPane" prefHeight="510.0" prefWidth="884.0" stylesheets="@../../resources/application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManagerTeacherController">
    <center>
-      <GridPane BorderPane.alignment="CENTER">
+      <GridPane fx:id="gridPane" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
@@ -55,7 +55,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TableView fx:id="tableTeachers" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.columnSpan="10" GridPane.rowIndex="5" GridPane.rowSpan="5">
+            <TableView fx:id="tableTeachers" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="5" GridPane.rowSpan="5">
               <columns>
                 <TableColumn fx:id="nombre" prefWidth="75.0" text="Nombre" />
                 <TableColumn fx:id="correo" prefWidth="75.0" text="Correo" />
@@ -68,20 +68,20 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Button focusTraversable="false" mnemonicParsing="false" onAction="#actualizar" styleClass="Managerbutton" text="Actualizar" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-            <Button focusTraversable="false" mnemonicParsing="false" onAction="#eliminar" style="-fx-background-color: RED;" styleClass="Managerbutton" text="Eliminar" GridPane.columnIndex="8" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#actualizar" styleClass="Managerbutton" text="Actualizar" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#eliminar" style="-fx-background-color: RED;" styleClass="Managerbutton" text="Eliminar" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
             <Button focusTraversable="false" mnemonicParsing="false" onAction="#añadir" style="-fx-background-color: GREEN;" styleClass="Managerbutton" text="Añadir" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lista de docentes registrados en el sistema" GridPane.columnIndex="8" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lista de docentes registrados en el sistema" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
                   <Font name="Calibri Light Italic" size="20.0" />
                </font>
             </Text>
-            <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar, eliminar o agregar un nuevo docente al sistema, debe darle click al boton correspondiente en la parte superior de esté mensaje" textAlignment="CENTER" wrappingWidth="338.36181640625" GridPane.columnIndex="8" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
+            <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar, eliminar o agregar un nuevo docente al sistema, debe darle click al boton correspondiente en la parte superior de esté mensaje" textAlignment="CENTER" wrappingWidth="338.36181640625" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
          </children>
       </GridPane>
    </center>
    <left>
-      <GridPane BorderPane.alignment="CENTER">
+      <GridPane prefHeight="510.0" prefWidth="201.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
@@ -133,17 +133,17 @@
                   <Font name="Calibri Light" size="15.0" />
                </font>
             </Text>
-            <ImageView fitHeight="66.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" GridPane.rowIndex="4">
+            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#docentes" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" GridPane.rowIndex="4">
                <image>
                   <Image url="@../../resources/img/teachers.png" />
                </image>
             </ImageView>
-            <Text fx:id="username1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Docentes" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <Text fx:id="username1" fill="WHITE" onMouseClicked="#docentes" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Docentes" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <font>
                   <Font name="Calibri Light Italic" size="15.0" />
                </font>
             </Text>
-            <Text fx:id="role1" fill="#c6c6c6" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona los docentes" translateY="25.0" wrappingWidth="76.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="BASELINE">
+            <Text fx:id="role1" fill="#c6c6c6" onMouseClicked="#docentes" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona los docentes" translateY="25.0" wrappingWidth="136.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>

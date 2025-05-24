@@ -42,16 +42,18 @@ public class ManagerTeacherController {
     @FXML private TableColumn<User, String> programa;
     @FXML private TableColumn<User, String> identificacion;
     @FXML private TableColumn<User, String> contacto;
+    @FXML private GridPane gridPane;
   
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
 	private SessionManager sessionManager = SessionManager.getInstance();
 
     @FXML public void initialize() {
-    	System.out.println("paso");
+        rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
+        
     	username.setText(sessionManager.getName());
     	role.setText(sessionManager.getRole());
-        rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
+    	 /*
         
 		ObservableList<User> teacher = FXCollections.observableArrayList();
 		
@@ -67,6 +69,10 @@ public class ManagerTeacherController {
 		contacto.setCellValueFactory(new PropertyValueFactory<>("telefono"));
 		
 		tableTeachers.setItems(teacher);
+		*/
+    }
+    @FXML public void docentes() {
+    	Main.cargarGrid("/views/Manager/Manager.fxml", rootPane);
     }
     
     @FXML public void añadir() {
