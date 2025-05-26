@@ -24,7 +24,8 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
         ArrayList<Sanction> sanctions = new ArrayList<>();
         String query = "SELECT s.ID, s.TIPO_SANCION, s.DESCRIPCION, s.FECHA_SANCION"
         		+", s.FECHA_FIN, s.MONTO, s.ESTADO, s.ID_USUARIO, s.ID_PRESTAMO"
-                + " FROM SANCION s JOIN USUARIO u ON s.ID_USUARIO = u.ID WHERE u.ID = ?";
+                + " FROM SANCION s JOIN PRESTAMO p ON s.ID_PRESTAMO = p.ID JOIN USUARIO u ON p.ID_USUARIO = u.ID"
+                + " WHERE u.ID = ?";
  
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, userId);
