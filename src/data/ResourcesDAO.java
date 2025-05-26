@@ -1,6 +1,8 @@
 package data;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,11 +21,11 @@ public class ResourcesDAO {
         String query;
 
         if (type) {
-            query = "SELECT s.NOMBRE, s.CAPACIDAD ,u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION\r\n"
+            query = "SELECT s.NOMBRE, s.CAPACIDAD ,u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, s.DESCRIPCION, s.ID\r\n"
             		+ "FROM SALA s JOIN UBICACION u ON s.ID_UBICACION = u.ID\r\n"
             		+ "WHERE ESTADO = 'Disponible'" + second;
         } else {
-            query = "SELECT NOMBRE, TIPO_DISPOSITIVO, MARCA\r\n"
+            query = "SELECT NOMBRE, TIPO_DISPOSITIVO, MARCA, DESCRIPCION, ID\r\n"
             		+ "FROM EQUIPO\r\n"
             		+ "WHERE ESTADO = 'Disponible' AND CATEGORIA = 'DISPOSITIVO'" + second;
         }
@@ -35,8 +37,10 @@ public class ResourcesDAO {
                    String name = rs.getString(1);
                    String type_capacity = rs.getString(2);
                    String location_trademark = rs.getString(3);
+                   String description = rs.getString(4);
+            	   long idResource = rs.getLong(5);
                    
-                   Resources loansDevice = new Resources(name, location_trademark, type_capacity);
+                   Resources loansDevice = new Resources(idResource, name, location_trademark, type_capacity, description);
                    loansDeviceList.add(loansDevice);
                }
            } catch (SQLException e) {

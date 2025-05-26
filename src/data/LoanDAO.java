@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import model.Loan;
 import model.LoanTable;
 
@@ -44,7 +46,7 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
                 String locationType = rs.getString(4); // LOCALIZACION o TIPO_DISPOSITIVO
                 String state = rs.getString(5);
                 String specs = rs.getString(6);
-                int capacity = rs.getInt(7);
+                String capacity = String.valueOf(rs.getInt(7));
                 
                 LocalDate date = ts.toLocalDateTime().toLocalDate();
                 
@@ -78,9 +80,30 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 	}
     
 	@Override
-	public void save(Loan entity) {
-		// TODO Auto-generated method stub
-		
+	public void save(Loan loan) {
+//    	String query = "INSERT INTO PRESTAMO "
+//    			+ "(ID, "
+//    			+ "FECHA, "
+//    			+ "ESPECIFICACIONES, "
+//    			+ "ID_SALA, "
+//    			+ "ID_USUARIO, "
+//    			+ "ID_EQUIPO) "+
+//    						  "VALUES (SEQ_PRESATMO.NEXTVAL, ?, ?, ?, ?, ?)";
+//
+//	    	try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+//				pstmt.setDate(1, loan.getDate());
+//	            pstmt.setString(2, loan.getSpecs());
+//	            pstmt.setLong(3, loan.getIdHall());
+//	            pstmt.setLong(4, loan.getIdUser());
+//	            pstmt.setLong(5, loan.getIdEquipment());
+//	
+//	            int rowsAffected = pstmt.executeUpdate();
+//	            if (rowsAffected > 0) {
+//	                this.AlertWindow(null, "Recurso reservado con exito", AlertType.INFORMATION);
+//	            }
+//	    	} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
 	}
 
 	@Override
@@ -106,6 +129,14 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+    private void AlertWindow(String text, String content, AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(null);
+        alert.setHeaderText(text);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 }
 
 
