@@ -2,22 +2,21 @@
 
 package model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Loan {
     private Long id, idHall, idUser, idEquipment;
-    private Date date;
-    private String specs, type, state;
+    private LocalDate date;
+    private String specs, state;
 
     public Loan(Long id, Long idHall, Long idUser, Long idEquipment, 
-                Date date, String specs, String type, String state) {
+    		LocalDate date, String specs, String state) {
         this.id = id;
         this.idHall = idHall;
         this.idUser = idUser;
         this.idEquipment = idEquipment;
         this.date = date;
         this.specs = specs;
-        this.type = type;
         this.state = state;
     }
 
@@ -37,17 +36,13 @@ public class Loan {
         return idEquipment;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
 
     public String getSpecs() {
         return specs;
-    }
-
-    public String getType() {
-        return type;
     }
     
     public String getState() {

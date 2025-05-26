@@ -1,16 +1,22 @@
 package model;
 
 public class Resources {
-    private String name, locationTrademark, typeCapacity;
+	private Long idResource;
+    private String name, locationTrademark, typeCapacity, description;
 
-    public Resources(String name, String locationTrademark, String typeCapacity) {
+    public Resources(Long idResource, String name, String locationTrademark, String typeCapacity, String description) {
         super();
+        this.idResource = idResource;
         this.name = name;
         this.locationTrademark = locationTrademark;
         this.typeCapacity = typeCapacity;
+        this.description = description;
     }
 
-
+    public Long getIdResource() {
+    	return idResource;
+    }
+    
     public String getName() {
         return name;
     }
@@ -21,6 +27,10 @@ public class Resources {
 
     public String getTypeCapacity() {
         return typeCapacity;
+    }
+    
+    public String getDescription() {
+    	return description;
     }
 }
 

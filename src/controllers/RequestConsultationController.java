@@ -2,14 +2,13 @@ package controllers;
 
 import java.sql.Connection;
 import java.text.Normalizer;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import application.Main;
 import data.DataBase;
 import data.Filter;
-import data.LoanDAO;
 import data.ResourcesDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +20,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,7 +28,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import model.Resources;
-import model.LoanTable;
 
 public class RequestConsultationController {
 
@@ -63,10 +62,7 @@ public class RequestConsultationController {
     private ContextMenu menuName;
 
     @FXML
-    private ContextMenu menuState;
-
-    @FXML
-    private ContextMenu menuType;
+    private ContextMenu menuCapacity;
 
     @FXML
     private TableColumn<Resources, String> nameColumn;
@@ -79,95 +75,108 @@ public class RequestConsultationController {
 
     @FXML
     private Label title;
-
-    @FXML
-    private TextField typeText;
     
     ObservableList<Resources> resources = FXCollections.observableArrayList();
     
 	private Connection database = DataBase.getInstance().getConnection();
 	private  ResourcesDAO resourcesDAO = new ResourcesDAO(database);
 	private Filter filter = new Filter(database);
+	
+    @FXML
+    public void initialize() {  	
+    	tableResources.setRowFactory(tv -> {
+    	    TableRow<Resources> row = new TableRow<>();
+
+    	    row.setOnMouseClicked(event -> {
+    	        if (!row.isEmpty()) {
+    	        	Resources resource = row.getItem();
+
+    	            if (event.getClickCount() == 2) {
+    	                // Doble clic
+    	            	Main.datoGlobal = resource;
+    	            	Main.cargarGrid("/views/roomRequest.fxml", Main.rootLayout);
+    	            } else {
+    	                // Clic simple
+    	                if (row.isSelected()) {
+    	                	tableResources.getSelectionModel().clearSelection();
+    	                } else {
+    	                	tableResources.getSelectionModel().select(resource);
+    	                }
+    	            }
+    	        }
+    	    });
+
+    	    return row;
+    	});
+    }
 
     @FXML
     void handleDevices() {
-    	
+    	buildingText.setPromptText("Tipo");
+        GridPane.setColumnSpan(buildingText, 3);
+    	flatText.setVisible(false);
+    	capacityText.setPromptText("Marca");
+    	title.setText("Solicitar recursos\n(Dispositivos)");
+    	visble();
+    	fillTable(resourcesDAO.ResourcesView(false, new StringBuilder()), "DISPOSITIVO", "TIPO DISPOSITIVO", "MARCA");
+    	contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "EQUIPO", ""));
+    	contextualAutocomplete(buildingText, menuBuilding, filter.Options("TIPO_DISPOSITIVO", "EQUIPO", ""));
+    	contextualAutocomplete(capacityText, menuCapacity, filter.Options("MARCA", "EQUIPO", ""));
     }
 
     @FXML
     void handleFilter(ActionEvent event) {
+    	String name = nameText.getText().trim();
+        StringBuilder query = new StringBuilder();
+        String building = buildingText.getText().trim();
+    	if(!buildingText.getPromptText().equals("Tipo")) {            
+            String flat = flatText.getText().trim();
+            String capacity = capacityText.getText().trim();
+            
+            if (!name.isEmpty()) {
+                query.append(" AND s.NOMBRE = '").append(name).append("'");
+            }
+            if (!building.isEmpty()) {
+                query.append(" AND u.EDIFICIO = '").append(building).append("'");
+            }
+            if (!flat.isEmpty()) {
+                query.append(" AND u.PISO = '").append(flat).append("'");
+            }
+            if (!capacity.isEmpty()) {
+            	query.append(" AND s.CAPACIDAD = '").append(capacity).append("'");
+            }
+            if (query.length() > 0) {
+            	fillTable(resourcesDAO.ResourcesView(true, query), "SALA", "CAPACIDAD", "UBICACION");
+            } 
+    	} else {
 
+            if (!name.isEmpty()) {
+                query.append(" AND NOMBRE = '").append(name).append("'");
+            }
+            if (!building.isEmpty()) {
+                query.append(" AND TIPO_DISPOSITIVO = '").append(building).append("'");
+            }
+            if (query.length() > 0) {
+            	fillTable(resourcesDAO.ResourcesView(false, query), "DISPOSITIVO", "TIPO DISPOSITIVO", "MARCA");
+            } 
+    	}
     }
 
     @FXML
     void handleHall(MouseEvent event) {
+    	buildingText.setPromptText("Edificio");
+        GridPane.setColumnSpan(buildingText, 1);
     	buildingText.setVisible(true);
     	flatText.setVisible(true);
-    	typeText.setVisible(false);
-    	title.setText("MIS PRESTAMOS\n(SALAS)");
+    	capacityText.setPromptText("Capacidad");
+    	title.setText("Solicitar recursos\n(Salas)");
     	visble();
     	fillTable(resourcesDAO.ResourcesView(true, new StringBuilder()), "SALA", "CAPACIDAD","UBICACION");
     	contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "SALA", ""));
     	contextualAutocomplete(buildingText, menuBuilding, filter.Options("EDIFICIO", "UBICACION", ""));
-    	contextualAutocomplete(capacityText, menuState, filter.Options("CAPACIDAD", "SALA", ""));
+    	contextualAutocomplete(capacityText, menuCapacity, filter.Options("CAPACIDAD", "SALA", ""));
     }
     
-//    @FXML
-//    void handleFilter() {
-//    	String name = nameText.getText().trim();
-//        String state = stateText.getText().trim();
-//        LocalDate start = startInterval.getValue();
-//        LocalDate end = endInterval.getValue();
-//        StringBuilder query = new StringBuilder();
-//        if (start != null) {
-//            if (end != null) {
-//                query.append(" AND (TRUNC(p.FECHA) BETWEEN TO_DATE('")
-//                     .append(start)
-//                     .append("', 'YYYY-MM-DD') AND TO_DATE('")
-//                     .append(end)
-//                     .append("', 'YYYY-MM-DD'))");
-//            } else {
-//                query.append(" AND TRUNC(p.FECHA) = TO_DATE('")
-//                     .append(start)
-//                     .append("', 'YYYY-MM-DD')");
-//            }
-//        }
-//    	if(!typeText.isVisible()) { 
-//            String building = buildingText.getText().trim();
-//            String flat = flatText.getText().trim();
-//
-//            if (!name.isEmpty()) {
-//                query.append(" AND s.NOMBRE = '").append(name).append("'");
-//            }
-//            if (!building.isEmpty()) {
-//                query.append(" AND u.EDIFICIO = '").append(building).append("'");
-//            }
-//            if (!flat.isEmpty()) {
-//                query.append(" AND u.PISO = '").append(flat).append("'");
-//            }
-//            if (!state.isEmpty()) {
-//                query.append(" AND p.ESTADO = '").append(state).append("'");
-//            }
-//            if (query.length() > 0) {
-//            	fillTable(loanDAO.MyLoansView(sessionManager.getId(), true, query),  "SALA", "UBICACION");
-//            } 
-//    	} else {
-//    		String type = typeText.getText().trim();
-//    		
-//            if (!name.isEmpty()) {
-//                query.append(" AND e.NOMBRE = '").append(name).append("'");
-//            }
-//            if (!type.isEmpty()) {
-//                query.append(" AND e.TIPO_DISPOSITIVO = '").append(type).append("'");
-//            }
-//            if (!state.isEmpty()) {
-//                query.append(" AND p.ESTADO = '").append(state).append("'");
-//            }
-//            if (query.length() > 0) {
-//            	fillTable(loanDAO.MyLoansView(sessionManager.getId(), false, query),  "DISPOSITIVO", "TIPO DISPOSITIVO");
-//            } 
-//    	}
-//    }
     
     void contextualAutocomplete(TextField textField, ContextMenu suggestionsMenu, List<String> options) {	
         textField.textProperty().addListener((obs, oldText, newText) -> {
@@ -219,6 +228,7 @@ public class RequestConsultationController {
     }
     
     void visble() {
+    	capacityText.clear();
     	filterButton.setVisible(true);
     	tableResources.setVisible(true);
     	nameText.setVisible(true);

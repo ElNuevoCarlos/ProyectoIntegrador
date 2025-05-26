@@ -90,7 +90,7 @@
       </TextField>
       <TextField fx:id="capacityText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Capacidad" GridPane.columnIndex="9" GridPane.rowIndex="2">
          <contextMenu>
-            <ContextMenu fx:id="menuState" />
+            <ContextMenu fx:id="menuCapacity" />
          </contextMenu>
       </TextField>
       <Label fx:id="title" alignment="TOP_CENTER" prefWidth="149.0" text="Solicitar recursos" textAlignment="CENTER" GridPane.columnIndex="6" GridPane.columnSpan="4" GridPane.rowIndex="1">
@@ -116,14 +116,5 @@
             </ContextMenu>
          </contextMenu></TextField>
       <Button fx:id="filterButton" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFilter" prefHeight="57.0" prefWidth="114.0" text="Filtrar" GridPane.columnIndex="11" GridPane.rowIndex="2" GridPane.rowSpan="3" />
-      <TextField fx:id="typeText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="TIPO" visible="false" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2">
-         <contextMenu>
-            <ContextMenu fx:id="menuType">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-              </items>
-            </ContextMenu>
-         </contextMenu>
-      </TextField>
   </children>
 </GridPane>

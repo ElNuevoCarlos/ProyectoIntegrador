@@ -1,12 +1,12 @@
 package model;
 
 public class Equipment {
-	private long id, idHall;
+	private Long id, idHall;
 	private String name, category, deviceType, brand, serialNumber, state, description;
 	
 	
-	public Equipment(long id, String name, String category, String deviceType, 
-			String brand, String serialNumber, String state, String description, long idHall) {
+	public Equipment(Long id, String name, String category, String deviceType, 
+			String brand, String serialNumber, String state, String description, Long idHall) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -19,7 +19,7 @@ public class Equipment {
 		this.idHall = idHall;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
@@ -50,7 +50,7 @@ public class Equipment {
 		return description;
 	}
 	
-	public long getIdHall() {
+	public Long getIdHall() {
 		return idHall;
 	}
 }

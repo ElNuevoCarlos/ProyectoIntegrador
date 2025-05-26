@@ -240,6 +240,11 @@ public class MyLoansController {
                      .append("', 'YYYY-MM-DD')");
             }
         }
+        
+        if (!state.isEmpty()) {
+            query.append(" AND p.ESTADO = '").append(state).append("'");
+        }
+        
     	if(!typeText.isVisible()) { 
             String building = buildingText.getText().trim();
             String flat = flatText.getText().trim();
@@ -253,9 +258,7 @@ public class MyLoansController {
             if (!flat.isEmpty()) {
                 query.append(" AND u.PISO = '").append(flat).append("'");
             }
-            if (!state.isEmpty()) {
-                query.append(" AND p.ESTADO = '").append(state).append("'");
-            }
+
             if (query.length() > 0) {
             	fillTable(loanDAO.MyLoansView(sessionManager.getId(), true, query),  "SALA", "UBICACION");
             } 
@@ -267,9 +270,6 @@ public class MyLoansController {
             }
             if (!type.isEmpty()) {
                 query.append(" AND e.TIPO_DISPOSITIVO = '").append(type).append("'");
-            }
-            if (!state.isEmpty()) {
-                query.append(" AND p.ESTADO = '").append(state).append("'");
             }
             if (query.length() > 0) {
             	fillTable(loanDAO.MyLoansView(sessionManager.getId(), false, query),  "DISPOSITIVO", "TIPO DISPOSITIVO");

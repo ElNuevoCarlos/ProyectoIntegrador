@@ -5,10 +5,9 @@ import java.time.LocalDate;
 public class LoanTable {
     private Long id;
     private LocalDate date;
-    private String name, locationType, state, specs;
-    private int capacity;
+    private String name, locationType, state, specs, capacity;
     
-    public LoanTable(Long id, String name, LocalDate date, String locationType, String state, String specs, int capacity) {
+    public LoanTable(Long id, String name, LocalDate date, String locationType, String state, String specs, String capacity) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -43,7 +42,7 @@ public class LoanTable {
     	return specs;
     }
     
-    public int getCapacity() {
+    public String getCapacity() {
     	return capacity;
     }
 }
