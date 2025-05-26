@@ -14,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -23,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.User;
 
@@ -88,7 +90,97 @@ public class UsersController {
     }
     
     @FXML public void añadir() {
+        Dialog<User> dialog = new Dialog<>();
+        
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/teacher.png")));
+        
+        GridPane grid = new GridPane();
+        
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 20, 10, 10));
     	
+        TextField nombreField = new TextField();
+        nombreField.setPromptText("Nombre");
+        TextField apellidoField = new TextField();
+        apellidoField.setPromptText("Apellidos");
+        
+    	ComboBox<String> tiField = new ComboBox<>();
+    	
+	    ObservableList<String> itemsTI = FXCollections.observableArrayList(
+		        "CC", "CE"
+		    );
+	    tiField.setPromptText("T.I");
+	    tiField.setPrefWidth(60);
+	    tiField.setItems(itemsTI);
+	    
+	    TextField numeroField = new TextField();
+	    numeroField.setPrefWidth(250);
+	    numeroField.setPromptText("Número de Identificación");
+	    
+	    TextField proDeField = new TextField();
+	    proDeField.setPrefWidth(100);
+	    proDeField.setPromptText("Programa o Departamento");
+	    
+	    TextField telefonoField = new TextField();
+	    telefonoField.setPromptText("Telefono");
+	    
+	    ComboBox<String> roleField = new ComboBox<>();
+	    
+	    ObservableList<String> itemsRol = FXCollections.observableArrayList(
+		        "DOCENTE", "ADMINISTRATIVO"
+		    );
+	    roleField.setPromptText("Seleccione su rol");
+	    roleField.setPrefWidth(155);
+		roleField.setItems(itemsRol);
+		
+		TextField correoField = new TextField();
+	    correoField.setPromptText("Correo Institucional");
+	    
+	    TextField contraseñaField = new TextField();
+	    contraseñaField.setPromptText("Contraseña");
+	    
+	    TextField conVerField = new TextField();
+	    conVerField.setPromptText("Confirmar Contraseña");
+
+        grid.add(nombreField, 0, 1);
+        grid.add(apellidoField, 1, 1);
+        
+        
+        HBox identificacionBox = new HBox(5); 
+        identificacionBox.getChildren().addAll(tiField, numeroField);
+        
+        grid.add(identificacionBox, 0, 2, 2, 1);
+        
+        grid.add(proDeField, 0, 3, 2, 1);
+        grid.add(telefonoField, 0, 4);
+        grid.add(roleField, 1, 4);
+        grid.add(correoField, 0, 5, 2, 1);
+        grid.add(contraseñaField, 0, 6);
+        grid.add(conVerField, 1, 6);
+        
+        dialog.getDialogPane().setContent(grid);
+        
+        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+        
+        
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+            	System.out.println("asd");
+            }
+            return null;
+        });
+        
+        Optional<User> result = dialog.showAndWait();
+        result.ifPresent(updatedCourse -> {
+        	/*
+            userDao.update(updatedCourse);
+            initialize();
+            */
+        	Main.AlertWindow(null, "El Docente Ha sido creado con exito.", AlertType.INFORMATION);
+        });
     }
     
     @FXML public void actualizar() {
