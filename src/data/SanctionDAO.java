@@ -22,9 +22,9 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
 	
 	public ArrayList<Sanction> fetchUser(Long userId) {
         ArrayList<Sanction> sanctions = new ArrayList<>();
-        String query = "SELECT s.ID, s.TIPO_SANCTION, s.DESCRIPCION, s.FECHA_SANCION"
+        String query = "SELECT s.ID, s.TIPO_SANCION, s.DESCRIPCION, s.FECHA_SANCION"
         		+", s.FECHA_FIN, s.MONTO, s.ESTADO, s.ID_USUARIO, s.ID_PRESTAMO"
-                + "FROM SANCION s JOIN USUARIO u ON s.ID_USUARIO = u.ID WHERE u.ID = ?";
+                + " FROM SANCION s JOIN USUARIO u ON s.ID_USUARIO = u.ID WHERE u.ID = ?";
  
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setLong(1, userId);

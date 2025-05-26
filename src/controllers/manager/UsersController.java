@@ -31,8 +31,6 @@ import model.User;
 
 public class UsersController {
     @FXML private BorderPane rootPane;
-    @FXML private Text menuTechLend;
-    @FXML private ImageView menuImage;
     @FXML private TableView<User> tableTeachers;
     @FXML private TableColumn<User, String> nombre;
     @FXML private TableColumn<User, String> correo;
@@ -40,7 +38,6 @@ public class UsersController {
     @FXML private TableColumn<User, String> programa;
     @FXML private TableColumn<User, String> identificacion;
     @FXML private TableColumn<User, String> contacto;
-    @FXML private GridPane gridPane;
   
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
@@ -87,7 +84,8 @@ public class UsersController {
     			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
     			user.getRol(), user.getPassword(), user.getId());
     	if (user != null) {
-    		Main.cargarGrid("/views/Manager/Sanction.fxml", rootPane);
+    		Main.teacher = user;
+    		Main.cargarGrid("/views/Manager/Sanction.fxml", Main.rootLayout);
     	}
     }
     

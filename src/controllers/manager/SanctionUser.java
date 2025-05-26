@@ -33,9 +33,9 @@ import model.User;
 
 
 public class SanctionUser {
-    @FXML private BorderPane rootPane;
+
     @FXML private Text name, id;
-    @FXML private TableView<Sanction> tabletableSanctions;
+    @FXML private TableView<Sanction> tableSanctions;
     @FXML private TableColumn<Sanction, String> tipo_sancion;
     @FXML private TableColumn<Sanction, String> descripcion;
     @FXML private TableColumn<Sanction, Date> fecha_sancion;
@@ -49,28 +49,33 @@ public class SanctionUser {
     private SanctionDAO sanctionDao = new SanctionDAO(database);
 
     @FXML public void initialize() {
-
     	
-    	name.setText("Carlos");
-    	id.setText("1095788069");
-    	
+    	name.setText(Main.teacher.getNombre_completo());
+    	id.setText(Main.teacher.getNumero_identificacion());
+/*    	
 		ObservableList<Sanction> sanctions = FXCollections.observableArrayList();
 		
-		for (User sanction : sanctionDao.fetchUser(1095788069)) { 
+
+		long x = 1095788069;
+		
+		for (Sanction sanction : sanctionDao.fetchUser(x)) { 
 			sanctions.add(sanction);
 		}
 		
-		nombre.setCellValueFactory(new PropertyValueFactory<>("nombre_completo"));
-		correo.setCellValueFactory(new PropertyValueFactory<>("correo_institucional"));
-		rol.setCellValueFactory(new PropertyValueFactory<>("rol"));
-		programa.setCellValueFactory(new PropertyValueFactory<>("programa_departamento"));
-		identificacion.setCellValueFactory(new PropertyValueFactory<>("numero_identificacion"));
-		contacto.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+	    tipo_sancion.setCellValueFactory(new PropertyValueFactory<>("typeSanction"));
+	    descripcion.setCellValueFactory(new PropertyValueFactory<>("description"));
+	    fecha_sancion.setCellValueFactory(new PropertyValueFactory<>("sanctionDate"));
+	    fecha_fin.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+	    monto.setCellValueFactory(new PropertyValueFactory<>("amount"));
+	    estado.setCellValueFactory(new PropertyValueFactory<>("state"));
+	    id_prestamo.setCellValueFactory(new PropertyValueFactory<>("idLoanHall"));
+	    
 		
 		tableSanctions.setItems(sanctions);
+		*/
     }
     @FXML public void docentes() {
-    	Main.cargarGrid("/views/Manager/Manager.fxml", rootPane);
+    	Main.cargarGrid("/views/Manager/Manager.fxml", Main.rootLayout);
     }
     
     @FXML public void añadir() {
@@ -85,9 +90,7 @@ public class SanctionUser {
 
     }
     @FXML public void goToBack() {
-        Stage currentStage = (Stage) rootPane.getScene().getWindow();
-        currentStage.close();
-		Main.loadView("/views/Login.fxml");
+    	Main.cargarGrid("/views/Manager/Menu.fxml", Main.rootLayout);
     }
 
 }
