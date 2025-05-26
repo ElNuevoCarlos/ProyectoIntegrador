@@ -2,33 +2,17 @@ package controllers.manager;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.util.Optional;
-
 import application.Main;
 import data.DataBase;
 import data.SanctionDAO;
-import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import model.LoanTable;
 import model.Sanction;
 import model.User;
 
@@ -54,20 +38,18 @@ public class SanctionUser {
     @FXML public void initialize() {
     	
 	    Object dato = Main.datoGlobal;
-	    if (dato instanceof LoanTable) {
+	    
+	    if (dato instanceof User) {
 	    	user = (User) dato;
 	    }
+	    System.out.println(user);
 	    
-    	
     	name.setText(user.getNombre_completo());
     	id.setText(user.getNumero_identificacion());
   	
 		ObservableList<Sanction> sanctions = FXCollections.observableArrayList();
-		
 
-		long x = (long) 1095788069;
-		
-		for (Sanction sanction : sanctionDao.fetchUser(x)) { 
+		for (Sanction sanction : sanctionDao.fetchUser(user.getNumero_identificacion())) { 
 			sanctions.add(sanction);
 		}
 		
@@ -81,7 +63,6 @@ public class SanctionUser {
 	    
 		
 		tableSanctions.setItems(sanctions);
-
     }
     @FXML public void docentes() {
     	Main.cargarGrid("/views/Manager/Manager.fxml", Main.rootLayout);
