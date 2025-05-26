@@ -30,7 +30,6 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
-
             while (rs.next()) {
             	Long id = rs.getLong(1);
                 String typeSanction = rs.getString(2);
@@ -42,15 +41,11 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
                 Long idLoanDevice = rs.getLong(8);
                 
                 Sanction sanction = new Sanction(
-                		id, 
-                		typeSanction, 
-                		descripcion,
-                		sanctionDate, 
-                		endDate, 
-                		amount, 
-                		state,
-                		idLoanDevice
-                		);
+                		id, typeSanction, 
+                		descripcion, sanctionDate, 
+                		endDate, amount, 
+                		state, idLoanDevice);
+                
                 sanctions.add(sanction);
             }
         } catch (SQLException e) {
