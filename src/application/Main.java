@@ -16,10 +16,6 @@ import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
 	public static Object datoGlobal;
-	
-	@SuppressWarnings("exports")
-	public static User teacher;
-	
 	public static Pane pane;
 	public static BorderPane rootLayout;
 

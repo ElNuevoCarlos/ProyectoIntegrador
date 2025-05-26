@@ -28,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.LoanTable;
 import model.Sanction;
 import model.User;
 
@@ -47,16 +48,24 @@ public class SanctionUser {
   
     private Connection database = DataBase.getInstance().getConnection();
     private SanctionDAO sanctionDao = new SanctionDAO(database);
+    
+    User user;
 
     @FXML public void initialize() {
     	
-    	name.setText(Main.teacher.getNombre_completo());
-    	id.setText(Main.teacher.getNumero_identificacion());
-/*    	
+	    Object dato = Main.datoGlobal;
+	    if (dato instanceof LoanTable) {
+	    	user = (User) dato;
+	    }
+	    
+    	
+    	name.setText(user.getNombre_completo());
+    	id.setText(user.getNumero_identificacion());
+  	
 		ObservableList<Sanction> sanctions = FXCollections.observableArrayList();
 		
 
-		long x = 1095788069;
+		long x = (long) 1095788069;
 		
 		for (Sanction sanction : sanctionDao.fetchUser(x)) { 
 			sanctions.add(sanction);
@@ -72,7 +81,7 @@ public class SanctionUser {
 	    
 		
 		tableSanctions.setItems(sanctions);
-		*/
+
     }
     @FXML public void docentes() {
     	Main.cargarGrid("/views/Manager/Manager.fxml", Main.rootLayout);

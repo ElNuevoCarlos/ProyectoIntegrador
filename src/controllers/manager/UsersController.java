@@ -84,7 +84,7 @@ public class UsersController {
     			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
     			user.getRol(), user.getPassword(), user.getId());
     	if (user != null) {
-    		Main.teacher = user;
+    		Main.datoGlobal = user;
     		Main.cargarGrid("/views/Manager/Sanction.fxml", Main.rootLayout);
     	}
     }
