@@ -14,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -21,11 +22,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import model.User;
 
 
@@ -90,7 +91,149 @@ public class UsersController {
     }
     
     @FXML public void añadir() {
+        Dialog<User> dialog = new Dialog<>();
+        
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/teacher.png")));
+        
+        GridPane grid = new GridPane();
+        
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 20, 10, 10));
     	
+        TextField nombreField = new TextField();
+        nombreField.setPromptText("Nombre");
+        TextField apellidoField = new TextField();
+        apellidoField.setPromptText("Apellidos");
+        
+    	ComboBox<String> tiField = new ComboBox<>();
+    	
+	    ObservableList<String> itemsTI = FXCollections.observableArrayList(
+		        "CC", "CE"
+		    );
+	    tiField.setPromptText("T.I");
+	    tiField.setPrefWidth(60);
+	    tiField.setItems(itemsTI);
+	    
+	    TextField numeroField = new TextField();
+	    numeroField.setPrefWidth(250);
+	    numeroField.setPromptText("Número de Identificación");
+	    
+	    TextField proDeField = new TextField();
+	    proDeField.setPrefWidth(100);
+	    proDeField.setPromptText("Programa o Departamento");
+	    
+	    TextField telefonoField = new TextField();
+	    telefonoField.setPromptText("Telefono");
+	    
+	    ComboBox<String> roleField = new ComboBox<>();
+	    
+	    ObservableList<String> itemsRol = FXCollections.observableArrayList(
+		        "DOCENTE", "ADMINISTRATIVO"
+		    );
+	    roleField.setPromptText("Seleccione su rol");
+	    roleField.setPrefWidth(155);
+		roleField.setItems(itemsRol);
+		
+		TextField correoField = new TextField();
+	    correoField.setPromptText("Correo Institucional");
+	    
+	    TextField contraseñaField = new TextField();
+	    contraseñaField.setPromptText("Contraseña");
+	    
+	    TextField conVerField = new TextField();
+	    conVerField.setPromptText("Confirmar Contraseña");
+
+        grid.add(nombreField, 0, 1);
+        grid.add(apellidoField, 1, 1);
+        
+        
+        HBox identificacionBox = new HBox(5); 
+        identificacionBox.getChildren().addAll(tiField, numeroField);
+        
+        grid.add(identificacionBox, 0, 2, 2, 1);
+        
+        grid.add(proDeField, 0, 3, 2, 1);
+        grid.add(telefonoField, 0, 4);
+        grid.add(roleField, 1, 4);
+        grid.add(correoField, 0, 5, 2, 1);
+        grid.add(contraseñaField, 0, 6);
+        grid.add(conVerField, 1, 6);
+        
+        dialog.getDialogPane().setContent(grid);
+        
+        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+        
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+        		String Name = nombreField.getText().trim();
+        		String LastName = apellidoField.getText().trim();
+        		String TI = tiField.getValue() != null ? tiField.getValue().trim() : "";
+        		String NumIdentification = numeroField.getText().trim();
+        		String Pro_dep = proDeField.getText().trim();
+        		String Phone = telefonoField.getText().trim();
+        		String Email = correoField.getText().trim();
+        		String Role = roleField.getValue() != null ? roleField.getValue().trim() : "";
+        		String Password1 = contraseñaField.getText().trim();
+        		String Password2 = conVerField.getText().trim();
+        		
+                if (Name.isEmpty() || 
+                		LastName.isEmpty() || 
+                		TI.isEmpty() || 
+                		NumIdentification.isEmpty() || 
+                		Pro_dep.isEmpty() || 
+                		Phone.isEmpty() || 
+                		Email.isEmpty() || 
+                		Role.isEmpty() || 
+                		Password1.isEmpty() || 
+                		Password2.isEmpty()){
+                	
+                	Main.AlertWindow("Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
+                    return null;
+                }
+                String regexEmail = "^[a-zA-Z0-9._%+-]+@udi\\.edu\\.co$";
+                if (!Email.matches(regexEmail)) {
+                	Main.AlertWindow("Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
+                	return null;
+                }
+                if (!NumIdentification.matches("\\d{6,10}")) {
+                	Main.AlertWindow("Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
+                	return null;
+                }
+                if (!Phone.matches("\\d{10}")) {
+                	Main.AlertWindow("Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
+                	return null;
+                }
+                if (Password1.equals(Password2)) {
+                	if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
+                		Main.AlertWindow("Contraseña insegura", 
+                                "La contraseña debe tener:\n" +
+                                "- Entre 8 y 20 caracteres\n" +
+                                "- Al menos una letra mayúscula\n" +
+                                "- Al menos una letra minúscula\n" +
+                                "- Al menos un número\n" +
+                                "- Al menos un carácter especial (@#$%^&+=!)", AlertType.ERROR);
+                            return null;
+                	} else {
+                		String fullName = Name +" "+ LastName;
+                		User newUser = new User(fullName, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, null);
+                		userDao.save(newUser);
+                		return newUser;
+                	}
+                } else {
+                	Main.AlertWindow("Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
+                	return null;
+                }
+            }
+            return null;
+        });
+        
+        Optional<User> result = dialog.showAndWait();
+        result.ifPresent(newUser -> {
+        	Main.AlertWindow(null, "El Docente " + newUser.getNombre_completo() + "+ Ha sido creado con exito.", AlertType.INFORMATION);
+        });
     }
     
     @FXML public void actualizar() {

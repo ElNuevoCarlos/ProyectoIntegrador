@@ -3,22 +3,21 @@ package model;
 import java.sql.Date;
 
 public class Sanction {
-    private long id, idLoanHall, idLoanDevice;
+    private long id, idLoanDevice;
     private String typeSanction, description, state;
     private Date sanctionDate, endDate;
     private int amount;
     
-    public Sanction(long id, String typeSanction, String description, String state, 
-                    Date sanctionDate, Date endDate, int amount, long idLoanHall, long idLoanDevice) {
+    public Sanction(long id, String typeSanction, String description, Date sanctionDate, Date endDate, 
+    		int amount, String state, long idLoanDevice) {
         super();
         this.id = id;
         this.typeSanction = typeSanction;
         this.description = description;
-        this.state = state;
         this.sanctionDate = sanctionDate;
         this.endDate = endDate;
         this.amount = amount;
-        this.idLoanHall = idLoanHall;
+        this.state = state;
         this.idLoanDevice = idLoanDevice;
     }
     
@@ -48,10 +47,6 @@ public class Sanction {
 
     public int getAmount() {
         return amount;
-    }
-
-    public long getIdLoanHall() {
-        return idLoanHall;
     }
 
     public long getIdLoanDevice() {
