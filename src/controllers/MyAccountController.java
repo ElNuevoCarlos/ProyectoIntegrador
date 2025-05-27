@@ -141,7 +141,7 @@ public class MyAccountController {
 				if (!modifiedData.isEmpty()) {
 					User newUser = new User(Name, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, sessionManager.getId());
 					sessionManager.setUser(sessionManager.getId(), Name, Role, Email);
-					if (showConfirmation("Confirmación", "¿Desea actualizar " + modifiedData + "?")) {
+					if (Main.showConfirmation("Confirmación", "¿Desea actualizar " + modifiedData + "?")) {
 						userDao.update(newUser); 
 						showAlert("Actualizado", "Información actualizada",
 								"Los datos "+ modifiedData + " actualizados exitosamente.");
@@ -170,16 +170,6 @@ public class MyAccountController {
 					"Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.");
 			return;
 		}
-	}
-	
-	private boolean showConfirmation(String title, String message) {
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle(title);
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-
-		ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
-		return result == ButtonType.OK;
 	}
 	
 	private void showAlert(String title, String head, String message) {

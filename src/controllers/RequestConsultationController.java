@@ -94,7 +94,7 @@ public class RequestConsultationController {
     	            if (event.getClickCount() == 2) {
     	                // Doble clic
     	            	Main.datoGlobal = resource;
-    	            	Main.cargarGrid("/views/roomRequest.fxml", Main.rootLayout);
+    	            	Main.cargarGrid("/views/Request.fxml", Main.rootLayout);
     	            } else {
     	                // Clic simple
     	                if (row.isSelected()) {
@@ -112,12 +112,12 @@ public class RequestConsultationController {
 
     @FXML
     void handleDevices() {
+    	visble();
     	buildingText.setPromptText("Tipo");
         GridPane.setColumnSpan(buildingText, 3);
     	flatText.setVisible(false);
     	capacityText.setPromptText("Marca");
     	title.setText("Solicitar recursos\n(Dispositivos)");
-    	visble();
     	fillTable(resourcesDAO.ResourcesView(false, new StringBuilder()), "DISPOSITIVO", "TIPO DISPOSITIVO", "MARCA");
     	contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "EQUIPO", ""));
     	contextualAutocomplete(buildingText, menuBuilding, filter.Options("TIPO_DISPOSITIVO", "EQUIPO", ""));
@@ -164,13 +164,12 @@ public class RequestConsultationController {
 
     @FXML
     void handleHall(MouseEvent event) {
+    	visble();
     	buildingText.setPromptText("Edificio");
         GridPane.setColumnSpan(buildingText, 1);
-    	buildingText.setVisible(true);
     	flatText.setVisible(true);
     	capacityText.setPromptText("Capacidad");
     	title.setText("Solicitar recursos\n(Salas)");
-    	visble();
     	fillTable(resourcesDAO.ResourcesView(true, new StringBuilder()), "SALA", "CAPACIDAD","UBICACION");
     	contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "SALA", ""));
     	contextualAutocomplete(buildingText, menuBuilding, filter.Options("EDIFICIO", "UBICACION", ""));
@@ -228,7 +227,11 @@ public class RequestConsultationController {
     }
     
     void visble() {
+    	buildingText.setVisible(true);
+    	flatText.clear();
     	capacityText.clear();
+    	buildingText.clear();
+    	capacityText.setVisible(true);
     	filterButton.setVisible(true);
     	tableResources.setVisible(true);
     	nameText.setVisible(true);
@@ -248,6 +251,11 @@ public class RequestConsultationController {
 		typeCapacityColumn.setCellValueFactory(new PropertyValueFactory<>("typeCapacity"));
 		locationTrademarkColumn.setCellValueFactory(new PropertyValueFactory<>("locationTrademark"));
 		tableResources.setItems(resources);
+    }
+    
+    @FXML
+    void handleReturn() {
+    	Main.rootLayout.setCenter(null);
     }
     
     private String removeAccents(String input) {

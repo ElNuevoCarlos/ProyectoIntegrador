@@ -261,7 +261,9 @@ public class MyLoansController {
 
             if (query.length() > 0) {
             	fillTable(loanDAO.MyLoansView(sessionManager.getId(), true, query),  "SALA", "UBICACION");
-            } 
+            } else {
+            	
+            }
     	} else {
     		String type = typeText.getText().trim();
     		

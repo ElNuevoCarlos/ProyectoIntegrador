@@ -1,8 +1,6 @@
 package data;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,6 +19,7 @@ public class ResourcesDAO {
         String query;
 
         if (type) {
+        	
             query = "SELECT s.NOMBRE, s.CAPACIDAD ,u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, s.DESCRIPCION, s.ID\r\n"
             		+ "FROM SALA s JOIN UBICACION u ON s.ID_UBICACION = u.ID\r\n"
             		+ "WHERE ESTADO = 'Disponible'" + second;
@@ -40,7 +39,7 @@ public class ResourcesDAO {
                    String description = rs.getString(4);
             	   long idResource = rs.getLong(5);
                    
-                   Resources loansDevice = new Resources(idResource, name, location_trademark, type_capacity, description);
+                   Resources loansDevice = new Resources(idResource, name, location_trademark, type_capacity, description, type);
                    loansDeviceList.add(loansDevice);
                }
            } catch (SQLException e) {

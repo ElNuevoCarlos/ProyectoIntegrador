@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import model.Block;
 import model.Loan;
 import model.LoanTable;
 
@@ -80,31 +81,73 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 	}
     
 	@Override
-	public void save(Loan loan) {
-//    	String query = "INSERT INTO PRESTAMO "
-//    			+ "(ID, "
-//    			+ "FECHA, "
-//    			+ "ESPECIFICACIONES, "
-//    			+ "ID_SALA, "
-//    			+ "ID_USUARIO, "
-//    			+ "ID_EQUIPO) "+
-//    						  "VALUES (SEQ_PRESATMO.NEXTVAL, ?, ?, ?, ?, ?)";
-//
-//	    	try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-//				pstmt.setDate(1, loan.getDate());
-//	            pstmt.setString(2, loan.getSpecs());
-//	            pstmt.setLong(3, loan.getIdHall());
-//	            pstmt.setLong(4, loan.getIdUser());
-//	            pstmt.setLong(5, loan.getIdEquipment());
-//	
-//	            int rowsAffected = pstmt.executeUpdate();
-//	            if (rowsAffected > 0) {
-//	                this.AlertWindow(null, "Recurso reservado con exito", AlertType.INFORMATION);
-//	            }
-//	    	} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-	}
+    public void save( Loan loan) {
+		
+        String queryLoan = "INSERT INTO PRESTAMO (ID, FECHA, ESPECIFICACIONES, ID_SALA, ID_USUARIO, ID_EQUIPO, ESTADO) " +
+                              "VALUES (SEQ_PRESTAMO.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+        String queryLoanBlock = "INSERT INTO PRESTAMO_BLOQUE (ID_PRESTAMO, ID_BLOQUE) VALUES (?, ?)";
+
+        try {
+            connection.setAutoCommit(false); // Inicia la transacción
+
+            Long idLoan = null;
+
+            // Insertamos en PERSONA y obtenemos la clave generada
+            try (PreparedStatement pstmtPersona = connection.prepareStatement(queryLoan,new String[] { "ID" })) {
+
+                pstmtPersona.setDate(1, java.sql.Date.valueOf(loan.getDate()));
+                pstmtPersona.setString(2, loan.getSpecs());
+                if (loan.getIdHall() != null) {
+                    pstmtPersona.setLong(3, loan.getIdHall());
+                } else {
+                    pstmtPersona.setNull(3, java.sql.Types.BIGINT);
+                }
+                pstmtPersona.setLong(4, loan.getIdUser());
+                if (loan.getIdEquipment() != null) {
+                    pstmtPersona.setLong(5, loan.getIdEquipment());
+                } else {
+                    pstmtPersona.setNull(5, java.sql.Types.BIGINT);
+                }
+                pstmtPersona.setString(6, loan.getState());
+
+                int rows = pstmtPersona.executeUpdate();
+                if (rows > 0) {
+                    try (ResultSet rs = pstmtPersona.getGeneratedKeys()) {
+                        if (rs.next()) {
+                        	idLoan = rs.getLong(1);
+                        }
+                    }
+                }
+            }
+
+            if (idLoan != null) {
+                try (PreparedStatement pstmtBlock = connection.prepareStatement(queryLoanBlock)) {
+                    for (Block block : loan.getBlocks()) {
+                        pstmtBlock.setLong(1, idLoan);
+                        pstmtBlock.setLong(2, block.getId());
+                        pstmtBlock.executeUpdate();
+                    }
+                }
+            }
+
+            connection.commit(); // Confirmamos la transacción
+            System.out.println("Prestamo y bloques insertados correctamente.");
+        } catch (SQLException e) {
+            try {
+                connection.rollback(); // Revertimos si hay error
+                System.out.println("Error al insertar, se hizo rollback.");
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.setAutoCommit(true); // Restauramos autocommit
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 	@Override
 	public ArrayList<Loan> fetch() {

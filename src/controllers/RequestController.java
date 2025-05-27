@@ -1,8 +1,6 @@
 package controllers;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -17,15 +15,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.control.Alert.AlertType;
 import model.Block;
 import model.Loan;
 import model.Resources;
 
-public class roomRequestController {
+public class RequestController {
     @FXML
     private Label info;
 
@@ -66,13 +64,26 @@ public class roomRequestController {
 
         myBlocksArray = FXCollections.observableArrayList();
         myBlocks.setItems(myBlocksArray);
-        info.setText("Sala: " + resource.getName() + "\n"
-                + "Ubicación: " + resource.getLocationTrademark() + "\n"
-                + "Capacidad: " + resource.getTypeCapacity() + "\n"
-                + "Descripción: " + resource.getDescription());
+        if (resource.getTypeResource()) {
+            info.setText("Sala: " + resource.getName() + "\n"
+                    + "Ubicación: " + resource.getLocationTrademark() + "\n"
+                    + "Capacidad: " + resource.getTypeCapacity() + "\n"
+                    + "Descripción: " + resource.getDescription());
+        } else {
+            info.setText("Dispositivo: " + resource.getName() + "\n"
+                    + "Marca: " + resource.getLocationTrademark() + "\n"
+                    + "Tipo dispositivo: " + resource.getTypeCapacity() + "\n"
+                    + "Descripción: " + resource.getDescription());
+        }
+
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            blocksArray = blockDAO.hallBlocks(newValue, resource.getIdResource());
+        	myBlocks.getItems().clear();
+        	if (resource.getTypeResource()){
+        		blocksArray = blockDAO.hallBlocks(newValue, "p.ID_SALA = " + resource.getIdResource());
+        	} else {
+        		blocksArray = blockDAO.hallBlocks(newValue, "p.ID_EQUIPO = " + resource.getIdResource());
+        	}
             ObservableList<Block> observableList = FXCollections.observableArrayList(blocksArray);
             blocks.setItems(observableList);
             date = newValue;
@@ -101,8 +112,46 @@ public class roomRequestController {
     
     @FXML
     void handleReserve() {
-//    	Loan loan = new Loan(null, resource.getIdResource(), sessionManager.getId(), null, date, specsText.getText(), null);
-//    	loanDAO.save(loan);
+
+    	if (date == null || myBlocksArray.isEmpty()) {
+    		Main.AlertWindow(
+    			    "Campos incompletos",
+    			    "Faltan datos requeridos",
+    			    "Por favor, completa todos los campos: fecha y horarios. Las especificaciones son opcionales.",
+    			    AlertType.WARNING
+    			);
+    		return;
+    	}
+    	if (Main.showConfirmation("Confirmación", "¿Desea hacer la reserva de " + resource.getName() + ", en los horarios " + myBlocksArray + "?")) {
+        	Loan loan;
+        	if (resource.getTypeResource()) {
+        		loan = new Loan(null, resource.getIdResource(), sessionManager.getId(), null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
+        	} else {
+        		loan = new Loan(null, null, sessionManager.getId(), resource.getIdResource(), date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
+        	}
+        	loanDAO.save(loan);
+        	myBlocks.getItems().clear();
+        	Main.AlertWindow(
+        		    "Reserva solicitada",
+        		    "Reserva pendiente",
+        		    "La reserva de la sala está solicitada para los bloques, esperando a que sea aprobada.",
+        		    AlertType.INFORMATION
+        		);
+
+    	} else {
+    		Main.AlertWindow(
+    			    "Reserva cancelada",
+    			    "Reserva cancelada por ti",
+    			    "Has cancelado la reserva. Si quieres, puedes hacer una nueva solicitud en cualquier momento.",
+    			    AlertType.INFORMATION
+    			);
+    	}
+
+    }
+    
+    @FXML
+    void handleReturn() {
+    	Main.cargarGrid("/views/RequestConsultation.fxml", Main.rootLayout);
     }
 
 }

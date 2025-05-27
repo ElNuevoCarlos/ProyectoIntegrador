@@ -70,7 +70,7 @@
             <Image url="@../../resources/img/salas.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tableResources" focusTraversable="false" prefHeight="84.0" prefWidth="521.0" styleClass="tabla-centrada" GridPane.columnIndex="3" GridPane.columnSpan="9" GridPane.rowIndex="6" GridPane.rowSpan="5">
+      <TableView fx:id="tableResources" focusTraversable="false" prefHeight="84.0" prefWidth="521.0" styleClass="tabla-centrada" visible="false" GridPane.columnIndex="3" GridPane.columnSpan="9" GridPane.rowIndex="6" GridPane.rowSpan="5">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="91.199951171875" text="SALA" />
             <TableColumn fx:id="typeCapacityColumn" prefWidth="135.0" text="CAPACIDAD" />
@@ -80,7 +80,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TextField fx:id="nameText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Nombre" GridPane.columnIndex="3" GridPane.rowIndex="2">
+      <TextField fx:id="nameText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Nombre" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <font>
             <Font name="Candara Light" size="15.0" />
          </font>
@@ -88,7 +88,7 @@
             <ContextMenu fx:id="menuName" />
          </contextMenu>
       </TextField>
-      <TextField fx:id="capacityText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Capacidad" GridPane.columnIndex="9" GridPane.rowIndex="2">
+      <TextField fx:id="capacityText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Capacidad" visible="false" GridPane.columnIndex="9" GridPane.rowIndex="2">
          <contextMenu>
             <ContextMenu fx:id="menuCapacity" />
          </contextMenu>
@@ -98,7 +98,7 @@
             <Font name="Candara Light" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="buildingText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Edificio" GridPane.columnIndex="5" GridPane.rowIndex="2">
+      <TextField fx:id="buildingText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Edificio" visible="false" GridPane.columnIndex="5" GridPane.rowIndex="2">
          <contextMenu>
             <ContextMenu fx:id="menuBuilding">
               <items>
@@ -107,7 +107,7 @@
             </ContextMenu>
          </contextMenu>
       </TextField>
-      <TextField fx:id="flatText" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Piso" GridPane.columnIndex="7" GridPane.rowIndex="2">
+      <TextField fx:id="flatText" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Piso" visible="false" GridPane.columnIndex="7" GridPane.rowIndex="2">
          <contextMenu>
             <ContextMenu fx:id="menuFlat">
               <items>
@@ -115,6 +115,11 @@
               </items>
             </ContextMenu>
          </contextMenu></TextField>
-      <Button fx:id="filterButton" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFilter" prefHeight="57.0" prefWidth="114.0" text="Filtrar" GridPane.columnIndex="11" GridPane.rowIndex="2" GridPane.rowSpan="3" />
+      <Button fx:id="filterButton" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFilter" prefHeight="57.0" prefWidth="114.0" text="Filtrar" visible="false" GridPane.columnIndex="11" GridPane.rowIndex="2" GridPane.rowSpan="3" />
+      <ImageView fitHeight="34.0" fitWidth="44.0" onMouseClicked="#handleReturn" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/img/volver-flecha.png" />
+         </image>
+      </ImageView>
   </children>
 </GridPane>

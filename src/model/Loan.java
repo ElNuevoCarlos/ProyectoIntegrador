@@ -4,13 +4,16 @@ package model;
 
 import java.time.LocalDate;
 
+import javafx.collections.ObservableList;
+
 public class Loan {
     private Long id, idHall, idUser, idEquipment;
     private LocalDate date;
     private String specs, state;
+    private ObservableList<Block> blocks;
 
     public Loan(Long id, Long idHall, Long idUser, Long idEquipment, 
-    		LocalDate date, String specs, String state) {
+    		LocalDate date, String specs, String state, ObservableList<Block> blocks) {
         this.id = id;
         this.idHall = idHall;
         this.idUser = idUser;
@@ -18,6 +21,7 @@ public class Loan {
         this.date = date;
         this.specs = specs;
         this.state = state;
+        this.blocks = blocks;
     }
 
     public Long getId() {
@@ -47,6 +51,10 @@ public class Loan {
     
     public String getState() {
     	return state;
+    }
+    
+    public ObservableList<Block> getBlocks() {
+    	return blocks;
     }
 }
 

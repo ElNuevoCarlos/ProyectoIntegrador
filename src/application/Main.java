@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.User;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -48,14 +48,8 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-    @SuppressWarnings("exports")
-	public static void AlertWindow(String text, String content, AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(null);
-        alert.setHeaderText(text);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
+    
+
     
     public static void cargarGrid(String archivoFXML, BorderPane rootPane) {
         try {
@@ -64,6 +58,25 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static boolean showConfirmation(String title, String message) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+
+		ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+		return result == ButtonType.OK;
+	}
+    
+    @SuppressWarnings("exports")
+    public static void AlertWindow(String title, String text, String content, AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(text);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
     
     public static void main(String[] args) {
