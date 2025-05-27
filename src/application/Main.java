@@ -2,28 +2,18 @@ package application;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Optional;
-
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.User;
+import javafx.stage.Window;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 
 public class Main extends Application {
 	public static Object datoGlobal;
@@ -67,7 +57,21 @@ public class Main extends Application {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    // Lo puse aquí para el boton de añadir docentes, la razón es que al poner campos invalidos y cerrar esa venta, también cerraba la ventana
+    // en la que se estaban llenando los datos, y con este bloque lo que hago es especificar el Stage que quiero cerrar
     
+    @SuppressWarnings("exports")
+    public static void AlertWindowStage(Window owner, String text, String content, AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(null);
+        alert.setHeaderText(text);
+        alert.setContentText(content);
+        alert.initModality(Modality.WINDOW_MODAL); 
+        if (owner != null) {
+            alert.initOwner(owner); 
+        }                
+        alert.showAndWait();
+    }
     public static void cargarGrid(String archivoFXML, BorderPane rootPane) {
         try {
             GridPane nuevoGrid = FXMLLoader.load(Main.class.getResource(archivoFXML));

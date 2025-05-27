@@ -26,6 +26,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import model.User;
 
 
@@ -165,21 +166,73 @@ public class UsersController {
         ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
         
-        
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
-            	System.out.println("asd");
+        		String Name = nombreField.getText().trim();
+        		String LastName = apellidoField.getText().trim();
+        		String TI = tiField.getValue() != null ? tiField.getValue().trim() : "";
+        		String NumIdentification = numeroField.getText().trim();
+        		String Pro_dep = proDeField.getText().trim();
+        		String Phone = telefonoField.getText().trim();
+        		String Email = correoField.getText().trim();
+        		String Role = roleField.getValue() != null ? roleField.getValue().trim() : "";
+        		String Password1 = contraseñaField.getText().trim();
+        		String Password2 = conVerField.getText().trim();
+        		
+                if (Name.isEmpty() || 
+                		LastName.isEmpty() || 
+                		TI.isEmpty() || 
+                		NumIdentification.isEmpty() || 
+                		Pro_dep.isEmpty() || 
+                		Phone.isEmpty() || 
+                		Email.isEmpty() || 
+                		Role.isEmpty() || 
+                		Password1.isEmpty() || 
+                		Password2.isEmpty()){
+                	
+                	Main.AlertWindow("Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
+                    return null;
+                }
+                String regexEmail = "^[a-zA-Z0-9._%+-]+@udi\\.edu\\.co$";
+                if (!Email.matches(regexEmail)) {
+                	Main.AlertWindow("Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
+                	return null;
+                }
+                if (!NumIdentification.matches("\\d{6,10}")) {
+                	Main.AlertWindow("Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
+                	return null;
+                }
+                if (!Phone.matches("\\d{10}")) {
+                	Main.AlertWindow("Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
+                	return null;
+                }
+                if (Password1.equals(Password2)) {
+                	if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
+                		Main.AlertWindow("Contraseña insegura", 
+                                "La contraseña debe tener:\n" +
+                                "- Entre 8 y 20 caracteres\n" +
+                                "- Al menos una letra mayúscula\n" +
+                                "- Al menos una letra minúscula\n" +
+                                "- Al menos un número\n" +
+                                "- Al menos un carácter especial (@#$%^&+=!)", AlertType.ERROR);
+                            return null;
+                	} else {
+                		String fullName = Name +" "+ LastName;
+                		User newUser = new User(fullName, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, null);
+                		userDao.save(newUser);
+                		return newUser;
+                	}
+                } else {
+                	Main.AlertWindow("Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
+                	return null;
+                }
             }
             return null;
         });
         
         Optional<User> result = dialog.showAndWait();
-        result.ifPresent(updatedCourse -> {
-        	/*
-            userDao.update(updatedCourse);
-            initialize();
-            */
-        	Main.AlertWindow(null, "El Docente Ha sido creado con exito.", AlertType.INFORMATION);
+        result.ifPresent(newUser -> {
+        	Main.AlertWindow(null, "El Docente " + newUser.getNombre_completo() + "+ Ha sido creado con exito.", AlertType.INFORMATION);
         });
     }
     
