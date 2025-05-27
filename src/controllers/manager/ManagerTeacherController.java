@@ -1,6 +1,5 @@
 package controllers.manager;
 
-import application.Main;
 import data.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -10,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User;
+import utils.ViewUtils;
 
 
 public class ManagerTeacherController {
@@ -33,13 +33,13 @@ public class ManagerTeacherController {
     	role.setText(sessionManager.getRole());
     }
     @FXML public void docentes() {
-    	Main.cargarGrid("/views/Manager/Manager.fxml", rootPane);
+    	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
     }
     
     @FXML public void goToBack() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
-		Main.loadView("/views/Login.fxml");
+        ViewUtils.loadView("/views/Login.fxml");
     }
 
 }

@@ -30,6 +30,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import model.LoanTable;
+import utils.ViewUtils;
 
 public class MyLoansController {
     @FXML
@@ -114,7 +115,7 @@ public class MyLoansController {
     	            if (event.getClickCount() == 2) {
     	                // Doble clic
     	            	Main.datoGlobal = loan;
-    	            	Main.cargarGrid("/views/ModifyLoan.fxml", Main.rootLayout);
+    	            	ViewUtils.cargarGrid("/views/ModifyLoan.fxml", Main.rootLayout);
     	            } else {
     	                // Clic simple
     	                if (row.isSelected()) {

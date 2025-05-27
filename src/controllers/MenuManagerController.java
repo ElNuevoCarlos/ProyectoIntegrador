@@ -2,21 +2,18 @@ package controllers;
 
 import java.sql.Connection;
 
-import application.Main;
 import data.DataBase;
 import data.SessionManager;
 import data.UserDAO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User;
+import utils.ViewUtils;
 
 
 public class MenuManagerController {
@@ -62,13 +59,13 @@ public class MenuManagerController {
     public void teachers() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
-		Main.loadView("/views/test.fxml");
+        ViewUtils.loadView("/views/test.fxml");
     }
     
     @FXML public void goToBack() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
-		Main.loadView("/views/Login.fxml");
+        ViewUtils.loadView("/views/Login.fxml");
     }
 
 }

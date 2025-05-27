@@ -2,7 +2,6 @@ package controllers;
 
 import java.sql.Connection;
 
-import application.Main;
 import data.DataBase;
 import data.UserDAO;
 import javafx.collections.FXCollections;
@@ -16,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.User;
+import utils.ViewUtils;
 
 public class NewAccountController {
 	@FXML private BorderPane rootPane;
@@ -122,6 +122,6 @@ public class NewAccountController {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
         // CIERRA LA VENTANA ACTUAL
-    	Main.loadView("/views/Login.fxml");
+        ViewUtils.loadView("/views/Login.fxml");
 	}
 }

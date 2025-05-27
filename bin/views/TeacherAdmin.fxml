@@ -46,7 +46,7 @@
                   <Image url="@../../resources/img/user.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="closeSession" fitHeight="26.0" fitWidth="27.0" layoutX="5.0" layoutY="524.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="closeSession" fitHeight="26.0" fitWidth="27.0" layoutX="5.0" layoutY="524.0" onMouseClicked="#handleLogOut" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../resources/img/cerrar-sesion.png" />
                </image>

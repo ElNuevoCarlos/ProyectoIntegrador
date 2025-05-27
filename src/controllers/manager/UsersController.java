@@ -28,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.User;
+import utils.ViewUtils;
 
 
 public class UsersController {
@@ -60,13 +61,13 @@ public class UsersController {
 		tableTeachers.setItems(teacher);
     }
     @FXML public void docentes() {
-    	Main.cargarGrid("/views/Manager/Manager.fxml", rootPane);
+    	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
     }
     
     public User selectUser() {
     	User user = tableTeachers.getSelectionModel().getSelectedItem();
     	if (user == null) {
-    		Main.AlertWindow(null, "Debe primero seleccionar a un docente.", AlertType.ERROR);
+    		ViewUtils.AlertWindow(null, "Debe primero seleccionar a un docente.", AlertType.ERROR);
     		return null;
     	}
     	return user;
@@ -86,7 +87,7 @@ public class UsersController {
     			user.getRol(), user.getPassword(), user.getId());
     	if (user != null) {
     		Main.datoGlobal = user;
-    		Main.cargarGrid("/views/Manager/Sanction.fxml", Main.rootLayout);
+    		ViewUtils.cargarGrid("/views/Manager/Sanction.fxml", Main.rootLayout);
     	}
     }
     
@@ -190,25 +191,25 @@ public class UsersController {
                 		Password1.isEmpty() || 
                 		Password2.isEmpty()){
                 	
-                	Main.AlertWindow("Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
+                	ViewUtils.AlertWindow("Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
                     return null;
                 }
                 String regexEmail = "^[a-zA-Z0-9._%+-]+@udi\\.edu\\.co$";
                 if (!Email.matches(regexEmail)) {
-                	Main.AlertWindow("Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
+                	ViewUtils.AlertWindow("Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
                 	return null;
                 }
                 if (!NumIdentification.matches("\\d{6,10}")) {
-                	Main.AlertWindow("Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
+                	ViewUtils.AlertWindow("Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
                 	return null;
                 }
                 if (!Phone.matches("\\d{10}")) {
-                	Main.AlertWindow("Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
+                	ViewUtils.AlertWindow("Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
                 	return null;
                 }
                 if (Password1.equals(Password2)) {
                 	if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
-                		Main.AlertWindow("Contraseña insegura", 
+                		ViewUtils.AlertWindow("Contraseña insegura", 
                                 "La contraseña debe tener:\n" +
                                 "- Entre 8 y 20 caracteres\n" +
                                 "- Al menos una letra mayúscula\n" +
@@ -223,7 +224,7 @@ public class UsersController {
                 		return newUser;
                 	}
                 } else {
-                	Main.AlertWindow("Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
+                	ViewUtils.AlertWindow("Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
                 	return null;
                 }
             }
@@ -232,7 +233,7 @@ public class UsersController {
         
         Optional<User> result = dialog.showAndWait();
         result.ifPresent(newUser -> {
-        	Main.AlertWindow(null, "El Docente " + newUser.getNombre_completo() + "+ Ha sido creado con exito.", AlertType.INFORMATION);
+        	ViewUtils.AlertWindow(null, "El Docente " + newUser.getNombre_completo() + "+ Ha sido creado con exito.", AlertType.INFORMATION);
         });
     }
     
@@ -302,7 +303,7 @@ public class UsersController {
 	        result.ifPresent(updatedCourse -> {
 	            userDao.update(updatedCourse);
 	            initialize();
-	            Main.AlertWindow(null, "Docente actualizado con éxito.", AlertType.INFORMATION);
+	            ViewUtils.AlertWindow(null, "Docente actualizado con éxito.", AlertType.INFORMATION);
 	        });
     	}
     }
@@ -320,14 +321,14 @@ public class UsersController {
 	        if (result.get() == ButtonType.OK) {
 	    		userDao.delete(user.getNumero_identificacion());
 	    		initialize();
-	    		Main.AlertWindow(null, "El docente fue removido con éxito.", AlertType.INFORMATION);
+	    		ViewUtils.AlertWindow(null, "El docente fue removido con éxito.", AlertType.INFORMATION);
 	        }
     	}
     }
     @FXML public void goToBack() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
-		Main.loadView("/views/Login.fxml");
+        ViewUtils.loadView("/views/Login.fxml");
     }
 
 }

@@ -21,7 +21,7 @@ public class ModifyLoanController {
 	private DatePicker date;
 
 	@FXML
-	private TextArea specs;
+	private TextArea info;
 	
 	@FXML
 	private ListView<String> blocks;
@@ -37,9 +37,6 @@ public class ModifyLoanController {
 	
 	@FXML
 	private TextField capacity;
-	
-	@FXML
-	private Label nuevo;
 	
 	
 	LoanTable loan;
@@ -60,11 +57,11 @@ public class ModifyLoanController {
 	    blocks.setItems(observableList);
 	    String[] partsLocation = loan.getLocationType().split("-");
 	    date.setValue(loan.getDate());
-	    specs.setText("Sala: " +loan.getName()+"\n"+"Fecha:" + loan.getDate() + "\n" +"Capacidad: "+ loan.getCapacity() + "\n"+ "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" + "Especificaciones: " + loan.getSpecs());
+	    info.setText("Sala: " +loan.getName()+"\n"+"Fecha:" + loan.getDate() + "\n" +"Capacidad: "+ loan.getCapacity() + "\n"+ "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" + "Especificaciones: " + loan.getSpecs());
 		name.setText(loan.getName());
 		building.setText(partsLocation[0].trim());
 		flat.setText(partsLocation[1].trim());
-		nuevo.setText("Sala: " +loan.getName()+"\n"+"Fecha:" + loan.getDate() + "\n" +"Capacidad: "+ loan.getCapacity() + "\n"+ "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" + "Especificaciones: Se solicita sala con capacidad mínima para 50 personas, equipada con aire acondicionado, proyector en buen estado, sistema de audio funcional, cortinas para evitar luz solar directa, pizarra acrílica con marcadores disponibles, conexión a internet estable mediante red WiFi, alargadores eléctricos disponibles, acceso controlado con llave, buena ventilación y cercanía a baños. Actividad programada es una capacitación técnica para docentes y estudiantes universitarios.");
+		info.setText("Sala: " +loan.getName()+"\n"+"Fecha:" + loan.getDate() + "\n" +"Capacidad: "+ loan.getCapacity() + "\n"+ "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" + "Especificaciones: Se solicita sala con capacidad mínima para 50 personas, equipada con aire acondicionado, proyector en buen estado, sistema de audio funcional, cortinas para evitar luz solar directa, pizarra acrílica con marcadores disponibles, conexión a internet estable mediante red WiFi, alargadores eléctricos disponibles, acceso controlado con llave, buena ventilación y cercanía a baños. Actividad programada es una capacitación técnica para docentes y estudiantes universitarios.");
 		capacity.setText(loan.getCapacity());
 		
 	}

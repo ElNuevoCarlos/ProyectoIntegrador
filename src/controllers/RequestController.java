@@ -22,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import model.Block;
 import model.Loan;
 import model.Resources;
+import utils.ViewUtils;
 
 public class RequestController {
     @FXML
@@ -78,16 +79,33 @@ public class RequestController {
 
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-        	myBlocks.getItems().clear();
-        	if (resource.getTypeResource()){
-        		blocksArray = blockDAO.hallBlocks(newValue, "p.ID_SALA = " + resource.getIdResource());
-        	} else {
-        		blocksArray = blockDAO.hallBlocks(newValue, "p.ID_EQUIPO = " + resource.getIdResource());
-        	}
+            if (newValue == null) {
+                return;
+            }
+
+            if (newValue.isBefore(LocalDate.now()) || newValue.isAfter(LocalDate.now().plusDays(15))) {
+            	ViewUtils.AlertWindow(
+                    "Fecha inválida",
+                    "La fecha seleccionada no es válida",
+                    "Por favor, selecciona una fecha desde hoy hasta un máximo de 15 días en el futuro.",
+                    AlertType.WARNING
+                );
+                datePicker.setValue(null);
+                return;
+            }
+
+            myBlocks.getItems().clear();
+            if (resource.getTypeResource()) {
+                blocksArray = blockDAO.hallBlocks(newValue, "p.ID_SALA = " + resource.getIdResource());
+            } else {
+                blocksArray = blockDAO.hallBlocks(newValue, "p.ID_EQUIPO = " + resource.getIdResource());
+            }
+
             ObservableList<Block> observableList = FXCollections.observableArrayList(blocksArray);
             blocks.setItems(observableList);
             date = newValue;
         });
+
 
         blocks.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
@@ -112,9 +130,8 @@ public class RequestController {
     
     @FXML
     void handleReserve() {
-
     	if (date == null || myBlocksArray.isEmpty()) {
-    		Main.AlertWindow(
+    		ViewUtils.AlertWindow(
     			    "Campos incompletos",
     			    "Faltan datos requeridos",
     			    "Por favor, completa todos los campos: fecha y horarios. Las especificaciones son opcionales.",
@@ -122,7 +139,7 @@ public class RequestController {
     			);
     		return;
     	}
-    	if (Main.showConfirmation("Confirmación", "¿Desea hacer la reserva de " + resource.getName() + ", en los horarios " + myBlocksArray + "?")) {
+    	if (ViewUtils.showConfirmation("Confirmación", "¿Desea hacer la reserva de " + resource.getName() + ", en los horarios " + myBlocksArray + "?")) {
         	Loan loan;
         	if (resource.getTypeResource()) {
         		loan = new Loan(null, resource.getIdResource(), sessionManager.getId(), null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
@@ -131,7 +148,7 @@ public class RequestController {
         	}
         	loanDAO.save(loan);
         	myBlocks.getItems().clear();
-        	Main.AlertWindow(
+        	ViewUtils.AlertWindow(
         		    "Reserva solicitada",
         		    "Reserva pendiente",
         		    "La reserva de la sala está solicitada para los bloques, esperando a que sea aprobada.",
@@ -139,7 +156,7 @@ public class RequestController {
         		);
 
     	} else {
-    		Main.AlertWindow(
+    		ViewUtils.AlertWindow(
     			    "Reserva cancelada",
     			    "Reserva cancelada por ti",
     			    "Has cancelado la reserva. Si quieres, puedes hacer una nueva solicitud en cualquier momento.",
@@ -151,7 +168,7 @@ public class RequestController {
     
     @FXML
     void handleReturn() {
-    	Main.cargarGrid("/views/RequestConsultation.fxml", Main.rootLayout);
+    	ViewUtils.cargarGrid("/views/RequestConsultation.fxml", Main.rootLayout);
     }
 
 }

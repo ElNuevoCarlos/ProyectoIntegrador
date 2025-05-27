@@ -2,7 +2,6 @@ package controllers;
 
 import java.sql.Connection;
 
-import application.*;
 import data.DataBase;
 import data.SessionManager;
 import data.UserDAO;
@@ -17,6 +16,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import utils.ViewUtils;
 
 public class LoginController {
     @FXML private Text title;
@@ -66,7 +66,7 @@ public class LoginController {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
         // CIERRA LA VENTANA ACTUAL
-        Main.loadView("/views/NewAccount.fxml");
+        ViewUtils.loadView("/views/NewAccount.fxml");
     }
     
     @FXML void handleMailRecovery() {
@@ -95,7 +95,7 @@ public class LoginController {
             hyperlink.setOnAction(event -> {
                 Stage currentStage = (Stage) rootPane.getScene().getWindow();
                 currentStage.close();
-                Main.loadView("/views/PasswordRecovery.fxml");
+                ViewUtils.loadView("/views/PasswordRecovery.fxml");
             });
             button.setLayoutX(button.getLayoutX() - 60);
             button.setText("Entrar");
@@ -125,13 +125,13 @@ public class LoginController {
             sessionManager.setUser(id, Name, role, Email);
             switch (role) {
             	case "ENCARGADO":
-            		Main.loadView("/views/Manager/Menu.fxml");
+            		ViewUtils.loadView("/views/Manager/Menu.fxml");
                 	break;
             	case "SUPERENCARGADO":
-            		Main.loadView("/views/SuperManager.fxml");
+            		ViewUtils.loadView("/views/SuperManager.fxml");
             		break;
             	default:
-            		Main.loadView("/views/TeacherAdmin.fxml");
+            		ViewUtils.loadView("/views/TeacherAdmin.fxml");
             }
 		} else this.AlertWindow(
     			null, 

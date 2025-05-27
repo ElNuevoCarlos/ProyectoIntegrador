@@ -13,7 +13,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -21,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import model.User;
+import utils.ViewUtils;
 
 public class MyAccountController {
 	
@@ -141,7 +141,7 @@ public class MyAccountController {
 				if (!modifiedData.isEmpty()) {
 					User newUser = new User(Name, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, sessionManager.getId());
 					sessionManager.setUser(sessionManager.getId(), Name, Role, Email);
-					if (Main.showConfirmation("Confirmación", "¿Desea actualizar " + modifiedData + "?")) {
+					if (ViewUtils.showConfirmation("Confirmación", "¿Desea actualizar " + modifiedData + "?")) {
 						userDao.update(newUser); 
 						showAlert("Actualizado", "Información actualizada",
 								"Los datos "+ modifiedData + " actualizados exitosamente.");

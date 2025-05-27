@@ -13,6 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import utils.ViewUtils;
 
 
 public class MenuTeacherController {
@@ -104,17 +106,24 @@ public class MenuTeacherController {
 	void handleEditUser() {
 		Main.datoGlobal = editUser;
 		Main.pane = pane;
-		Main.cargarGrid("/views/MyAccount.fxml", rootPane);
+		ViewUtils.cargarGrid("/views/MyAccount.fxml", rootPane);
 
 	}
 	
     @FXML
     void handleMyLoans(MouseEvent event) {
-    	Main.cargarGrid("/views/MyLoans.fxml", rootPane);
+    	ViewUtils.cargarGrid("/views/MyLoans.fxml", rootPane);
     }
     
     @FXML
     void handleRequestConsultation() {
-    	Main.cargarGrid("/views/RequestConsultation.fxml", rootPane);
+    	ViewUtils.cargarGrid("/views/RequestConsultation.fxml", rootPane);
+    }
+    
+    @FXML
+    void handleLogOut() {
+        Stage currentStage = (Stage) rootPane.getScene().getWindow();
+        currentStage.close();
+        ViewUtils.loadView("/views/Login.fxml");
     }
 }

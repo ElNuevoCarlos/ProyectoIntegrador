@@ -28,6 +28,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import model.Resources;
+import utils.ViewUtils;
 
 public class RequestConsultationController {
 
@@ -94,7 +95,7 @@ public class RequestConsultationController {
     	            if (event.getClickCount() == 2) {
     	                // Doble clic
     	            	Main.datoGlobal = resource;
-    	            	Main.cargarGrid("/views/Request.fxml", Main.rootLayout);
+    	            	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
     	            } else {
     	                // Clic simple
     	                if (row.isSelected()) {

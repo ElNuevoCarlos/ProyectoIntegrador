@@ -1,12 +1,12 @@
 package controllers;
 
-import application.Main;
 import data.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import utils.ViewUtils;
 
 public class MenuReportsController {
 	private SessionManager sessionManager = SessionManager.getInstance();
@@ -23,14 +23,14 @@ public class MenuReportsController {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
         // CIERRA LA VENTANA ACTUAL
-    	Main.loadView("/views/MenuTeacher.fxml");
+        ViewUtils.loadView("/views/MenuTeacher.fxml");
     }
     @FXML void handleLogout(ActionEvent event) {
     	// CIERRA LA VENTANA ACTUAL
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
         // CIERRA LA VENTANA ACTUAL
-    	Main.loadView("/views/Login.fxml");
+        ViewUtils.loadView("/views/Login.fxml");
     }
     
     public void data() {

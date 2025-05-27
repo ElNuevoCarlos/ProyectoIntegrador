@@ -18,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import utils.ViewUtils;
 
 public class PasswordRecoveryController {
 	@FXML private BorderPane rootPane;
@@ -48,7 +49,7 @@ public class PasswordRecoveryController {
 	void handleReturnLogin() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
-		Main.loadView("/views/Login.fxml");
+        ViewUtils.loadView("/views/Login.fxml");
 	}
 	
 	@FXML
@@ -138,7 +139,7 @@ public class PasswordRecoveryController {
 		            currentStage.close();
 		            
 		            AlertWindow("Éxito", "Tu contraseña se actualizó correctamente", AlertType.INFORMATION);
-		            Main.loadView("/views/Login.fxml");
+		            ViewUtils.loadView("/views/Login.fxml");
 		        } else {
 		        	AlertWindow("Error", "No se pudo actualizar la contraseña", AlertType.ERROR);
 		        }
