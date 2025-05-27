@@ -19,8 +19,8 @@ public class ViewUtils {
         Stage secondStage = new Stage();
         try {
             FXMLLoader loader = new FXMLLoader(ViewUtils.class.getResource(fxmlFile));
-            BorderPane rootLayout = loader.load();
-            Scene scene = new Scene(rootLayout);
+            Main.rootLayout = loader.load();
+            Scene scene = new Scene(Main.rootLayout);
             secondStage.setScene(scene);
             Image icon = new Image(ViewUtils.class.getResourceAsStream("/img/teacher.png"));
             secondStage.getIcons().add(icon);

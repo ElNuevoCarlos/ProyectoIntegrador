@@ -7,9 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import model.Block;
 import model.Loan;
 import model.LoanTable;
@@ -173,13 +170,6 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 		return false;
 	}
 	
-    private void AlertWindow(String text, String content, AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(null);
-        alert.setHeaderText(text);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
 }
 
 

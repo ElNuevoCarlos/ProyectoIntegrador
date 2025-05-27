@@ -3,7 +3,6 @@ package controllers;
 import java.sql.Connection;
 import java.util.concurrent.CompletableFuture;
 
-import application.Main;
 import data.DataBase;
 import data.EmailService;
 import java.security.SecureRandom;
