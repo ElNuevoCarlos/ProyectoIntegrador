@@ -29,8 +29,8 @@ public class UserDAO implements CRUD_operation<User, String>{
     			+ "TELEFONO, "
     			+ "ESTADO, "
     			+ "ROL, "
-    			+ "PASSWORD) "+
-    						  "VALUES (SEQ_PERSONA_ID.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    			+ "PASSWORD) "
+    			+ "VALUES (SEQ_PERSONA_ID.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    	try (PreparedStatement pstmt = connection.prepareStatement(queryUsuario)) {
 				pstmt.setString(1, user.getNombre_completo());
