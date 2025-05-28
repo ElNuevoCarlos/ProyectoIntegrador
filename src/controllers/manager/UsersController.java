@@ -67,38 +67,60 @@ public class UsersController {
         
         nombre.setOnEditCommit(event -> {
         	User user = event.getRowValue();
+        	String name = user.getNombre_completo();
+        	
         	user.setNombre_completo(event.getNewValue());
-        	userDao.update(user);
+        	Boolean verifyUpdate = userDao.update(user);
+        	if (!verifyUpdate) user.setNombre_completo(name);
+        	
         });
+        
         correo.setOnEditCommit(event -> {
         	User user = event.getRowValue();
+        	String email = user.getCorreo_institucional();
+        	
         	user.setCorreo_institucional(event.getNewValue());
-        	userDao.update(user);
+        	Boolean verifyUpdate = userDao.update(user);
+        	if (!verifyUpdate) user.setCorreo_institucional(email);
         });
+        
         rol.setOnEditCommit(event -> {
         	User user = event.getRowValue();
+        	String role = user.getRol();
+        	
         	user.setRol(event.getNewValue());
-        	userDao.update(user);
+        	Boolean verifyUpdate = userDao.update(user);
+        	if (!verifyUpdate) user.setRol(role);
         });
+        
         programa.setOnEditCommit(event -> {
         	User user = event.getRowValue();
+        	String program = user.getPrograma_departamento();
+        	
         	user.setPrograma_departamento(event.getNewValue());
-        	userDao.update(user);
+        	Boolean verifyUpdate = userDao.update(user);
+        	if (!verifyUpdate) user.setPrograma_departamento(program);
         });
+        
         identificacion.setOnEditCommit(event -> {
         	User user = event.getRowValue();
+        	String id = user.getNumero_identificacion();
+        	
         	user.setNumero_identificacion(event.getNewValue());
-        	userDao.update(user);
+        	Boolean verifyUpdate = userDao.update(user);
+        	if (!verifyUpdate) user.setNumero_identificacion(id);
         });
+        
         contacto.setOnEditCommit(event -> {
         	User user = event.getRowValue();
+        	String phone = user.getTelefono();
+        	
         	user.setTelefono(event.getNewValue());
-        	userDao.update(user);
+        	Boolean verifyUpdate = userDao.update(user);
+        	if (!verifyUpdate) user.setTelefono(phone);
         });
         
 		tableTeachers.setItems(teacher);
-		
-		tableTeachers.setEditable(true);
     }
     @FXML public void docentes() {
     	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
