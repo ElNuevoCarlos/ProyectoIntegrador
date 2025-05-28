@@ -1,6 +1,7 @@
 package controllers;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import application.Main;
@@ -151,11 +152,15 @@ public class MyAccountController {
 						otherData.set(2, Password1);
 						otherData.set(3, Pro_dep);
 						otherData.set(4, Phone);
-						String[] partesUptate = Name.split("\\s+");
-						editUser.setText(partesUptate[0] + " " + partesUptate[1] + "\n" + Role);
-						Platform.runLater(() -> {
-						    editUser.setLayoutX((pane.getWidth() - editUser.getWidth()) / 2);
-						});
+						
+						if (!(editUser == null)) {
+							String[] partesUptate = Name.split("\\s+");
+							editUser.setText(partesUptate[0] + " " + partesUptate[1] + "\n" + Role);
+							Platform.runLater(() -> {
+							    editUser.setLayoutX((pane.getWidth() - editUser.getWidth()) / 2);
+							});
+						}
+						
 					} else {
 						showAlert("Cancelado", "Actualización cancelada", "No se realizaron cambios");
 					}
