@@ -36,6 +36,10 @@ public class ManagerTeacherController {
     	username.setText(primerNombre + " " +primerApellido);
     	role.setText(sessionManager.getRole());
     }
+    
+    @FXML public void userInfo() {
+    	ViewUtils.cargarGrid("/views/MyAccount.fxml", rootPane);
+    }
     @FXML public void docentes() {
     	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
     }

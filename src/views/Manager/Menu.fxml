@@ -51,17 +51,17 @@
                   <Image url="@../../../resources/img/cerrar-sesion.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="72.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" translateX="5.0" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+            <ImageView fitHeight="72.0" fitWidth="75.0" onMouseClicked="#userInfo" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" translateX="5.0" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../../resources/img/account.png" />
                </image>
             </ImageView>
-            <Text fx:id="username" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Carlos Pinto" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Text fx:id="username" fill="WHITE" onMouseClicked="#userInfo" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Carlos Pinto" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font name="Calibri Light Italic" size="15.0" />
                </font>
             </Text>
-            <Text fx:id="role" fill="#c6c6c6" strokeType="OUTSIDE" strokeWidth="0.0" text="Encargado" translateY="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <Text fx:id="role" fill="#c6c6c6" onMouseClicked="#userInfo" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Encargado" translateY="19.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>
