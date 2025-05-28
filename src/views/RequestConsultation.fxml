@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -100,20 +99,12 @@
       </Label>
       <TextField fx:id="buildingText" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Edificio" visible="false" GridPane.columnIndex="5" GridPane.rowIndex="2">
          <contextMenu>
-            <ContextMenu fx:id="menuBuilding">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-              </items>
-            </ContextMenu>
+            <ContextMenu fx:id="menuBuilding" />
          </contextMenu>
       </TextField>
       <TextField fx:id="flatText" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="118.0" promptText="Piso" visible="false" GridPane.columnIndex="7" GridPane.rowIndex="2">
          <contextMenu>
-            <ContextMenu fx:id="menuFlat">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-              </items>
-            </ContextMenu>
+            <ContextMenu fx:id="menuFlat" />
          </contextMenu></TextField>
       <Button fx:id="filterButton" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFilter" prefHeight="57.0" prefWidth="114.0" text="Filtrar" visible="false" GridPane.columnIndex="11" GridPane.rowIndex="2" GridPane.rowSpan="3" />
       <ImageView fitHeight="34.0" fitWidth="44.0" onMouseClicked="#handleReturn" pickOnBounds="true" preserveRatio="true">

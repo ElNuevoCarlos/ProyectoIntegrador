@@ -96,9 +96,9 @@ public class RequestController {
 
             myBlocks.getItems().clear();
             if (resource.getTypeResource()) {
-                blocksArray = blockDAO.hallBlocks(newValue, "p.ID_SALA = " + resource.getIdResource());
+                blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_SALA = " + resource.getIdResource());
             } else {
-                blocksArray = blockDAO.hallBlocks(newValue, "p.ID_EQUIPO = " + resource.getIdResource());
+                blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_EQUIPO = " + resource.getIdResource());
             }
 
             ObservableList<Block> observableList = FXCollections.observableArrayList(blocksArray);

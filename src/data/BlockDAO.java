@@ -17,7 +17,7 @@ public class BlockDAO {
         this.connection = connection;
     }
     
-	public ArrayList<Block> hallBlocks(LocalDate date, String hallDevice) {
+	public ArrayList<Block> findAvailableBlocks(LocalDate date, String hallDevice) {
 		ArrayList<Block> blocks = new ArrayList<>();
 		String query = "SELECT b.ID, b.HORA_INICIO, b.HORA_FIN\r\n"
 				+ "FROM BLOQUE b\r\n"
@@ -29,6 +29,28 @@ public class BlockDAO {
 				+ ")";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
         	pstmt.setDate(1, java.sql.Date.valueOf(date));
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+            	Long id = rs.getLong(1);
+                Time startTime = rs.getTime(2);
+                Time endTime = rs.getTime(3);
+                Block block = new Block(id, startTime, endTime);
+                blocks.add(block);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return blocks;
+	}
+	
+	
+	public ArrayList<Block> findBlocksByLoanId(long idLoan) {
+		ArrayList<Block> blocks = new ArrayList<>();
+		String query = "SELECT b.ID, b.HORA_INICIO, b.HORA_FIN FROM BLOQUE b \r\n"
+				+ "WHERE b.ID IN (SELECT pb.ID_BLOQUE FROM PRESTAMO_BLOQUE pb WHERE pb.ID_PRESTAMO = ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setLong(1, idLoan);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
             	Long id = rs.getLong(1);
