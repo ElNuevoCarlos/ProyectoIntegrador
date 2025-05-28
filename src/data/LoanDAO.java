@@ -135,7 +135,8 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 	}
 
 	@Override
-	public void update(Loan entity) {
+	public boolean update(Loan entity) {
+		return false;
 		// TODO Auto-generated method stub
 		
 	}

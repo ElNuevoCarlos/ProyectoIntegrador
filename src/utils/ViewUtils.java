@@ -54,6 +54,10 @@ public class ViewUtils {
         alert.setTitle(title);
         alert.setHeaderText(text);
         alert.setContentText(content);
+        
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(ViewUtils.class.getResourceAsStream("/img/teacher.png"))); 
+        
         alert.showAndWait();
     }
 }

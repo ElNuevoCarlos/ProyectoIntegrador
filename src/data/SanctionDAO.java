@@ -62,7 +62,8 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
 	}
 
 	@Override
-	public void update(Sanction entity) {
+	public boolean update(Sanction entity) {
+		return false;
 		// TODO Auto-generated method stub
 		
 	}

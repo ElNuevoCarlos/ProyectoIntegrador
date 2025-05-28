@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+import utils.ViewUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import model.User;
@@ -165,7 +165,7 @@ public class UserDAO implements CRUD_operation<User, String>{
 	}
 
 	@Override
-	public void update(User user) {
+	public boolean update(User user) {
 		String query = "UPDATE USUARIO SET NOMBRE_COMPLETO = ?, CORREO_INSTITUCIONAL = ?, TIPO_IDENTIFICACION = ?, NUMERO_IDENTIFICACION = ?, PASSWORD = ?, PROGRAMA_DEPARTAMENTO = ?, TELEFONO = ?, ROL = ? WHERE ID = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, user.getNombre_completo());
@@ -179,8 +179,12 @@ public class UserDAO implements CRUD_operation<User, String>{
 			pstmt.setLong(9, user.getId());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
+					+ "- Qué ese dato no esté repetido.\n"
+					+ "- Verifique que escribió todo correctamente.", AlertType.ERROR);
+			return false;
 		}	
+		return true;
 	}
 	
 	
