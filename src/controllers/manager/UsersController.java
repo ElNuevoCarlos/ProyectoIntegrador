@@ -229,11 +229,7 @@ public class UsersController {
             }
             return null;
         });
-        
-        Optional<User> result = dialog.showAndWait();
-        result.ifPresent(newUser -> {
-        	ViewUtils.AlertWindow(null, null, "El Docente " + newUser.getNombre_completo() + "+ Ha sido creado con exito.", AlertType.INFORMATION);
-        });
+        dialog.showAndWait();
     }
     
     @FXML public void actualizar() {
