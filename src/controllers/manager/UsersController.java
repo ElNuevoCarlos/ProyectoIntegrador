@@ -70,6 +70,31 @@ public class UsersController {
         	user.setNombre_completo(event.getNewValue());
         	userDao.update(user);
         });
+        correo.setOnEditCommit(event -> {
+        	User user = event.getRowValue();
+        	user.setCorreo_institucional(event.getNewValue());
+        	userDao.update(user);
+        });
+        rol.setOnEditCommit(event -> {
+        	User user = event.getRowValue();
+        	user.setRol(event.getNewValue());
+        	userDao.update(user);
+        });
+        programa.setOnEditCommit(event -> {
+        	User user = event.getRowValue();
+        	user.setPrograma_departamento(event.getNewValue());
+        	userDao.update(user);
+        });
+        identificacion.setOnEditCommit(event -> {
+        	User user = event.getRowValue();
+        	user.setNumero_identificacion(event.getNewValue());
+        	userDao.update(user);
+        });
+        contacto.setOnEditCommit(event -> {
+        	User user = event.getRowValue();
+        	user.setTelefono(event.getNewValue());
+        	userDao.update(user);
+        });
         
 		tableTeachers.setItems(teacher);
 		
