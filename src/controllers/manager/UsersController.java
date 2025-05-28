@@ -26,7 +26,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import model.User;
 import utils.ViewUtils;
 
@@ -67,7 +66,7 @@ public class UsersController {
     public User selectUser() {
     	User user = tableTeachers.getSelectionModel().getSelectedItem();
     	if (user == null) {
-    		ViewUtils.AlertWindow(null, "Debe primero seleccionar a un docente.", AlertType.ERROR);
+    		ViewUtils.AlertWindow(null, null, "Debe primero seleccionar a un docente.", AlertType.ERROR);
     		return null;
     	}
     	return user;
@@ -191,25 +190,25 @@ public class UsersController {
                 		Password1.isEmpty() || 
                 		Password2.isEmpty()){
                 	
-                	ViewUtils.AlertWindow("Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
+                	ViewUtils.AlertWindow(null, "Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
                     return null;
                 }
                 String regexEmail = "^[a-zA-Z0-9._%+-]+@udi\\.edu\\.co$";
                 if (!Email.matches(regexEmail)) {
-                	ViewUtils.AlertWindow("Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
+                	ViewUtils.AlertWindow(null, "Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
                 	return null;
                 }
                 if (!NumIdentification.matches("\\d{6,10}")) {
-                	ViewUtils.AlertWindow("Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
+                	ViewUtils.AlertWindow(null, "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
                 	return null;
                 }
                 if (!Phone.matches("\\d{10}")) {
-                	ViewUtils.AlertWindow("Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
+                	ViewUtils.AlertWindow(null, "Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
                 	return null;
                 }
                 if (Password1.equals(Password2)) {
                 	if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
-                		ViewUtils.AlertWindow("Contraseña insegura", 
+                		ViewUtils.AlertWindow(null, "Contraseña insegura", 
                                 "La contraseña debe tener:\n" +
                                 "- Entre 8 y 20 caracteres\n" +
                                 "- Al menos una letra mayúscula\n" +
@@ -224,7 +223,7 @@ public class UsersController {
                 		return newUser;
                 	}
                 } else {
-                	ViewUtils.AlertWindow("Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
+                	ViewUtils.AlertWindow(null, "Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
                 	return null;
                 }
             }
@@ -233,7 +232,7 @@ public class UsersController {
         
         Optional<User> result = dialog.showAndWait();
         result.ifPresent(newUser -> {
-        	ViewUtils.AlertWindow(null, "El Docente " + newUser.getNombre_completo() + "+ Ha sido creado con exito.", AlertType.INFORMATION);
+        	ViewUtils.AlertWindow(null, null, "El Docente " + newUser.getNombre_completo() + "+ Ha sido creado con exito.", AlertType.INFORMATION);
         });
     }
     
@@ -303,7 +302,7 @@ public class UsersController {
 	        result.ifPresent(updatedCourse -> {
 	            userDao.update(updatedCourse);
 	            initialize();
-	            ViewUtils.AlertWindow(null, "Docente actualizado con éxito.", AlertType.INFORMATION);
+	            ViewUtils.AlertWindow(null, null, "Docente actualizado con éxito.", AlertType.INFORMATION);
 	        });
     	}
     }
@@ -321,7 +320,7 @@ public class UsersController {
 	        if (result.get() == ButtonType.OK) {
 	    		userDao.delete(user.getNumero_identificacion());
 	    		initialize();
-	    		ViewUtils.AlertWindow(null, "El docente fue removido con éxito.", AlertType.INFORMATION);
+	    		ViewUtils.AlertWindow(null, null, "El docente fue removido con éxito.", AlertType.INFORMATION);
 	        }
     	}
     }
