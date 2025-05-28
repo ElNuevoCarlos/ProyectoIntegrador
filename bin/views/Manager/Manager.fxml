@@ -68,7 +68,7 @@
             <Font name="Calibri Light Italic" size="20.0" />
          </font>
       </Text>
-      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar, eliminar o agregar un nuevo docente al sistema, debe darle click al boton correspondiente en la parte superior de esté mensaje" textAlignment="CENTER" wrappingWidth="398.36181640625" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar los datos de un docente, dale click al boton azul que dice Actualizar o dale doble click encima del docente para editar un campo en especficio. Si desea ver o gestionar sanciones de un docente, dale click al boton negro que dice Sanciones. Si desea eliminar a un docente, dale click al boton Rojo que dice Eliminar, o si desea añadir a un docente, dale click al boton Verde que dice Añadir" textAlignment="CENTER" wrappingWidth="782.36181640625" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="14" />
       <Button focusTraversable="false" mnemonicParsing="false" onAction="#sanciones" style="-fx-background-color: BLACK;" styleClass="Managerbutton" text="Sanciones" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
       <Button focusTraversable="false" mnemonicParsing="false" onAction="#prestamos" style="-fx-background-color: PURPLE;" styleClass="Managerbutton" text="Prestamos" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
    </children>

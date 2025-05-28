@@ -99,7 +99,7 @@ public class ModifyLoanController {
 	
 	private Resources resource = null;
 	
-	private LocalDate  date;
+	private LocalDate date;
 	
 	ObservableList<Resources> resources = FXCollections.observableArrayList();
 	

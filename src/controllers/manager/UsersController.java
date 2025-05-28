@@ -87,6 +87,16 @@ public class UsersController {
         });
         
         rol.setOnEditCommit(event -> {
+        	if (event.getNewValue().equals("ENCARGADO")) {
+        		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
+        		return;
+        	}
+        	else if (event.getNewValue().equals("SUPERENCARGADO")) {
+        		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Super Encargados", AlertType.ERROR);
+        		return;
+        	}
+        	
+        	
         	User user = event.getRowValue();
         	String role = user.getRol();
         	
@@ -343,11 +353,22 @@ public class UsersController {
 	        
 	        dialog.setResultConverter(dialogButton -> {
 	            if (dialogButton == saveButtonType) {
+	            	String rol = rolField.getText().trim();
+	            	
+	            	if (rol.equals("ENCARGADO")) {
+	            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
+	            		return null;
+	            	}
+	            	else if (rol.equals("SUPERENCARGADO")) {
+	            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Super Encargados", AlertType.ERROR);
+	            		return null;
+	            	}
+	            	
+	            	
 	                String name = nameField.getText().trim();
 	                String email = emailField.getText().trim();
 	                String programa = programaField.getText().trim();
 	                String telefono = telefonoField.getText().trim();
-	                String rol = rolField.getText().trim();
 	                String contraseña = passwordField.getText().trim();
 	                
 	                return new User(name, 
