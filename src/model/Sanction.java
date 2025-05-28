@@ -21,7 +21,39 @@ public class Sanction {
         this.idLoanDevice = idLoanDevice;
     }
     
-    public long getId() {
+    public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setIdLoanDevice(long idLoanDevice) {
+		this.idLoanDevice = idLoanDevice;
+	}
+
+	public void setTypeSanction(String typeSanction) {
+		this.typeSanction = typeSanction;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public void setSanctionDate(Date sanctionDate) {
+		this.sanctionDate = sanctionDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public long getId() {
         return id;
     }
 

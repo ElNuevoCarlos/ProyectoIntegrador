@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import model.Sanction;
@@ -37,15 +38,17 @@ public class SanctionUser {
     User user;
 
     @FXML public void initialize() {
-    	
 	    Object dato = Main.datoGlobal;
 	    
 	    if (dato instanceof User) {
 	    	user = (User) dato;
 	    }
-	    System.out.println(user);
 	    
-    	name.setText(user.getNombre_completo());
+	    String[] partes = user.getNombre_completo().split(" ");
+	    String primerNombre = partes[0];
+	    String primerApellido = partes.length > 2 ? partes[partes.length - 2] : partes[1];
+        
+    	name.setText(primerNombre + " " +primerApellido);
     	id.setText(user.getNumero_identificacion());
   	
 		ObservableList<Sanction> sanctions = FXCollections.observableArrayList();
@@ -62,7 +65,28 @@ public class SanctionUser {
 	    estado.setCellValueFactory(new PropertyValueFactory<>("state"));
 	    id_prestamo.setCellValueFactory(new PropertyValueFactory<>("idLoanHall"));
 	    
-		
+	    tipo_sancion.setCellFactory(TextFieldTableCell.forTableColumn());
+	    descripcion.setCellFactory(TextFieldTableCell.forTableColumn());
+	    
+	    tipo_sancion.setOnEditCommit(event -> { 
+		    Sanction sanction = event.getRowValue();
+		    String type = sanction.getTypeSanction();
+	    	
+		    sanction.setTypeSanction(event.getNewValue());
+		    Boolean verifyUpdate = sanctionDao.update(sanction);
+		    if (!verifyUpdate) sanction.setTypeSanction(type);
+	    }); 
+	    
+	    descripcion.setOnEditCommit(event -> { 
+		    Sanction sanction = event.getRowValue();
+		    String description = sanction.getDescription();
+	    	
+		    sanction.setDescription(event.getNewValue());
+		    Boolean verifyUpdate = sanctionDao.update(sanction);
+		    if (!verifyUpdate) sanction.setDescription(description);
+	    }); 
+        
+
 		tableSanctions.setItems(sanctions);
     }
     @FXML public void docentes() {

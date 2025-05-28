@@ -54,7 +54,7 @@
             <Image url="@../../../resources/img/login.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tableSanctions" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="5" GridPane.rowSpan="5">
+      <TableView fx:id="tableSanctions" editable="true" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="5" GridPane.rowSpan="5">
          <columns>
             <TableColumn fx:id="tipo_sancion" prefWidth="75.0" text="Sanción" />
             <TableColumn fx:id="descripcion" prefWidth="75.0" text="Descripción" />
@@ -77,12 +77,12 @@
          </font>
       </Text>
       <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Si deseas actualizar, eliminar o agregar una nueva sanción, debe darle click al boton correspondiente en la parte superior de esté mensaje" textAlignment="CENTER" wrappingWidth="398.36181640625" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
-      <Text fx:id="name" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" translateX="50.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+      <Text fx:id="name" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario" translateX="90.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font name="Calibri Light Italic" size="17.0" />
          </font>
       </Text>
-      <Text fx:id="id" strokeType="OUTSIDE" strokeWidth="0.0" text="Identificación" translateX="70.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+      <Text fx:id="id" strokeType="OUTSIDE" strokeWidth="0.0" text="Identificación" translateX="90.0" translateY="20.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font name="Calibri Light Italic" size="17.0" />
          </font>

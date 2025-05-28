@@ -72,6 +72,7 @@ public class UsersController {
         	user.setNombre_completo(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
         	if (!verifyUpdate) user.setNombre_completo(name);
+        	else ViewUtils.AlertWindow(null, null, "El nombre del docente fue cambiado con exito.", AlertType.INFORMATION);
         	
         });
         
@@ -82,6 +83,7 @@ public class UsersController {
         	user.setCorreo_institucional(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
         	if (!verifyUpdate) user.setCorreo_institucional(email);
+        	else ViewUtils.AlertWindow(null, null, "El correo del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
         rol.setOnEditCommit(event -> {
@@ -91,6 +93,7 @@ public class UsersController {
         	user.setRol(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
         	if (!verifyUpdate) user.setRol(role);
+        	else ViewUtils.AlertWindow(null, null, "El rol del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
         programa.setOnEditCommit(event -> {
@@ -100,6 +103,7 @@ public class UsersController {
         	user.setPrograma_departamento(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
         	if (!verifyUpdate) user.setPrograma_departamento(program);
+        	else ViewUtils.AlertWindow(null, null, "El programa del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
         identificacion.setOnEditCommit(event -> {
@@ -109,6 +113,7 @@ public class UsersController {
         	user.setNumero_identificacion(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
         	if (!verifyUpdate) user.setNumero_identificacion(id);
+        	else ViewUtils.AlertWindow(null, null, "La identificación del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
         contacto.setOnEditCommit(event -> {
@@ -118,6 +123,7 @@ public class UsersController {
         	user.setTelefono(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
         	if (!verifyUpdate) user.setTelefono(phone);
+        	else ViewUtils.AlertWindow(null, null, "El contacto del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
 		tableTeachers.setItems(teacher);
