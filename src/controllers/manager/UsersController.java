@@ -230,6 +230,7 @@ public class UsersController {
             return null;
         });
         dialog.showAndWait();
+        initialize();
     }
     
     @FXML public void actualizar() {
