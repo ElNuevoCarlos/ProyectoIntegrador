@@ -29,7 +29,11 @@ public class ManagerTeacherController {
     @FXML public void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
         
-    	username.setText(sessionManager.getName());
+	    String[] partes = sessionManager.getName().split(" ");
+	    String primerNombre = partes[0];
+	    String primerApellido = partes.length > 2 ? partes[partes.length - 2] : partes[1];
+        
+    	username.setText(primerNombre + " " +primerApellido);
     	role.setText(sessionManager.getRole());
     }
     @FXML public void docentes() {

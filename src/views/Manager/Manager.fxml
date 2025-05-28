@@ -47,7 +47,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="tableTeachers" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="5" GridPane.rowSpan="5">
+      <TableView fx:id="tableTeachers" editable="true" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="5" GridPane.rowSpan="5">
          <columns>
             <TableColumn fx:id="nombre" prefWidth="75.0" text="Nombre" />
             <TableColumn fx:id="correo" prefWidth="75.0" text="Correo" />

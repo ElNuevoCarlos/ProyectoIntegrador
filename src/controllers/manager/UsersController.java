@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -57,7 +58,22 @@ public class UsersController {
 		identificacion.setCellValueFactory(new PropertyValueFactory<>("numero_identificacion"));
 		contacto.setCellValueFactory(new PropertyValueFactory<>("telefono"));
 		
+        nombre.setCellFactory(TextFieldTableCell.forTableColumn());
+        correo.setCellFactory(TextFieldTableCell.forTableColumn());
+        rol.setCellFactory(TextFieldTableCell.forTableColumn());
+        programa.setCellFactory(TextFieldTableCell.forTableColumn());
+        identificacion.setCellFactory(TextFieldTableCell.forTableColumn());
+        contacto.setCellFactory(TextFieldTableCell.forTableColumn());
+        
+        nombre.setOnEditCommit(event -> {
+        	User user = event.getRowValue();
+        	user.setNombre_completo(event.getNewValue());
+        	userDao.update(user);
+        });
+        
 		tableTeachers.setItems(teacher);
+		
+		tableTeachers.setEditable(true);
     }
     @FXML public void docentes() {
     	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
@@ -81,10 +97,10 @@ public class UsersController {
 
     @FXML public void sanciones() {
     	User user = selectUser();
-    	user = new User(user.getNombre_completo(), user.getNumero_identificacion(), user.getTipo_identificacion(),
-    			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
-    			user.getRol(), user.getPassword(), user.getId());
     	if (user != null) {
+        	user = new User(user.getNombre_completo(), user.getNumero_identificacion(), user.getTipo_identificacion(),
+        			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
+        			user.getRol(), user.getPassword(), user.getId());
     		Main.datoGlobal = user;
     		ViewUtils.cargarGrid("/views/Manager/Sanction.fxml", Main.rootLayout);
     	}
