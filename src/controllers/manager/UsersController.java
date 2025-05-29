@@ -396,6 +396,15 @@ public class UsersController {
     @FXML public void eliminar() {
     	User user = selectUser();
     	if (user != null) {
+        	if (user.getRol().equals("ENCARGADO")) {
+        		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes eliminar a otros Encargados", AlertType.ERROR);
+        		return;
+        	}
+        	else if (user.getRol().equals("SUPERENCARGADO")) {
+        		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes eliminar a los Super Encargados", AlertType.ERROR);
+        		return;
+        	}
+        	
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 	        alert.setTitle("Confirmación");
 	        alert.setContentText("Estás seguro de eliminar al docente?\n\n"+
