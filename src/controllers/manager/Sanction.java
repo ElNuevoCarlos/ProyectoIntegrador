@@ -7,6 +7,7 @@ import data.DataBase;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -29,6 +30,8 @@ public class Sanction {
     @FXML private TableColumn<User, String> programa_departamento;
     @FXML private TableColumn<User, String> telefono;
     
+    private FilteredList<User> listaFiltrada;
+    
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
 
@@ -44,7 +47,26 @@ public class Sanction {
 		programa_departamento.setCellValueFactory(new PropertyValueFactory<>("programa_departamento"));
 		telefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         
-		tableTeachers.setItems(teacher);
+	    listaFiltrada = new FilteredList<>(teacher, p -> true);
+	    
+		tableTeachers.setItems(listaFiltrada);
+		
+		correoField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		nombreField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		identificacionField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+    }
+    private void filtro() {
+        String Correo = correoField.getText().toLowerCase();
+        String Nombre = nombreField.getText().toLowerCase();
+        String Identificacion = identificacionField.getText().toLowerCase();
+
+        listaFiltrada.setPredicate(teacher -> {
+            boolean coincideCorreo = teacher.getCorreo_institucional().toLowerCase().contains(Correo);
+            boolean coincideNombre = teacher.getNombre_completo().toLowerCase().contains(Nombre);
+            boolean coincideId = teacher.getNumero_identificacion().toLowerCase().contains(Identificacion);
+
+            return coincideCorreo && coincideNombre && coincideId;
+        });
     }
     
     public User selectUser() {
@@ -74,7 +96,6 @@ public class Sanction {
     @FXML void sancionar(ActionEvent event) {
     	User user = selectUser();
     }
-    
     
     
     

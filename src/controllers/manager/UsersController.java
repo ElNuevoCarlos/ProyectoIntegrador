@@ -8,6 +8,7 @@ import data.DataBase;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert.AlertType;
@@ -33,6 +34,8 @@ import utils.ViewUtils;
 
 public class UsersController {
     @FXML private BorderPane rootPane;
+    
+    @FXML private TextField correoField, nombreField, identificacionField, contactoField;
     @FXML private TableView<User> tableTeachers;
     @FXML private TableColumn<User, String> nombre;
     @FXML private TableColumn<User, String> correo;
@@ -40,6 +43,8 @@ public class UsersController {
     @FXML private TableColumn<User, String> programa;
     @FXML private TableColumn<User, String> identificacion;
     @FXML private TableColumn<User, String> contacto;
+    
+    private FilteredList<User> listaFiltrada;
   
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
@@ -136,7 +141,30 @@ public class UsersController {
         	else ViewUtils.AlertWindow(null, null, "El contacto del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
-		tableTeachers.setItems(teacher);
+	    listaFiltrada = new FilteredList<>(teacher, p -> true);
+
+		correoField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		nombreField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		identificacionField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		contactoField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		
+		tableTeachers.setItems(listaFiltrada);
+    }
+    
+    private void filtro() {
+        String Correo = correoField.getText().toLowerCase();
+        String Nombre = nombreField.getText().toLowerCase();
+        String Identificacion = identificacionField.getText().toLowerCase();
+        String Contacto = contactoField.getText().toLowerCase();
+
+        listaFiltrada.setPredicate(teacher -> {
+            boolean bCorreo = teacher.getCorreo_institucional().toLowerCase().contains(Correo);
+            boolean bNombre = teacher.getNombre_completo().toLowerCase().contains(Nombre);
+            boolean bId = teacher.getNumero_identificacion().toLowerCase().contains(Identificacion);
+            boolean bContacto = teacher.getTelefono().toLowerCase().contains(Contacto);
+
+            return bCorreo && bNombre && bId && bContacto;
+        });
     }
 
     public User selectUser() {
