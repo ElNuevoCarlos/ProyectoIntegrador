@@ -167,7 +167,7 @@ public class UsersController {
         });
     }
 
-    public User selectUser() {
+    private User selectUser() {
     	User user = tableTeachers.getSelectionModel().getSelectedItem();
     	if (user == null) {
     		ViewUtils.AlertWindow(null, null, "Debe primero seleccionar a un docente.", AlertType.ERROR);

@@ -51,7 +51,7 @@
                   <Image url="@../../../resources/img/cerrar-sesion.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#sanciones" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" GridPane.rowIndex="7">
+            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#sanciones" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" translateX="5.0" GridPane.rowIndex="7">
                <image>
                   <Image url="@../../../resources/img/sancion.png" />
                </image>
@@ -71,7 +71,7 @@
                   <Font name="Calibri Light" size="15.0" />
                </font>
             </Text>
-            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#docentes" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" GridPane.rowIndex="4">
+            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#docentes" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" translateX="5.0" GridPane.rowIndex="4">
                <image>
                   <Image url="@../../../resources/img/teachers.png" />
                </image>
