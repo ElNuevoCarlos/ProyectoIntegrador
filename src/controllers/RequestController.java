@@ -25,23 +25,12 @@ import model.Resources;
 import utils.ViewUtils;
 
 public class RequestController {
-    @FXML
-    private Label info;
-
-    @FXML
-    private GridPane gripe;
-
-    @FXML
-    private DatePicker datePicker;
-
-    @FXML
-    private ListView<Block> blocks;
-
-    @FXML
-    private ListView<Block> myBlocks;
-    
-    @FXML
-    private TextArea specsText;
+    @FXML private Label info;
+    @FXML private GridPane gripe;
+    @FXML private DatePicker datePicker;
+    @FXML private ListView<Block> blocks;
+    @FXML private ListView<Block> myBlocks;
+    @FXML private TextArea specsText;
 
     private ArrayList<Block> blocksArray;
     private ObservableList<Block> myBlocksArray;
@@ -49,15 +38,13 @@ public class RequestController {
     private Resources resource;
 
     private Connection database = DataBase.getInstance().getConnection();
+    private SessionManager sessionManager = SessionManager.getInstance();
     private BlockDAO blockDAO = new BlockDAO(database);
     private LoanDAO loanDAO = new LoanDAO(database);
     
     private LocalDate  date;
-    
-    private SessionManager sessionManager = SessionManager.getInstance();
 
-    @FXML
-    public void initialize() {
+    @FXML public void initialize() {
         Object dato = Main.datoGlobal;
         if (dato instanceof Resources) {
             resource = (Resources) dato;
@@ -128,8 +115,7 @@ public class RequestController {
         });
     }
     
-    @FXML
-    void handleReserve() {
+    @FXML void handleReserve() {
     	if (date == null || myBlocksArray.isEmpty()) {
     		ViewUtils.AlertWindow(
     			    "Campos incompletos",
@@ -166,8 +152,7 @@ public class RequestController {
 
     }
     
-    @FXML
-    void handleReturn() {
+    @FXML void handleReturn() {
     	ViewUtils.cargarGrid("/views/RequestConsultation.fxml", Main.rootLayout);
     }
 

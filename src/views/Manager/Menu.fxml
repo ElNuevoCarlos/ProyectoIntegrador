@@ -101,6 +101,23 @@
                   <Font name="Calibri Light" size="15.0" />
                </font>
             </Text>
+            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#prestamos" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" translateX="5.0" GridPane.rowIndex="10">
+               <image>
+                  <Image url="@../../../resources/img/persona-de-libre-dedicacion.png" />
+               </image>
+            </ImageView>
+            <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="8" GridPane.rowSpan="2" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="11" GridPane.rowSpan="2" />
+            <Text fill="WHITE" onMouseClicked="#prestamos" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Prestamos" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10">
+               <font>
+                  <Font name="Calibri Light Italic" size="15.0" />
+               </font>
+            </Text>
+            <Text fill="#c6c6c6" onMouseClicked="#prestamos" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona y solicita Prestamos" translateX="15.0" translateY="25.0" wrappingWidth="136.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Calibri Light" size="15.0" />
+               </font>
+            </Text>
          </children>
       </GridPane>
    </left>
