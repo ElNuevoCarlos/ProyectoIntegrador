@@ -32,50 +32,24 @@ import utils.ViewUtils;
 
 public class RequestConsultationController {
 
-    @FXML
-    private TextField buildingText;
+    @FXML private TextField buildingText;
 
-    @FXML
-    private TableColumn<Resources, String> typeCapacityColumn;
+    @FXML private TableColumn<Resources, String> typeCapacityColumn;
 
-    @FXML
-    private TextField capacityText;
+    @FXML private TextField capacityText;
 
-    @FXML
-    private Button filterButton;
-
-    @FXML
-    private TextField flatText;
-
-    @FXML
-    private GridPane gripe;
-
-    @FXML
-    private TableColumn<Resources, String> locationTrademarkColumn;
-
-    @FXML
-    private ContextMenu menuBuilding;
-
-    @FXML
-    private ContextMenu menuFlat;
-
-    @FXML
-    private ContextMenu menuName;
-
-    @FXML
-    private ContextMenu menuCapacity;
-
-    @FXML
-    private TableColumn<Resources, String> nameColumn;
-
-    @FXML
-    private TextField nameText;
-
-    @FXML
-    private TableView<Resources> tableResources;
-
-    @FXML
-    private Label title;
+    @FXML private Button filterButton;
+    @FXML private TextField flatText;
+    @FXML private GridPane gripe;
+    @FXML private TableColumn<Resources, String> locationTrademarkColumn;
+    @FXML private ContextMenu menuBuilding;
+    @FXML private ContextMenu menuFlat;
+    @FXML private ContextMenu menuName;
+    @FXML private ContextMenu menuCapacity;
+    @FXML private TableColumn<Resources, String> nameColumn;
+    @FXML private TextField nameText;
+    @FXML private TableView<Resources> tableResources;
+    @FXML private Label title;
     
     ObservableList<Resources> resources = FXCollections.observableArrayList();
     
@@ -176,7 +150,6 @@ public class RequestConsultationController {
     	contextualAutocomplete(buildingText, menuBuilding, filter.Options("EDIFICIO", "UBICACION", ""));
     	contextualAutocomplete(capacityText, menuCapacity, filter.Options("CAPACIDAD", "SALA", ""));
     }
-    
     
     void contextualAutocomplete(TextField textField, ContextMenu suggestionsMenu, List<String> options) {	
         textField.textProperty().addListener((obs, oldText, newText) -> {

@@ -18,7 +18,6 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
         this.connection = connection;
     }
 
-
 	public ArrayList<LoanTable> MyLoansView(Long idUser, Boolean type, StringBuilder second) {
         ArrayList<LoanTable> loansView = new ArrayList<>();
         String query;

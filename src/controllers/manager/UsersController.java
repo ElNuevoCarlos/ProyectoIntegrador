@@ -24,7 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -33,8 +32,6 @@ import utils.ViewUtils;
 
 
 public class UsersController {
-    @FXML private BorderPane rootPane;
-    
     @FXML private TextField correoField, nombreField, identificacionField, contactoField;
     @FXML private TableView<User> tableTeachers;
     @FXML private TableColumn<User, String> nombre;
