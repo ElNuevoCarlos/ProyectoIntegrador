@@ -138,10 +138,7 @@ public class UsersController {
         
 		tableTeachers.setItems(teacher);
     }
-    @FXML public void docentes() {
-    	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
-    }
-    
+
     public User selectUser() {
     	User user = tableTeachers.getSelectionModel().getSelectedItem();
     	if (user == null) {
@@ -165,7 +162,7 @@ public class UsersController {
         			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
         			user.getRol(), user.getPassword(), user.getId());
     		Main.datoGlobal = user;
-    		ViewUtils.cargarGrid("/views/Manager/Sanction.fxml", Main.rootLayout);
+    		ViewUtils.cargarGrid("/views/Manager/SanctionUser.fxml", Main.rootLayout);
     	}
     }
     
@@ -350,24 +347,25 @@ public class UsersController {
 	        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
 	        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 	        
-	        
 	        dialog.setResultConverter(dialogButton -> {
 	            if (dialogButton == saveButtonType) {
 	            	String rol = rolField.getText().trim();
+	            	String roleUser = user.getRol();
 	            	
-	            	if (rol.equals("ENCARGADO")) {
-	            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
-	            		return null;
+	            	if (!roleUser.equals(rol)) {
+		            	if (rol.equals("ENCARGADO")) {
+		            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
+		            		return null;
+		            	}
+		            	else if (rol.equals("SUPERENCARGADO")) {
+		            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Super Encargados", AlertType.ERROR);
+		            		return null;
+		            	}
+		            	
 	            	}
-	            	else if (rol.equals("SUPERENCARGADO")) {
-	            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Super Encargados", AlertType.ERROR);
-	            		return null;
-	            	}
-	            	
-	            	
+	            	String programa = programaField.getText().trim();
 	                String name = nameField.getText().trim();
 	                String email = emailField.getText().trim();
-	                String programa = programaField.getText().trim();
 	                String telefono = telefonoField.getText().trim();
 	                String contraseña = passwordField.getText().trim();
 	                
@@ -420,10 +418,4 @@ public class UsersController {
 	        }
     	}
     }
-    @FXML public void goToBack() {
-        Stage currentStage = (Stage) rootPane.getScene().getWindow();
-        currentStage.close();
-        ViewUtils.loadView("/views/Login.fxml");
-    }
-
 }
