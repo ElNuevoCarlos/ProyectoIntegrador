@@ -350,7 +350,6 @@ public class UsersController {
 	        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
 	        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 	        
-	        
 	        dialog.setResultConverter(dialogButton -> {
 	            if (dialogButton == saveButtonType) {
 	            	String rol = rolField.getText().trim();
