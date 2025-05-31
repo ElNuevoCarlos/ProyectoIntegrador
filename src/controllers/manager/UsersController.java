@@ -354,20 +354,22 @@ public class UsersController {
 	        dialog.setResultConverter(dialogButton -> {
 	            if (dialogButton == saveButtonType) {
 	            	String rol = rolField.getText().trim();
+	            	String roleUser = user.getRol();
 	            	
-	            	if (rol.equals("ENCARGADO")) {
-	            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
-	            		return null;
+	            	if (!roleUser.equals(rol)) {
+		            	if (rol.equals("ENCARGADO")) {
+		            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
+		            		return null;
+		            	}
+		            	else if (rol.equals("SUPERENCARGADO")) {
+		            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Super Encargados", AlertType.ERROR);
+		            		return null;
+		            	}
+		            	
 	            	}
-	            	else if (rol.equals("SUPERENCARGADO")) {
-	            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Super Encargados", AlertType.ERROR);
-	            		return null;
-	            	}
-	            	
-	            	
+	            	String programa = programaField.getText().trim();
 	                String name = nameField.getText().trim();
 	                String email = emailField.getText().trim();
-	                String programa = programaField.getText().trim();
 	                String telefono = telefonoField.getText().trim();
 	                String contraseña = passwordField.getText().trim();
 	                
