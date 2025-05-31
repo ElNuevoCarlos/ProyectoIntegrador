@@ -43,7 +43,9 @@ public class ManagerTeacherController {
     @FXML public void docentes() {
     	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
     }
-    
+    @FXML public void sanciones() {
+    	ViewUtils.cargarGrid("/views/Manager/Sanction.fxml", rootPane);
+    }
     @FXML public void goToBack() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();

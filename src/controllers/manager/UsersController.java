@@ -138,10 +138,7 @@ public class UsersController {
         
 		tableTeachers.setItems(teacher);
     }
-    @FXML public void docentes() {
-    	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
-    }
-    
+
     public User selectUser() {
     	User user = tableTeachers.getSelectionModel().getSelectedItem();
     	if (user == null) {
@@ -165,7 +162,7 @@ public class UsersController {
         			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
         			user.getRol(), user.getPassword(), user.getId());
     		Main.datoGlobal = user;
-    		ViewUtils.cargarGrid("/views/Manager/Sanction.fxml", Main.rootLayout);
+    		ViewUtils.cargarGrid("/views/Manager/SanctionUser.fxml", Main.rootLayout);
     	}
     }
     
@@ -421,10 +418,4 @@ public class UsersController {
 	        }
     	}
     }
-    @FXML public void goToBack() {
-        Stage currentStage = (Stage) rootPane.getScene().getWindow();
-        currentStage.close();
-        ViewUtils.loadView("/views/Login.fxml");
-    }
-
 }
