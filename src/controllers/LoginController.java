@@ -92,6 +92,7 @@ public class LoginController {
             passwordview.setVisible(true);
             newAccount.setVisible(false);
             hyperlink.setText("¿Acaso has olvidado tú contraseña?");
+            sessionManager.setUser(null, Name, null, Email);
             hyperlink.setOnAction(event -> {
                 Stage currentStage = (Stage) rootPane.getScene().getWindow();
                 currentStage.close();

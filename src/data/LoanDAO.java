@@ -135,7 +135,85 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 	}
 
 	@Override
-	public boolean update(Loan entity) {
+	public boolean update(Loan loan) {
+		
+		StringBuilder sqlDetele = new StringBuilder("DELETE FROM PRESTAMO_BLOQUE WHERE ID_PRESTAMO = ? AND ID_BLOQUE IN (\")");
+        String queryLoan = "INSERT INTO PRESTAMO (ID, FECHA, ESPECIFICACIONES, ID_SALA, ID_USUARIO, ID_EQUIPO, ESTADO) " +
+                              "VALUES (SEQ_PRESTAMO.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+        String queryLoanBlock = "INSERT INTO PRESTAMO_BLOQUE (ID_PRESTAMO, ID_BLOQUE) VALUES (?, ?)";
+        
+        
+        for (Block block : loan.getBlocks()) {
+        	
+        }
+        for (int i = 0; i < loan.getBlocks().gt.size(); i++) {
+        	sqlDetele.append("?");
+            if (i < idsBloque.size() - 1) {
+                sql.append(",");
+            }
+        }
+        sql.append(")");
+
+        try {
+            connection.setAutoCommit(false); // Inicia la transacción
+
+            Long idLoan = null;
+
+            // Insertamos en PERSONA y obtenemos la clave generada
+            try (PreparedStatement pstmtPersona = connection.prepareStatement(queryLoan,new String[] { "ID" })) {
+
+                pstmtPersona.setDate(1, java.sql.Date.valueOf(loan.getDate()));
+                pstmtPersona.setString(2, loan.getSpecs());
+                if (loan.getIdHall() != null) {
+                    pstmtPersona.setLong(3, loan.getIdHall());
+                } else {
+                    pstmtPersona.setNull(3, java.sql.Types.BIGINT);
+                }
+                pstmtPersona.setLong(4, loan.getIdUser());
+                if (loan.getIdEquipment() != null) {
+                    pstmtPersona.setLong(5, loan.getIdEquipment());
+                } else {
+                    pstmtPersona.setNull(5, java.sql.Types.BIGINT);
+                }
+                pstmtPersona.setString(6, loan.getState());
+
+                int rows = pstmtPersona.executeUpdate();
+                if (rows > 0) {
+                    try (ResultSet rs = pstmtPersona.getGeneratedKeys()) {
+                        if (rs.next()) {
+                        	idLoan = rs.getLong(1);
+                        }
+                    }
+                }
+            }
+
+            if (idLoan != null) {
+                try (PreparedStatement pstmtBlock = connection.prepareStatement(queryLoanBlock)) {
+                    for (Block block : loan.getBlocks()) {
+                        pstmtBlock.setLong(1, idLoan);
+                        pstmtBlock.setLong(2, block.getId());
+                        pstmtBlock.executeUpdate();
+                    }
+                }
+            }
+
+            connection.commit(); // Confirmamos la transacción
+            System.out.println("Prestamo y bloques insertados correctamente.");
+        } catch (SQLException e) {
+            try {
+                connection.rollback(); // Revertimos si hay error
+                System.out.println("Error al insertar, se hizo rollback.");
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.setAutoCommit(true); // Restauramos autocommit
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 		return false;
 		// TODO Auto-generated method stub
 		

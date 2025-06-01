@@ -73,7 +73,6 @@ public class UsersController {
         	Boolean verifyUpdate = userDao.update(user);
         	if (!verifyUpdate) user.setNombre_completo(name);
         	else ViewUtils.AlertWindow(null, null, "El nombre del docente fue cambiado con exito.", AlertType.INFORMATION);
-        	
         });
         
         correo.setOnEditCommit(event -> {

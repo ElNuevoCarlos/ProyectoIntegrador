@@ -68,16 +68,59 @@ public class PasswordRecoveryController {
 
 	    // Después enviamos el correo en segundo plano
 	    String affair = "Tu código de cambio de contraseña es " + generatedCode;
-	    String body = "Un paso más para cambiar tu contraseña\n\n" +
-	            "Hola, " + Name + ":\n" +
-	            "Hemos recibido tu solicitud de cambio de contraseña. Introduce este código en TECHLEND:\n" +
-	            generatedCode + "\n" +
-	            "No compartas este código con nadie.\n\n" +
-	            "Si alguien solicita este código\n" +
-	            "No compartas este código con nadie, especialmente si te dice que trabaja para TECHLEND. Puede que estén intentando piratear tu cuenta.";
+	    String htmlBody = String.format("""
+	    		<!DOCTYPE html>
+	    		<html>
+	    		<head>
+	    		  <meta charset="UTF-8">
+	    		  <title>Confirmación de cambio de contraseña</title>
+	    		</head>
+	    		<body style="margin:0;padding:0;font-family:'Segoe UI',Roboto,sans-serif;background-color:#f5f6fa;">
+
+	    		  <div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:12px;overflow:hidden;">
+	    		    <div style="background-color:#0b66ff;padding:30px;text-align:center;">
+	    		      <img src="https://img.icons8.com/ios-filled/100/ffffff/security-checked.png" alt="icono" style="width:60px;height:60px;" />
+	    		      <h1 style="color:#ffffff;margin-top:10px;font-size:24px;">TECHLEND</h1>
+	    		    </div>
+
+	    		    <div style="padding:40px 30px;text-align:center;">
+	    		      <h2 style="color:#222;font-size:22px;margin-bottom:20px;">Confirma tu cambio de contraseña</h2>
+	    		      <p style="color:#555;font-size:16px;">Hola, <strong>%s 👋</strong></p>
+	    		      <p style="color:#777;font-size:15px;">Introduce este código en la aplicación para continuar:</p>
+
+	    		      <div style="margin:30px auto;width:max-content;background:linear-gradient(90deg,#7ee8fa,#80ff72,#8ec5fc);padding:4px;border-radius:14px;">
+	    		        <div style="padding:12px 30px;background-color:white;border-radius:10px;">
+	    		          <span style="font-size:28px;color:#0b66ff;font-weight:bold;letter-spacing:5px;">%s</span>
+	    		        </div>
+	    		      </div>
+
+	    		      <p style="color:#999;font-size:14px;">Este código expira en 10 minutos.</p>
+
+	    		      <hr style="margin:30px 0;border:none;border-top:1px solid #eee;">
+
+	    		      <p style="font-size:14px;color:#444;">¿No fuiste tú? 
+	    		        <a href="mailto:techlend27@gmail.com?subject=Reporte%%20de%%20cambio%%20de%%20contraseña%%20no%%20solicitado&body=Hola%%2C%%20quiero%%20reportar%%20un%%20problema%%20con%%20el%%20cambio%%20de%%20contraseña." 
+	    		           style="color:#0b66ff;text-decoration:none;">
+	    		          Contáctanos aquí.
+	    		        </a>
+	    		      </p>
+	    		    </div>
+
+	    		    <div style="background-color:#1e1e1e;padding:20px;text-align:center;color:#999;font-size:13px;border-bottom-left-radius:12px;border-bottom-right-radius:12px;">
+	    		      © 2025 TECHLEND. Todos los derechos reservados.<br>
+	    		      Este correo fue generado automáticamente. No respondas a este mensaje.
+	    		    </div>
+	    		  </div>
+
+	    		</body>
+	    		</html>
+	    		""", Name, generatedCode);
+
+
+
 
 	    CompletableFuture.runAsync(() -> {
-	        EmailService.sendMessage(Email, affair, body);
+	        EmailService.sendMessage(Email, affair, htmlBody);
 	    });
 	}
 

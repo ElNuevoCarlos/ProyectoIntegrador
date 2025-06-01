@@ -61,7 +61,7 @@
          </contextMenu></TextField>
       <Label text="Edicion de prestamo" GridPane.columnIndex="3" />
       <ListView fx:id="myBlocks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-      <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+      <TextArea fx:id="specs" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="7" GridPane.rowIndex="4" />
       <TableView fx:id="tableResources" focusTraversable="false" prefHeight="84.0" prefWidth="521.0" styleClass="tabla-centrada" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="2">
          <columns>
             <TableColumn fx:id="nameColumn" prefWidth="91.199951171875" text="SALA" />
@@ -72,6 +72,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="filterButton" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFilter" prefHeight="57.0" prefWidth="114.0" text="Filtrar" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+      <Button focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFilter" prefHeight="57.0" prefWidth="114.0" text="Filtrar" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+      <Button focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="57.0" prefWidth="114.0" text="Actualizar" GridPane.columnIndex="9" GridPane.rowIndex="4" />
    </children>
 </GridPane>

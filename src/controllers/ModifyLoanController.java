@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,9 @@ public class ModifyLoanController {
 
 	@FXML
 	private TextArea info;
+	
+	@FXML
+	private TextArea specs;
 	
 	@FXML
 	private ListView<Block> blocks;
@@ -106,7 +110,10 @@ public class ModifyLoanController {
 	private ObservableList<Block> availableBlocks = FXCollections.observableArrayList();
 	private ObservableList<Block> selectedBlocks = FXCollections.observableArrayList();
 	
-	ArrayList<Block> blocksArray;
+	private ArrayList<Block> blocksArray;
+	private ArrayList<Block> myBlocksInitial;
+	
+	
 	
 	@FXML
 	public void initialize() {
@@ -114,8 +121,10 @@ public class ModifyLoanController {
 	    if (dato instanceof LoanTable) {
 	    	loan = (LoanTable) dato;
 	    }
+	    specs.setText(loan.getSpecs());
 	    datePicker.setValue(loan.getDate());
 	    blocksArray = blockDAO.findBlocksByLoanId(loan.getId());
+	    myBlocksInitial = new ArrayList<>(blocksArray);
 	    selectedBlocks.setAll(blocksArray);
 	    myBlocks.setItems(selectedBlocks);
 	    if (!"0".equals(loan.getCapacity())) {
@@ -274,6 +283,20 @@ public class ModifyLoanController {
             	fillTable(resourcesDAO.ResourcesView(false, query), "DISPOSITIVO", "TIPO DISPOSITIVO", "MARCA");
             } 
     	}
+	}
+	
+	@FXML
+	void handleUpdate() {
+		if(resource == null) {
+			System.out.println(myBlocksInitial);
+			System.out.println(selectedBlocks);			
+			List<Block> newBlocks = new ArrayList<>(selectedBlocks);
+			newBlocks.removeAll(myBlocksInitial);
+			System.out.println("Nuevos "+ newBlocks);
+			List<Block> deletedBlocks = new ArrayList<>(myBlocksInitial);
+			deletedBlocks.removeAll(selectedBlocks);
+			System.out.println("Eliminados "+ deletedBlocks);
+		}
 	}
 	
     void fillTable(ArrayList<Resources> listResource, String name, String typeCapacity, String locationTrademark) {
