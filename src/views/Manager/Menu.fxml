@@ -51,6 +51,11 @@
                   <Image url="@../../../resources/img/cerrar-sesion.png" />
                </image>
             </ImageView>
+            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#sanciones" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" translateX="5.0" GridPane.rowIndex="7">
+               <image>
+                  <Image url="@../../../resources/img/sancion.png" />
+               </image>
+            </ImageView>
             <ImageView fitHeight="72.0" fitWidth="75.0" onMouseClicked="#userInfo" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" translateX="5.0" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../../resources/img/account.png" />
@@ -66,17 +71,22 @@
                   <Font name="Calibri Light" size="15.0" />
                </font>
             </Text>
-            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#docentes" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" GridPane.rowIndex="4">
+            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#docentes" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" translateX="5.0" GridPane.rowIndex="4">
                <image>
                   <Image url="@../../../resources/img/teachers.png" />
                </image>
             </ImageView>
-            <Text fx:id="username1" fill="WHITE" onMouseClicked="#docentes" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Docentes" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <Text fill="WHITE" onMouseClicked="#sanciones" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Sanciones" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                <font>
                   <Font name="Calibri Light Italic" size="15.0" />
                </font>
             </Text>
-            <Text fx:id="role1" fill="#c6c6c6" onMouseClicked="#docentes" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona los docentes" translateY="25.0" wrappingWidth="136.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <Text fill="WHITE" onMouseClicked="#docentes" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Docentes" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Calibri Light Italic" size="15.0" />
+               </font>
+            </Text>
+            <Text fill="#c6c6c6" onMouseClicked="#docentes" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona los docentes" translateY="25.0" wrappingWidth="136.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>
@@ -85,6 +95,29 @@
                </GridPane.margin>
             </Text>
             <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2" />
+            <Text fill="#c6c6c6" onMouseClicked="#sanciones" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona las sanciones" translateY="25.0" wrappingWidth="136.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Calibri Light" size="15.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="66.0" fitWidth="120.0" onMouseClicked="#prestamos" pickOnBounds="true" preserveRatio="true" styleClass="Managerbutton" translateX="5.0" GridPane.rowIndex="10">
+               <image>
+                  <Image url="@../../../resources/img/persona-de-libre-dedicacion.png" />
+               </image>
+            </ImageView>
+            <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="8" GridPane.rowSpan="2" />
+            <Separator prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="11" GridPane.rowSpan="2" />
+            <Text fill="WHITE" onMouseClicked="#prestamos" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Prestamos" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10">
+               <font>
+                  <Font name="Calibri Light Italic" size="15.0" />
+               </font>
+            </Text>
+            <Text fill="#c6c6c6" onMouseClicked="#prestamos" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Managerbutton" text="Gestiona y solicita Prestamos" translateX="15.0" translateY="25.0" wrappingWidth="136.59765625" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="Calibri Light" size="15.0" />
+               </font>
+            </Text>
          </children>
       </GridPane>
    </left>

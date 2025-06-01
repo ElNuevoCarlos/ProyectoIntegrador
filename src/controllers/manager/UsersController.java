@@ -8,6 +8,7 @@ import data.DataBase;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert.AlertType;
@@ -23,7 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -32,7 +32,7 @@ import utils.ViewUtils;
 
 
 public class UsersController {
-    @FXML private BorderPane rootPane;
+    @FXML private TextField correoField, nombreField, identificacionField, contactoField;
     @FXML private TableView<User> tableTeachers;
     @FXML private TableColumn<User, String> nombre;
     @FXML private TableColumn<User, String> correo;
@@ -40,6 +40,8 @@ public class UsersController {
     @FXML private TableColumn<User, String> programa;
     @FXML private TableColumn<User, String> identificacion;
     @FXML private TableColumn<User, String> contacto;
+    
+    private FilteredList<User> listaFiltrada;
   
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
@@ -72,7 +74,9 @@ public class UsersController {
         	user.setNombre_completo(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
         	if (!verifyUpdate) user.setNombre_completo(name);
-        	else ViewUtils.AlertWindow(null, null, "El nombre del docente fue cambiado con exito.", AlertType.INFORMATION);
+        	else {
+        		ViewUtils.AlertWindow(null, null, "El nombre del docente fue cambiado con exito.", AlertType.INFORMATION);
+        	}
         });
         
         correo.setOnEditCommit(event -> {
@@ -135,13 +139,33 @@ public class UsersController {
         	else ViewUtils.AlertWindow(null, null, "El contacto del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
-		tableTeachers.setItems(teacher);
-    }
-    @FXML public void docentes() {
-    	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
+	    listaFiltrada = new FilteredList<>(teacher, p -> true);
+
+		correoField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		nombreField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		identificacionField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		contactoField.textProperty().addListener((obs, oldVal, newVal) -> filtro());
+		
+		tableTeachers.setItems(listaFiltrada);
     }
     
-    public User selectUser() {
+    private void filtro() {
+        String Correo = correoField.getText().toLowerCase();
+        String Nombre = nombreField.getText().toLowerCase();
+        String Identificacion = identificacionField.getText().toLowerCase();
+        String Contacto = contactoField.getText().toLowerCase();
+
+        listaFiltrada.setPredicate(teacher -> {
+            boolean bCorreo = teacher.getCorreo_institucional().toLowerCase().contains(Correo);
+            boolean bNombre = teacher.getNombre_completo().toLowerCase().contains(Nombre);
+            boolean bId = teacher.getNumero_identificacion().toLowerCase().contains(Identificacion);
+            boolean bContacto = teacher.getTelefono().toLowerCase().contains(Contacto);
+
+            return bCorreo && bNombre && bId && bContacto;
+        });
+    }
+
+    private User selectUser() {
     	User user = tableTeachers.getSelectionModel().getSelectedItem();
     	if (user == null) {
     		ViewUtils.AlertWindow(null, null, "Debe primero seleccionar a un docente.", AlertType.ERROR);
@@ -164,7 +188,7 @@ public class UsersController {
         			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
         			user.getRol(), user.getPassword(), user.getId());
     		Main.datoGlobal = user;
-    		ViewUtils.cargarGrid("/views/Manager/Sanction.fxml", Main.rootLayout);
+    		ViewUtils.cargarGrid("/views/Manager/SanctionUser.fxml", Main.rootLayout);
     	}
     }
     
@@ -349,24 +373,25 @@ public class UsersController {
 	        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
 	        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 	        
-	        
 	        dialog.setResultConverter(dialogButton -> {
 	            if (dialogButton == saveButtonType) {
 	            	String rol = rolField.getText().trim();
+	            	String roleUser = user.getRol();
 	            	
-	            	if (rol.equals("ENCARGADO")) {
-	            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
-	            		return null;
+	            	if (!roleUser.equals(rol)) {
+		            	if (rol.equals("ENCARGADO")) {
+		            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
+		            		return null;
+		            	}
+		            	else if (rol.equals("SUPERENCARGADO")) {
+		            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Super Encargados", AlertType.ERROR);
+		            		return null;
+		            	}
+		            	
 	            	}
-	            	else if (rol.equals("SUPERENCARGADO")) {
-	            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Super Encargados", AlertType.ERROR);
-	            		return null;
-	            	}
-	            	
-	            	
+	            	String programa = programaField.getText().trim();
 	                String name = nameField.getText().trim();
 	                String email = emailField.getText().trim();
-	                String programa = programaField.getText().trim();
 	                String telefono = telefonoField.getText().trim();
 	                String contraseña = passwordField.getText().trim();
 	                
@@ -419,10 +444,4 @@ public class UsersController {
 	        }
     	}
     }
-    @FXML public void goToBack() {
-        Stage currentStage = (Stage) rootPane.getScene().getWindow();
-        currentStage.close();
-        ViewUtils.loadView("/views/Login.fxml");
-    }
-
 }

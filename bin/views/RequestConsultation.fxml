@@ -59,12 +59,12 @@
             <Font name="Candara Light" size="18.0" />
          </font>
       </Label>
-      <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="BOTTOM">
+      <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleDevices" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="BOTTOM">
          <image>
             <Image url="@../../resources/img/dispositivos.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
+      <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleHall" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
          <image>
             <Image url="@../../resources/img/salas.png" />
          </image>

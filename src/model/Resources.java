@@ -7,12 +7,12 @@ public class Resources {
 
     public Resources(Long idResource, String name, String locationTrademark, String typeCapacity, String description, Boolean typeResource) {
         super();
-        this.idResource = idResource;
-        this.name = name;
-        this.locationTrademark = locationTrademark;
-        this.typeCapacity = typeCapacity;
-        this.description = description;
-        this.typeResource = typeResource;
+        this.idResource = idResource; // ID SALA, ID DISPOSITIVO
+        this.name = name; // NOMBRE DISPOSITIVO, NOMBRE SALA
+        this.locationTrademark = locationTrademark; //UBICACIÓN SALA, MARCA DEL DISPOSITIVO
+        this.typeCapacity = typeCapacity; // TIPO DISPOSITIVO, CAPACIDAD SALA
+        this.description = description; // DESCRIPCIÓN SALA, DISPOSITIVO
+        this.typeResource = typeResource; // SALA, DISPOSITIVO
     }
 
     public Long getIdResource() {

@@ -16,8 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import model.Sanction;
 import model.User;
-import utils.ViewUtils;
-
 
 public class SanctionUser {
 
@@ -89,10 +87,7 @@ public class SanctionUser {
 
 		tableSanctions.setItems(sanctions);
     }
-    @FXML public void docentes() {
-    	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", Main.rootLayout);
-    }
-    
+
     @FXML public void añadir() {
     	
     }
@@ -104,8 +99,4 @@ public class SanctionUser {
     @FXML public void eliminar() {
 
     }
-    @FXML public void goToBack() {
-    	ViewUtils.cargarGrid("/views/Manager/Menu.fxml", Main.rootLayout);
-    }
-
 }

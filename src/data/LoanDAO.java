@@ -7,9 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javafx.collections.ObservableList;
 import model.Block;
 import model.Loan;
 import model.LoanTable;
+import model.Loans;
 
 public class LoanDAO implements CRUD_operation<Loan, String>{
     private Connection connection;
@@ -17,7 +20,6 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
     public LoanDAO(Connection connection) {
         this.connection = connection;
     }
-
 
 	public ArrayList<LoanTable> MyLoansView(Long idUser, Boolean type, StringBuilder second) {
         ArrayList<LoanTable> loansView = new ArrayList<>();
@@ -127,11 +129,85 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
             }
         }
     }
+	
+	public ArrayList<Loans> fetchLoandTwo() {
+        ArrayList<Loans> loans = new ArrayList<>();
+        
+        String query = "SELECT p.ID, s.NOMBRE, us.CORREO_INSTITUCIONAL, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES"
+                  + " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
+        		  + "JOIN USUARIO us ON p.ID_USUARIO = us.ID "
+                  + "JOIN UBICACION u ON s.ID_UBICACION = u.ID ";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+            	Long id = rs.getLong(1); 
+                String nombreSala = rs.getString(2); 
+                String correoUsuario = rs.getString(3);
+                Timestamp dateTimestamp = rs.getTimestamp(4); 
+                String location = rs.getString(5);
+                String state = rs.getString(6); 
+                String specs = rs.getString(7);
+                
+                LocalDate date = dateTimestamp.toLocalDateTime().toLocalDate();
+                
+                Loans loan = new Loans(id,
+                		nombreSala,
+                		location,
+                		correoUsuario,
+                		date,
+                		specs,
+                		state);
+                
+                loans.add(loan);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return loans;
+	}
+
+
+	public ArrayList<LoanTable> fetchLoand(Boolean type) {
+        ArrayList<LoanTable> loansView = new ArrayList<>();
+        String query;
+
+        if (type) {
+            query = "SELECT p.ID, s.NOMBRE, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES, s.CAPACIDAD"
+                  + " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
+                  + "JOIN UBICACION u ON s.ID_UBICACION = u.ID ";
+        } else {
+            query = "SELECT p.ID, e.NOMBRE, p.FECHA, e.TIPO_DISPOSITIVO, p.ESTADO, p.ESPECIFICACIONES, NULL "
+                  + "FROM PRESTAMO p JOIN EQUIPO e ON p.ID_EQUIPO = e.ID ";
+        }
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Long id = rs.getLong(1); // ID
+                String name = rs.getString(2); // Nombre
+                Timestamp ts = rs.getTimestamp(3); // FECHA
+                String locationType = rs.getString(4); // Ubicación
+                String state = rs.getString(5); // Estado
+                String specs = rs.getString(6); // Especificaciones
+                String capacity = String.valueOf(rs.getInt(7)); // Capacidad
+                
+                LocalDate date = ts.toLocalDateTime().toLocalDate();
+                
+                LoanTable loanView = new LoanTable(id, name, date,locationType, state, specs, capacity);
+                loansView.add(loanView);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return loansView;
+	}
 
 	@Override
 	public ArrayList<Loan> fetch() {
-		// TODO Auto-generated method stub
-		return null;
+        return null;
 	}
 
 	@Override
