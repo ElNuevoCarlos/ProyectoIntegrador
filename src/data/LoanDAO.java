@@ -7,9 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javafx.collections.ObservableList;
 import model.Block;
 import model.Loan;
 import model.LoanTable;
+import model.Loans;
 
 public class LoanDAO implements CRUD_operation<Loan, String>{
     private Connection connection;
@@ -126,6 +129,45 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
             }
         }
     }
+	
+	public ArrayList<Loans> fetchLoandTwo() {
+        ArrayList<Loans> loans = new ArrayList<>();
+        
+        String query = "SELECT p.ID, s.NOMBRE, us.CORREO_INSTITUCIONAL, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES"
+                  + " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
+        		  + "JOIN USUARIO us ON p.ID_USUARIO = us.ID "
+                  + "JOIN UBICACION u ON s.ID_UBICACION = u.ID ";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+            	Long id = rs.getLong(1); 
+                String nombreSala = rs.getString(2); 
+                String correoUsuario = rs.getString(3);
+                Timestamp dateTimestamp = rs.getTimestamp(4); 
+                String location = rs.getString(5);
+                String state = rs.getString(6); 
+                String specs = rs.getString(7);
+                
+                LocalDate date = dateTimestamp.toLocalDateTime().toLocalDate();
+                
+                Loans loan = new Loans(id,
+                		nombreSala,
+                		location,
+                		correoUsuario,
+                		date,
+                		specs,
+                		state);
+                
+                loans.add(loan);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return loans;
+	}
+
 
 	public ArrayList<LoanTable> fetchLoand(Boolean type) {
         ArrayList<LoanTable> loansView = new ArrayList<>();
@@ -133,7 +175,7 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 
         if (type) {
             query = "SELECT p.ID, s.NOMBRE, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES, s.CAPACIDAD"
-                  + "FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
+                  + " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
                   + "JOIN UBICACION u ON s.ID_UBICACION = u.ID ";
         } else {
             query = "SELECT p.ID, e.NOMBRE, p.FECHA, e.TIPO_DISPOSITIVO, p.ESTADO, p.ESPECIFICACIONES, NULL "

@@ -86,7 +86,6 @@
             <TableColumn fx:id="docentePrestado" prefWidth="75.0" text="Docente" />
             <TableColumn fx:id="especificacionesPrestado" prefWidth="75.0" text="Especificaciones" />
             <TableColumn fx:id="fechaPrestado" prefWidth="75.0" text="Entregada" />
-            <TableColumn fx:id="devuelvePrestado" prefWidth="75.0" text="Devuelve" />
             <TableColumn fx:id="estadoPrestado" prefWidth="75.0" text="Estado" />
          </columns>
          <columnResizePolicy>
