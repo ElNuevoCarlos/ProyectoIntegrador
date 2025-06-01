@@ -1,8 +1,6 @@
 package controllers;
 
-import java.sql.Connection;
 import application.Main;
-import data.DataBase;
 import data.SessionManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -18,24 +16,14 @@ import utils.ViewUtils;
 
 
 public class MenuTeacherController {
-	@FXML
-	private BorderPane rootPane;
-	@FXML
-	private Pane pane;
-	@FXML
-	private ImageView userImage, myLoansImage, requestConsultImage, closeSession;
-	@FXML
-	private Hyperlink editUser;
-	@FXML
-	private Text myLoans, requestConsult;
-	@FXML
-	private Separator separator1, separator2;
+	@FXML private BorderPane rootPane;
+	@FXML private Pane pane;
+	@FXML private ImageView userImage, myLoansImage, requestConsultImage, closeSession;
+	@FXML private Hyperlink editUser;
+	@FXML private Text myLoans, requestConsult;
+	@FXML private Separator separator1, separator2;
 
-	
-	private Connection database = DataBase.getInstance().getConnection();
-
-	@FXML
-	public void initialize() {
+	@FXML public void initialize() {
 		rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
 		String[] partes = SessionManager.getInstance().getName().trim().split("\\s+");
 		editUser.setText(partes[0] + " " + partes[1] + "\n" + SessionManager.getInstance().getRole());

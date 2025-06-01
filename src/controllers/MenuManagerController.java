@@ -1,10 +1,6 @@
 package controllers;
 
-import java.sql.Connection;
-
-import data.DataBase;
 import data.SessionManager;
-import data.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,8 +25,6 @@ public class MenuManagerController {
     @FXML private TableColumn<User, String> identificacion;
     @FXML private TableColumn<User, String> contacto;
   
-    private Connection database = DataBase.getInstance().getConnection();
-    private UserDAO userDao = new UserDAO(database);
 	private SessionManager sessionManager = SessionManager.getInstance();
 
     @FXML public void initialize() {

@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import application.Main;
 import data.BlockDAO;
 import data.DataBase;
@@ -39,60 +37,29 @@ import model.Resources;
 import utils.ViewUtils;
 
 public class ModifyLoanController {
-	@FXML
-	private DatePicker datePicker;
+	@FXML private DatePicker datePicker;
 
-	@FXML
-	private TextArea info;
-	
-	@FXML
-	private TextArea specs;
-	
-	@FXML
-	private ListView<Block> blocks;
-	
-	@FXML
-	private TextField nameText;
-	
-	@FXML
-	private TextField buildingText;
-	
-	@FXML
-	private TextField flatText;
-	
-	@FXML
-	private TextField capacityText;
+	@FXML private TextArea info, specs;
 
-    @FXML
-    private ListView<Block> myBlocks;
+	@FXML private ListView<Block> blocks;
+    @FXML private ListView<Block> myBlocks;
     
-    @FXML
-    private TableColumn<Resources, String> typeCapacityColumn;
+	@FXML private TextField nameText, buildingText, flatText, capacityText;
+
+    @FXML private TableView<Resources> tableResources;
+    @FXML private TableColumn<Resources, String> typeCapacityColumn;
+    @FXML private TableColumn<Resources, String> locationTrademarkColumn;
+    @FXML private TableColumn<Resources, String> nameColumn;
     
-    @FXML
-    private TableColumn<Resources, String> locationTrademarkColumn;
+    @FXML private ContextMenu menuName;
+    @FXML private ContextMenu menuCapacity; 
+    @FXML private ContextMenu menuBuilding;
+    @FXML private ContextMenu menuFlat;
     
-    @FXML
-    private TableColumn<Resources, String> nameColumn;
-    
-    @FXML
-    private TableView<Resources> tableResources;
-    
-    @FXML
-    private ContextMenu menuName;
-    
-    @FXML
-    private ContextMenu menuCapacity;
-    
-    @FXML
-    private ContextMenu menuBuilding;
-    
-    @FXML
-    private ContextMenu menuFlat;
-    
-	@FXML
-	private CheckBox enableCheck;
+	@FXML private CheckBox enableCheck;
 	
+	@SuppressWarnings("unused")
+	private LocalDate date;
 	
 	LoanTable loan;
 	
@@ -102,9 +69,7 @@ public class ModifyLoanController {
 	private BlockDAO blockDAO = new BlockDAO(database);
 	
 	private Resources resource = null;
-	
-	private LocalDate date;
-	
+
 	ObservableList<Resources> resources = FXCollections.observableArrayList();
 	
 	private ObservableList<Block> availableBlocks = FXCollections.observableArrayList();
@@ -114,9 +79,7 @@ public class ModifyLoanController {
 	private ArrayList<Block> myBlocksInitial;
 	
 	
-	
-	@FXML
-	public void initialize() {
+	@FXML void initialize() {
 	    Object dato = Main.datoGlobal;
 	    if (dato instanceof LoanTable) {
 	    	loan = (LoanTable) dato;
@@ -247,8 +210,7 @@ public class ModifyLoanController {
 		
 	}
 	
-	@FXML
-	void handleFilter() {
+	@FXML void handleFilter() {
     	String name = nameText.getText().trim();
         StringBuilder query = new StringBuilder();
         String building = buildingText.getText().trim();
@@ -285,8 +247,7 @@ public class ModifyLoanController {
     	}
 	}
 	
-	@FXML
-	void handleUpdate() {
+	@FXML void handleUpdate() {
 		if(resource == null) {
 			System.out.println(myBlocksInitial);
 			System.out.println(selectedBlocks);			

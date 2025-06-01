@@ -1,9 +1,7 @@
 package controllers;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import application.Main;
 import data.DataBase;
 import data.SessionManager;
@@ -24,35 +22,26 @@ import model.User;
 import utils.ViewUtils;
 
 public class MyAccountController {
+	@FXML private Pane pane;
+	@FXML private Hyperlink editUser;
 	
-	@FXML
-	private Pane pane;
-	@FXML
-	private Hyperlink editUser;
+	@FXML private GridPane grip;
 	
-	@FXML
-	private GridPane grip;
-	
-	@FXML
-	private Label nameText, numIdentificationText, tiText, emailText, phoneText, roleText, pro_depText, password1Text,
+	@FXML private Label nameText, numIdentificationText, tiText, emailText, phoneText, roleText, pro_depText, password1Text,
 			password2Text, title;
 	
-	@FXML
-	private TextField name, numIdentification, email, phone, pro_dep, password1, password2;
+	@FXML private TextField name, numIdentification, email, phone, pro_dep, password1, password2;
 	
-	@FXML
-	private ComboBox<String> ti, role;
+	@FXML private ComboBox<String> ti, role;
 	
-	@FXML
-	private Button save;
+	@FXML private Button save;
 	
 	private Connection database = DataBase.getInstance().getConnection();
 	private UserDAO userDao = new UserDAO(database);
 	private SessionManager sessionManager = SessionManager.getInstance();
 	private ArrayList<String> otherData;
 	
-	@FXML
-	public void initialize() {
+	@FXML void initialize() {
 	    Object dato = Main.datoGlobal;
 	    pane = Main.pane;
 	    if (dato instanceof Hyperlink) {
@@ -74,8 +63,7 @@ public class MyAccountController {
 		pro_dep.setText(otherData.get(3));
 	}
 	
-	@FXML
-	void handleSave() {
+	@FXML void handleSave() {
 		String Name = name.getText().trim();
 		String TI = ti.getValue() != null ? ti.getValue().trim() : "";
 		String NumIdentification = numIdentification.getText().trim();
