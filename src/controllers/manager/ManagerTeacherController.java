@@ -14,6 +14,8 @@ import utils.ViewUtils;
 
 
 public class ManagerTeacherController {
+	public static ManagerTeacherController instance;
+	
     @FXML private BorderPane rootPane;
     @FXML private Text username, role;
     @FXML private ImageView menuImage;
@@ -27,9 +29,10 @@ public class ManagerTeacherController {
 
 	private SessionManager sessionManager = SessionManager.getInstance();
 
-    @FXML public void initialize() {
+    @FXML void initialize() {
+    	instance = this;
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
-        
+
 	    String[] partes = sessionManager.getName().split(" ");
 	    String primerNombre = partes[0];
 	    String primerApellido = partes.length > 2 ? partes[partes.length - 2] : partes[1];
@@ -38,20 +41,19 @@ public class ManagerTeacherController {
     	role.setText(sessionManager.getRole());
     	Main.rootLayout = rootPane;
     }
-    
-    @FXML public void userInfo() {
+    @FXML void userInfo() {
     	ViewUtils.cargarGrid("/views/MyAccount.fxml", rootPane);
     }
-    @FXML public void docentes() {
+    @FXML void docentes() {
     	ViewUtils.cargarGrid("/views/Manager/Manager.fxml", rootPane);
     }
-    @FXML public void sanciones() {
+    @FXML void sanciones() {
     	ViewUtils.cargarGrid("/views/Manager/Sanction.fxml", rootPane);
     }
-    @FXML public void prestamos() {
+    @FXML void prestamos() {
     	ViewUtils.cargarGrid("/views/Manager/MenuLoands.fxml", rootPane);
     }
-    @FXML public void goToBack() {
+    @FXML void goToBack() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
         ViewUtils.loadView("/views/Login.fxml");

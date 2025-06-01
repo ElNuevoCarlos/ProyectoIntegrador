@@ -18,7 +18,6 @@ import model.Sanction;
 import model.User;
 
 public class SanctionUser {
-
     @FXML private Text name, id;
     @FXML private TableView<Sanction> tableSanctions;
     @FXML private TableColumn<Sanction, String> tipo_sancion;
@@ -35,7 +34,7 @@ public class SanctionUser {
     
     User user;
 
-    @FXML public void initialize() {
+    @FXML void initialize() {
 	    Object dato = Main.datoGlobal;
 	    
 	    if (dato instanceof User) {
@@ -88,15 +87,15 @@ public class SanctionUser {
 		tableSanctions.setItems(sanctions);
     }
 
-    @FXML public void añadir() {
+    @FXML void añadir() {
     	
     }
     
-    @FXML public void actualizar() {
+    @FXML void actualizar() {
 
     }
     
-    @FXML public void eliminar() {
+    @FXML void eliminar() {
 
     }
 }

@@ -25,7 +25,7 @@ import model.Resources;
 import utils.ViewUtils;
 
 public class RequestController {
-    @FXML private Label info;
+    @FXML private Label sala, ubicacion, descripcion, capacidad;
     @FXML private GridPane gripe;
     @FXML private DatePicker datePicker;
     @FXML private ListView<Block> blocks;
@@ -51,17 +51,24 @@ public class RequestController {
         }
 
         myBlocksArray = FXCollections.observableArrayList();
+        
         myBlocks.setItems(myBlocksArray);
         if (resource.getTypeResource()) {
-            info.setText("Sala: " + resource.getName() + "\n"
-                    + "Ubicación: " + resource.getLocationTrademark() + "\n"
-                    + "Capacidad: " + resource.getTypeCapacity() + "\n"
-                    + "Descripción: " + resource.getDescription());
+        	sala.setText(resource.getName());
+        	ubicacion.setText(resource.getLocationTrademark());
+        	capacidad.setText(resource.getTypeCapacity()+" Personas");
+        	descripcion.setText(resource.getDescription());
         } else {
+        	sala.setText(resource.getName());
+        	ubicacion.setText(resource.getLocationTrademark());
+        	capacidad.setText(resource.getTypeCapacity());
+        	descripcion.setText(resource.getDescription());
+        	/*
             info.setText("Dispositivo: " + resource.getName() + "\n"
                     + "Marca: " + resource.getLocationTrademark() + "\n"
                     + "Tipo dispositivo: " + resource.getTypeCapacity() + "\n"
                     + "Descripción: " + resource.getDescription());
+                    */
         }
 
 

@@ -1,6 +1,7 @@
 package controllers.manager;
 
 import java.sql.Connection;
+import application.Main;
 import data.DataBase;
 import data.LoanDAO;
 import data.ResourcesDAO;
@@ -11,9 +12,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Loans;
 import model.Resources;
+import utils.ViewUtils;
 
 public class LoandController {
     @FXML private TableView<Loans> tablePrestados;
@@ -30,7 +33,7 @@ public class LoandController {
     @FXML private TableColumn<Resources, String> ubicacionDisponible;
     @FXML private TableColumn<Resources, String> descripcionDisponible;
     
-    @FXML private TextField salaDisponibleField, ubicacionDisponibleField, salaPrestadoField, ubicacionPrestadoField, docentePrestadoField;
+    @FXML private TextField salaDisponibleField, ubicacionDisponibleField, salaPrestadoField, ubicacionPrestadoField, docentePrestadoField, estadoPrestadoField;
     
     private FilteredList<Resources> listaFiltradaDisponible;
     private FilteredList<Loans> listaFiltradaPrestados;
@@ -47,7 +50,6 @@ public class LoandController {
 		for (Resources resource : resourcesDao.ResourcesView(true, new StringBuilder())) { 
 			disponibles.add(resource);
 		}
-		
 		
 		capacidadDisponible.setCellValueFactory(new PropertyValueFactory<>("typeCapacity"));
 		salaDisponible.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -81,8 +83,24 @@ public class LoandController {
 		salaPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
 		ubicacionPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
 		docentePrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
+		estadoPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
 		
 		tablePrestados.setItems(listaFiltradaPrestados);
+    }
+    private void filtroPrestados() {
+        String sala = salaPrestadoField.getText().toLowerCase();
+        String ubicacion = ubicacionPrestadoField.getText().toLowerCase();
+        String email = docentePrestadoField.getText().toLowerCase();
+        String estado = estadoPrestadoField.getText().toLowerCase();
+        
+        listaFiltradaPrestados.setPredicate(resource -> {
+            boolean bSala = resource.getNameHall().toLowerCase().contains(sala);
+            boolean bUbicacion = resource.getLocation().toLowerCase().contains(ubicacion);
+            boolean bEmail = resource.getEmailUser().toLowerCase().contains(email);
+            boolean bEstado = resource.getState().toLowerCase().contains(estado);
+            
+            return bSala && bUbicacion && bEmail && bEstado;
+        });
     }
     
     private void filtroDisponibles() {
@@ -96,19 +114,13 @@ public class LoandController {
             return bSala && bUbicacion;
         });
     }
-    
-    private void filtroPrestados() {
-        String sala = salaPrestadoField.getText().toLowerCase();
-        String ubicacion = ubicacionPrestadoField.getText().toLowerCase();
-        String email = docentePrestadoField.getText().toLowerCase();
-
-        listaFiltradaPrestados.setPredicate(resource -> {
-            boolean bSala = resource.getNameHall().toLowerCase().contains(sala);
-            boolean bUbicacion = resource.getLocation().contains(ubicacion);
-            boolean bEmail = resource.getEmailUser().toLowerCase().contains(email);
-
-            return bSala && bUbicacion && bEmail;
-        });
+    private Resources selectResource() {
+    	Resources resource = tableDisponibles.getSelectionModel().getSelectedItem();
+    	if (resource == null) {
+    		ViewUtils.AlertWindow(null, null, "Debe primero seleccionar una sala", AlertType.ERROR);
+    		return null;
+    	}
+    	return resource;
     }
     
     @FXML void añadir() {
@@ -121,7 +133,10 @@ public class LoandController {
 
     }
     @FXML void pedir() {
-
+    	Resources resource = selectResource();
+    	
+    	Main.datoGlobal = resource;
+    	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
     }
     @FXML void aprobar() {
 

@@ -104,7 +104,7 @@
             <Insets top="-20.0" />
          </GridPane.margin>
       </Button>
-      <TextField fx:id="docentePrestadoField1" focusTraversable="false" promptText="Estado" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.rowIndex="15" />
+      <TextField fx:id="estadoPrestadoField" focusTraversable="false" promptText="Estado" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.rowIndex="15" />
       <Button focusTraversable="false" mnemonicParsing="false" onAction="#rechazar" styleClass="Managerbutton" text="Rechazar" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="12">
          <GridPane.margin>
             <Insets top="-6.0" />

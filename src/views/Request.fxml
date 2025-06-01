@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -11,63 +12,122 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<GridPane fx:id="gripe" prefHeight="560.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RequestController">
+<GridPane fx:id="gripe" prefHeight="560.0" prefWidth="872.0" stylesheets="@../../resources/application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RequestController">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.79998779296875" minWidth="10.0" prefWidth="50.399993896484375" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.0" minWidth="10.0" prefWidth="220.0000061035156" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="284.7999633789062" minWidth="10.0" prefWidth="220.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.7999755859375" minWidth="10.0" prefWidth="94.40003662109376" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="329.6000122070313" minWidth="10.0" prefWidth="220.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.4000244140625" minWidth="10.0" prefWidth="52.19997558593752" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.800048828125" minWidth="10.0" prefWidth="107.4000244140625" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.0" minWidth="10.0" prefWidth="31.199951171875" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="58.0" />
   </columnConstraints>
   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="184.40003051757813" minHeight="10.0" prefHeight="183.59998168945313" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="184.40003051757813" minHeight="10.0" prefHeight="39.199993896484386" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="164.0000061035156" minHeight="10.0" prefHeight="51.199993896484386" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="124.80002441406248" minHeight="6.399999999999977" prefHeight="28.799969482421886" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="128.4000305175781" minHeight="10.0" prefHeight="128.4000305175781" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label fx:id="info" text="Label" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+      <DatePicker fx:id="datePicker" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" promptText="Fecha de reserva" GridPane.columnIndex="10" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <ListView fx:id="blocks" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="78.0" prefWidth="206.0" GridPane.columnIndex="10" GridPane.columnSpan="4" GridPane.rowIndex="6" GridPane.rowSpan="5" />
+      <ListView fx:id="myBlocks" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="78.0" prefWidth="206.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="11" GridPane.rowSpan="3" />
+      <Label fx:id="title" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="81.0" text="Reserva" textAlignment="CENTER" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <font>
-            <Font name="Candara Light" size="16.0" />
+            <Font name="Candara Light Italic" size="20.0" />
          </font>
       </Label>
-      <DatePicker fx:id="datePicker" editable="false" maxHeight="1.7976931348623157E308" promptText="Fecha de reserva" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-      <ListView fx:id="blocks" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="78.0" prefWidth="206.0" GridPane.columnIndex="2" GridPane.rowIndex="6" GridPane.rowSpan="2" />
-      <ListView fx:id="myBlocks" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="78.0" prefWidth="206.0" GridPane.columnIndex="4" GridPane.rowIndex="6" GridPane.rowSpan="2" />
-      <Label fx:id="title" alignment="TOP_LEFT" text="Reserva" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+      <TextArea fx:id="specsText" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="5" GridPane.columnSpan="4" GridPane.rowIndex="11" GridPane.rowSpan="3">
+         <GridPane.margin>
+            <Insets left="5.0" />
+         </GridPane.margin></TextArea>
+      <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleReserve" styleClass="Managerbutton" text="Reservar" GridPane.columnIndex="10" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+      <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Horarios disponibles" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="10" GridPane.columnSpan="4" GridPane.rowIndex="5">
+         <font>
+            <Font name="Candara Light" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="sala" alignment="TOP_LEFT" textAlignment="CENTER" translateX="165.0" translateY="-60.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="18.0" />
          </font>
       </Label>
-      <TextArea fx:id="specsText" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleReserve" text="Reservar" GridPane.columnIndex="6" GridPane.rowIndex="4" />
-      <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Especificaciones" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+      <Label fx:id="ubicacion" alignment="TOP_LEFT" textAlignment="CENTER" translateX="190.0" translateY="-10.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+         <font>
+            <Font name="Candara Light" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="capacidad" alignment="TOP_LEFT" textAlignment="CENTER" translateX="175.0" translateY="35.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+         <font>
+            <Font name="Candara Light" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="descripcion" alignment="TOP_LEFT" textAlignment="CENTER" translateX="185.0" translateY="80.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+         <font>
+            <Font name="Candara Light" size="18.0" />
+         </font>
+      </Label>
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecciona para cuando necesites la sala para ver la disponibilidad" textAlignment="CENTER" wrappingWidth="248.0390625" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font name="Candara Light" size="15.0" />
          </font>
-      </Label>
-      <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Horarios disponibles" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5">
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Horarios seleccionados" textAlignment="CENTER" wrappingWidth="177.0390625" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10">
          <font>
             <Font name="Candara Light" size="15.0" />
          </font>
-      </Label>
-      <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Horarios seleccionados" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="5">
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Especificaciones" textAlignment="CENTER" wrappingWidth="177.0390625" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10">
          <font>
             <Font name="Candara Light" size="15.0" />
          </font>
-      </Label>
-      <ImageView fitHeight="34.0" fitWidth="44.0" onMouseClicked="#handleReturn" pickOnBounds="true" preserveRatio="true">
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de la Sala" translateX="190.0" translateY="-80.0" wrappingWidth="130.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+         <font>
+            <Font name="Candara Light" size="16.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ubicación" translateX="160.0" translateY="-30.0" wrappingWidth="69.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+         <font>
+            <Font name="Candara Light" size="16.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacidad" translateX="190.0" translateY="15.0" wrappingWidth="130.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+         <font>
+            <Font name="Candara Light" size="16.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción" translateX="190.0" translateY="60.0" wrappingWidth="130.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+         <font>
+            <Font name="Candara Light" size="16.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="250.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <image>
-            <Image url="@../../resources/img/volver-flecha.png" />
+            <Image url="@../../resources/img/class.png" />
          </image>
       </ImageView>
    </children>
