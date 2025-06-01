@@ -1,8 +1,6 @@
 package controllers.manager;
 
 import java.sql.Connection;
-import java.sql.Timestamp;
-
 import data.DataBase;
 import data.LoanDAO;
 import data.ResourcesDAO;
@@ -14,11 +12,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.Loan;
-import model.LoanTable;
 import model.Loans;
 import model.Resources;
-import model.User;
 
 public class LoandController {
     @FXML private TableView<Loans> tablePrestados;
@@ -87,7 +82,6 @@ public class LoandController {
 		ubicacionPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
 		docentePrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
 		
-		
 		tablePrestados.setItems(listaFiltradaPrestados);
     }
     
@@ -108,10 +102,10 @@ public class LoandController {
         String ubicacion = ubicacionPrestadoField.getText().toLowerCase();
         String email = docentePrestadoField.getText().toLowerCase();
 
-        listaFiltradaDisponible.setPredicate(resource -> {
-            boolean bSala = resource.getName().toLowerCase().contains(sala);
-            boolean bUbicacion = resource.getLocationTrademark().toLowerCase().contains(ubicacion);
-            boolean bEmail = resource.getLocationTrademark().toLowerCase().contains(email);
+        listaFiltradaPrestados.setPredicate(resource -> {
+            boolean bSala = resource.getNameHall().toLowerCase().contains(sala);
+            boolean bUbicacion = resource.getLocation().contains(ubicacion);
+            boolean bEmail = resource.getEmailUser().toLowerCase().contains(email);
 
             return bSala && bUbicacion && bEmail;
         });

@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.Sanction;
-import model.User;
 
 public class SanctionDAO implements CRUD_operation<Sanction, String>{
     private Connection connection;
