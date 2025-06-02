@@ -85,9 +85,10 @@ public class LoandController {
 		ubicacionPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
 		docentePrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
 		estadoPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
-		
+
 		tablePrestados.setItems(listaFiltradaPrestados);
     }
+    
     private void filtroPrestados() {
         String sala = salaPrestadoField.getText().toLowerCase();
         String ubicacion = ubicacionPrestadoField.getText().toLowerCase();
@@ -115,6 +116,7 @@ public class LoandController {
             return bSala && bUbicacion;
         });
     }
+
     private Resources selectResource() {
     	Resources resource = tableDisponibles.getSelectionModel().getSelectedItem();
     	if (resource == null) {
