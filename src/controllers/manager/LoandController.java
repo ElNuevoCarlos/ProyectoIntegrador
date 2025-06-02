@@ -68,6 +68,7 @@ public class LoandController {
 		ObservableList<Loans> prestamos = FXCollections.observableArrayList();
 		
 		for (Loans loan : loanDao.fetchLoandTwo()) { 
+			if (loan.getSpecs() == null) loan.setSpecs("Sin especificaciones");
 			prestamos.add(loan);
 		}
         
@@ -134,9 +135,10 @@ public class LoandController {
     }
     @FXML void pedir() {
     	Resources resource = selectResource();
-    	
-    	Main.datoGlobal = resource;
-    	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
+    	if (resource != null) {
+        	Main.datoGlobal = resource;
+        	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
+    	}
     }
     @FXML void aprobar() {
 

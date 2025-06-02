@@ -50,7 +50,6 @@ public class UserDAO implements CRUD_operation<User, String>{
 	    	} catch (SQLException e) {
 				e.printStackTrace();
 			}
-    	
     }
     // Aa1234567# CONTRASEÑA CPINTO5@UDI.EDU.CO
 	public String verifyUser(String email) {
@@ -66,6 +65,21 @@ public class UserDAO implements CRUD_operation<User, String>{
             e.printStackTrace();
         }
         return name; 
+	}
+	
+	public Long verifyId(Long id) {
+		Long idUser = null;
+        String query = "SELECT ID FROM USUARIO WHERE NUMERO_IDENTIFICACION = ?";       
+        try (PreparedStatement pstmt = connection.prepareStatement(query)){
+        	pstmt.setLong(1, id);
+        	ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                idUser = rs.getLong("ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return idUser; 
 	}
 	
 	public ArrayList<String> otherData(String email) {

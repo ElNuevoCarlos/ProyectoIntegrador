@@ -1,24 +1,34 @@
 package controllers;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import application.Main;
 import data.BlockDAO;
 import data.DataBase;
 import data.LoanDAO;
 import data.SessionManager;
+import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.image.Image;
 import model.Block;
 import model.Loan;
 import model.Resources;
@@ -41,7 +51,7 @@ public class RequestController {
     private SessionManager sessionManager = SessionManager.getInstance();
     private BlockDAO blockDAO = new BlockDAO(database);
     private LoanDAO loanDAO = new LoanDAO(database);
-    
+    private UserDAO userDao = new UserDAO(database);
     private LocalDate  date;
 
     @FXML public void initialize() {
@@ -135,7 +145,56 @@ public class RequestController {
     	if (ViewUtils.showConfirmation("Confirmación", "¿Desea hacer la reserva de " + resource.getName() + ", en los horarios " + myBlocksArray + "?")) {
         	Loan loan;
         	if (resource.getTypeResource()) {
-        		loan = new Loan(null, resource.getIdResource(), sessionManager.getId(), null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
+            	if (sessionManager.getRole().equals("ENCARGADO") || sessionManager.getRole().equals("SUPERENCARGADO")) {
+        	        Dialog<Long> dialog = new Dialog<>();
+        	        
+        	        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        	        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/teacher.png")));
+        	        
+        	        GridPane grid = new GridPane();
+        	        
+        	        grid.setHgap(10);
+        	        grid.setVgap(10);
+        	        grid.setPadding(new Insets(20, 20, 10, 10));
+        	        
+        	        TextField numberField = new TextField();
+        	        
+        	        grid.add(new Label("Debe colocar el numero de documento del docente a asignar."), 0, 0, 2, 1);
+        	        
+        	        grid.add(new Label("Numero de documento:"), 0, 1);
+        	        grid.add(numberField, 1, 1);
+        	        dialog.getDialogPane().setContent(grid);
+        	        
+        	        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
+        	        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+        	        
+        	        dialog.setResultConverter(dialogButton -> {
+        	            if (dialogButton == saveButtonType) {
+        	            	try {
+        	            		Long number = Long.parseLong(numberField.getText().trim());
+        	            		 return userDao.verifyId(number);
+        	            	} catch (NumberFormatException e) {
+        	            		ViewUtils.AlertWindow(null, null, "Tienes que escribir un numero de documento valido.", AlertType.ERROR);
+        	                }
+        	                return null;
+        	            }
+        	            return null;
+        	        });
+        	        
+        	        Optional<Long> result = dialog.showAndWait();
+        	        
+        	        result.ifPresent(number -> {
+        	        	if (number != null) {
+            	        	loanDAO.save(new Loan(null, resource.getIdResource(), number, null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray));
+            	            ViewUtils.AlertWindow(null, null, "Al Docente "+number+" Se le ha asignado el prestamo con exito.", AlertType.INFORMATION);
+        	        	} else {
+        	        		ViewUtils.AlertWindow(null, null, "No hay docentes con ese numero de documento.", AlertType.ERROR);
+        	        	}
+        	        });
+        	        return;
+            	} else {
+            		loan = new Loan(null, resource.getIdResource(), sessionManager.getId(), null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
+            	}
         	} else {
         		loan = new Loan(null, null, sessionManager.getId(), resource.getIdResource(), date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
         	}

@@ -33,6 +33,10 @@ public class Loans {
         return emailUser;
     }
     
+    public void setSpecs(String newSpecs) {
+    	this.specs = newSpecs;
+    }
+    
     public String getSpecs() {
         return specs;
     }

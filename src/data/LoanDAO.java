@@ -183,13 +183,13 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Long id = rs.getLong(1); // ID
-                String name = rs.getString(2); // Nombre
-                Timestamp ts = rs.getTimestamp(3); // FECHA
-                String locationType = rs.getString(4); // Ubicación
-                String state = rs.getString(5); // Estado
-                String specs = rs.getString(6); // Especificaciones
-                String capacity = String.valueOf(rs.getInt(7)); // Capacidad
+                Long id = rs.getLong(1);
+                String name = rs.getString(2);
+                Timestamp ts = rs.getTimestamp(3);
+                String locationType = rs.getString(4);
+                String state = rs.getString(5); 
+                String specs = rs.getString(6);
+                String capacity = String.valueOf(rs.getInt(7)); 
                 
                 LocalDate date = ts.toLocalDateTime().toLocalDate();
                 
