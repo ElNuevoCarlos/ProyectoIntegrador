@@ -1,10 +1,12 @@
 package controllers.manager;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import application.Main;
 import data.DataBase;
 import data.LoanDAO;
 import data.ResourcesDAO;
+import data.SanctionDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -12,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,6 +30,7 @@ import model.Hall;
 import model.Loans;
 import model.Location;
 import model.Resources;
+import model.Sanction;
 import model.User;
 import utils.ViewUtils;
 
@@ -48,6 +52,7 @@ public class LoandController {
     private Connection database = DataBase.getInstance().getConnection();
     private ResourcesDAO resourcesDao = new ResourcesDAO(database);
     private LoanDAO loanDao = new LoanDAO(database);
+    private SanctionDAO sanctionDao = new SanctionDAO(database);
     
     @FXML void initialize() {
 		// ------------------------------- Salas Disponibles
@@ -131,12 +136,19 @@ public class LoandController {
     private Resources selectResource() {
     	Resources resource = tableDisponibles.getSelectionModel().getSelectedItem();
     	if (resource == null) {
-    		ViewUtils.AlertWindow(null, null, "Debe seleccionar primero una sala", AlertType.ERROR);
+    		ViewUtils.AlertWindow(null, null, "Debe seleccionar primero una sala.", AlertType.ERROR);
     		return null;
     	}
     	return resource;
     }
-    
+    private Loans selectLoan() {
+    	Loans loan = tablePrestados.getSelectionModel().getSelectedItem();
+    	if (loan == null) {
+    		ViewUtils.AlertWindow(null, null, "Debe seleccionar primero un prestamo.", AlertType.ERROR);
+    		return null;
+    	}
+    	return loan;
+    }
     @FXML void añadir() {
         Dialog<User> dialog = new Dialog<>();
         
@@ -251,9 +263,6 @@ public class LoandController {
         dialog.showAndWait();
         initialize();
     }
-    @FXML void devolvio() {
-
-    }
     @FXML void eliminar() {
     	Resources resource = selectResource();
     	if (resource != null) {
@@ -266,22 +275,194 @@ public class LoandController {
     }
     @FXML void pedir() {
     	Resources resource = selectResource();
-    	if (resource.getState().equals("En Mantenimiento")) {
-        	ViewUtils.AlertWindow(null, "En Mantenimiento", "No puedes pedir una sala en mantenimiento.", AlertType.ERROR);
-        	return;
-    	}
     	if (resource != null) {
+        	if (resource.getState().equals("En Mantenimiento")) {
+            	ViewUtils.AlertWindow(null, "En Mantenimiento", "No puedes pedir una sala en mantenimiento.", AlertType.ERROR);
+            	return;
+        	}
         	Main.datoGlobal = resource;
         	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
     	}
     }
     @FXML void aprobar() {
-
+    	Loans loan = selectLoan();
+    	if (loan != null) {
+    		if (loan.getState().equals("APROBADO")) {
+    			ViewUtils.AlertWindow(null, "Ya esta aprobado", "El prestamo ya estaba aprobado.", AlertType.ERROR);
+    			return;
+    		} else if (loan.getState().equals("RECHAZADO")) {
+    			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está rechazado, ya no se puede aprobar", AlertType.ERROR);
+    			return;
+    		} else if (loan.getState().equals("FINALIZADO")) {
+    			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está finalizado, ya no se puede aprobar", AlertType.ERROR);
+    			return;
+    		}
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar el prestamo de "+loan.getEmailUser()+"\n"
+    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    			
+    			if (loanDao.updateState(loan, "APROBADO")) {
+    				initialize();
+    				ViewUtils.AlertWindow(null, "Prestamo Aprobado", "El prestamo de "+loan.getEmailUser()+" ha sido aprobado con éxito.", AlertType.INFORMATION);
+    			}
+    		}
+    	}
+    }
+    @FXML void devolvio() {
+    	Loans loan = selectLoan();
+    	if (loan != null) {
+    		if (loan.getState().equals("RECHAZADO")) {
+    			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está rechazado, no puede usar este boton.", AlertType.ERROR);
+    			return;
+    		} else if (loan.getState().equals("FINALIZADO")) {
+    			ViewUtils.AlertWindow(null, "Ya esta finalizado", "El prestamo ya estaba finalizado.", AlertType.ERROR);
+    			return;
+    		} else if (loan.getState().equals("SOLICITADO")) {
+    			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está SOLICITADO, no puede devolverlo si no ha sido aprobado.", AlertType.ERROR);
+    			return;
+    		}
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar la entrega del prestamo de "+loan.getEmailUser()+"\n"
+    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    			
+    			if (loanDao.updateState(loan, "FINALIZADO")) {
+    				initialize();
+    				ViewUtils.AlertWindow(null, "Prestamo Finalizado", "El prestamo de "+loan.getEmailUser()+" ha finalizado con éxito.", AlertType.INFORMATION);
+    			}
+    		}
+    	}
     }
     @FXML void rechazar() {
-
+    	Loans loan = selectLoan();
+    	if (loan != null) {
+    		if (loan.getState().equals("RECHAZADO")) {
+    			ViewUtils.AlertWindow(null, "Ya está rechazado", "El prestamo ya estaba rechazado.", AlertType.ERROR);
+    			return;
+    		} else if (loan.getState().equals("FINALIZADO")) {
+    			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está finalizado, ya no se puede rechazar", AlertType.ERROR);
+    			return;
+    		}
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de rechazar el prestamo de "+loan.getEmailUser()+"\n"
+    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    			
+    			if (loanDao.updateState(loan, "RECHAZADO")) {
+    				initialize();
+    				ViewUtils.AlertWindow(null, "Prestamo Rechazado", "El prestamo de "+loan.getEmailUser()+" ha sido rechazado.", AlertType.INFORMATION);
+    			}
+    		}
+    	}
     }
     @FXML void sancionar() {
+    	Loans loan = selectLoan();
+    	if (loan != null) {
+    		if (loan.getState().equals("FINALIZADO")) {
+    			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo ya está finalizado.", AlertType.ERROR);
+    			return;
+    		} else if (loan.getState().equals("RECHAZADO")) {
+    			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo ha sido rechazado y no puedes sancionarlo.", AlertType.ERROR);
+    			return;
+    		} else if (loan.getState().equals("SOLICITADO")) {
+    			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo apenas ha sido SOLICITADO y no puedes sancionarlo.", AlertType.ERROR);
+    			return;
+    		}
 
+	        Dialog<Sanction> dialog = new Dialog<>();
+	        
+	        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+	        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
+	        
+	        GridPane grid = new GridPane();
+	        
+	        grid.setHgap(10);
+	        grid.setVgap(10);
+	        grid.setPadding(new Insets(20, 20, 10, 10));
+
+	        DatePicker datePicker = new DatePicker();
+	        datePicker.setPromptText("Fin de la sanción");
+	        datePicker.setPrefWidth(150);
+	        grid.add(datePicker, 0, 0, 2, 1);
+	        
+	        ComboBox<String> typeSanctionField = new ComboBox<>();
+	        ObservableList<String> listCapacity = FXCollections.observableArrayList(
+	        						"Entrega Tarde", "Mal estado");
+	        typeSanctionField.setItems(listCapacity);
+	        typeSanctionField.setPromptText("Tipo de Sanción");
+	        typeSanctionField.setPrefWidth(150);
+	        
+		    TextField amountField = new TextField();
+		    amountField.setPrefWidth(100);
+		    amountField.setPromptText("Total a pagar");
+
+	        HBox BoxOne = new HBox(5); 
+	        BoxOne.getChildren().addAll(typeSanctionField, amountField);
+	        
+	        grid.add(BoxOne, 0, 1, 2, 1);
+	        
+		    TextField descField = new TextField();
+		    descField.setPrefWidth(100);
+		    descField.setPromptText("Descripción");
+		    
+	        grid.add(descField, 0, 3, 2, 2);
+	        
+
+	        dialog.getDialogPane().setContent(grid);
+	        
+	        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
+	        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+	        
+	        dialog.setResultConverter(dialogButton -> {
+	            if (dialogButton == saveButtonType) {
+	        		String typeSanction = typeSanctionField.getValue() != null ? typeSanctionField.getValue().trim() : "";
+	        		String amount = amountField.getText().trim();
+	        		String Description = descField.getText().trim();
+	        		LocalDate data = datePicker.getValue();
+
+	        		int parsedAmount = 0; 
+
+	        		if (amount != null && !amount.trim().isEmpty()) {
+	        		    try {
+	        		        parsedAmount = Integer.parseInt(amount.trim());
+	        		    } catch (NumberFormatException e) {
+	        		        ViewUtils.AlertWindow(null, "Formato inválido", "El valor a pagar debe ser un número válido.", AlertType.ERROR);
+	        		        return null;
+	        		    }
+	        		}
+	        		
+	                if (typeSanction.isEmpty() || 
+	                		Description.isEmpty()) {
+	                	ViewUtils.AlertWindow(null, "Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
+	                    return null;
+	                }
+	                
+	                LocalDate today = LocalDate.now();
+	                if (data.isBefore(today)) {
+	                	ViewUtils.AlertWindow(null, "Fecha no aceptada", "Debe colocar una fecha valida.", AlertType.ERROR);
+	                    return null;
+	                }
+
+	                sanctionDao.save(new Sanction(null, typeSanction, Description, data, parsedAmount, "ACTIVA", loan.getId()));
+	                
+	                ViewUtils.AlertWindow(null, "Sanción aplicada", "El docente ha sido sancionado con éxito.", AlertType.INFORMATION);
+	            }
+	            return null;
+	        });
+	        dialog.showAndWait();
+    	}
     }
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

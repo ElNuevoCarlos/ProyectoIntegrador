@@ -50,6 +50,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <DatePicker fx:id="datePicker" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" promptText="Fecha de reserva" GridPane.columnIndex="10" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" />

@@ -6,7 +6,6 @@ import data.DataBase;
 import data.SessionManager;
 import data.UserDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -33,8 +32,7 @@ public class LoginController {
 	private SessionManager sessionManager = SessionManager.getInstance();
     private String Email, Password, Name;
     
-    @FXML 
-    public void initialize() {
+    @FXML void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
         
         email.setOnKeyPressed(event -> {
@@ -70,7 +68,7 @@ public class LoginController {
     }
     
     @FXML void handleMailRecovery() {
-        AlertWindow(
+    	ViewUtils.AlertWindow(null,
                 "¿Olvidaste tu correo?", 
                 "Para recuperar tu correo institucional:\n\n" +
                 "1. Visita la página:\nhttps://web.udi.edu.co/\n\n" +
@@ -82,7 +80,7 @@ public class LoginController {
     @FXML void handleEmail() {
     	Email = email.getText();
     	if (Email.isBlank()) {
-            this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
+    		ViewUtils.AlertWindow(null, "El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
     	Name = userDao.verifyUser(Email);
@@ -101,7 +99,7 @@ public class LoginController {
             button.setLayoutX(button.getLayoutX() - 60);
             button.setText("Entrar");
             button.setOnAction(event -> handlePassword());
-    	} else this.AlertWindow(
+    	} else ViewUtils.AlertWindow(null,
     			"El nombre no está registrado.", 
     			"Verifique que el nombre es correcto.", 
     			AlertType.ERROR);
@@ -109,7 +107,7 @@ public class LoginController {
     @FXML void handlePassword() {
     	Password = password.getText();
     	if (Password.isBlank()) {
-            this.AlertWindow("El campo debe llenarse", null, AlertType.WARNING);
+            ViewUtils.AlertWindow(null, "El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
     	String[] verificationResult = userDao.verifyPassword(Email, Password);
@@ -134,17 +132,9 @@ public class LoginController {
             	default:
             		ViewUtils.loadView("/views/TeacherAdmin.fxml");
             }
-		} else this.AlertWindow(
+		} else ViewUtils.AlertWindow(null,
     			null, 
     			"La contraseña es incorrecta.", 
     			AlertType.ERROR);
-    }
-    
-    private void AlertWindow(String text, String content, AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(null);
-        alert.setHeaderText(text);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 }

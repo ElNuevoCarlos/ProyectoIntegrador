@@ -31,24 +31,17 @@ import model.Resources;
 import utils.ViewUtils;
 
 public class RequestConsultationController {
-
-    @FXML private TextField buildingText;
-
-    @FXML private TableColumn<Resources, String> typeCapacityColumn;
-
-    @FXML private TextField capacityText;
+    @FXML private TextField buildingText, capacityText;
 
     @FXML private Button filterButton;
-    @FXML private TextField flatText;
+    @FXML private TextField flatText, nameText;
     @FXML private GridPane gripe;
-    @FXML private TableColumn<Resources, String> locationTrademarkColumn;
-    @FXML private ContextMenu menuBuilding;
-    @FXML private ContextMenu menuFlat;
-    @FXML private ContextMenu menuName;
-    @FXML private ContextMenu menuCapacity;
-    @FXML private TableColumn<Resources, String> nameColumn;
-    @FXML private TextField nameText;
+    
     @FXML private TableView<Resources> tableResources;
+    @FXML private TableColumn<Resources, String> locationTrademarkColumn, nameColumn, typeCapacityColumn;
+    
+    @FXML private ContextMenu menuBuilding, menuFlat, menuName, menuCapacity;
+
     @FXML private Label title;
     
     ObservableList<Resources> resources = FXCollections.observableArrayList();
@@ -57,8 +50,7 @@ public class RequestConsultationController {
 	private  ResourcesDAO resourcesDAO = new ResourcesDAO(database);
 	private Filter filter = new Filter(database);
 	
-    @FXML
-    public void initialize() {  	
+    @FXML void initialize() {  	
     	tableResources.setRowFactory(tv -> {
     	    TableRow<Resources> row = new TableRow<>();
 
@@ -85,8 +77,7 @@ public class RequestConsultationController {
     	});
     }
 
-    @FXML
-    void handleDevices() {
+    @FXML void handleDevices() {
     	visble();
     	buildingText.setPromptText("Tipo");
         GridPane.setColumnSpan(buildingText, 3);
@@ -99,8 +90,7 @@ public class RequestConsultationController {
     	contextualAutocomplete(capacityText, menuCapacity, filter.Options("MARCA", "EQUIPO", ""));
     }
 
-    @FXML
-    void handleFilter(ActionEvent event) {
+    @FXML void handleFilter(ActionEvent event) {
     	String name = nameText.getText().trim();
         StringBuilder query = new StringBuilder();
         String building = buildingText.getText().trim();
@@ -137,8 +127,7 @@ public class RequestConsultationController {
     	}
     }
 
-    @FXML
-    void handleHall(MouseEvent event) {
+    @FXML void handleHall(MouseEvent event) {
     	visble();
     	buildingText.setPromptText("Edificio");
         GridPane.setColumnSpan(buildingText, 1);
@@ -227,8 +216,7 @@ public class RequestConsultationController {
 		tableResources.setItems(resources);
     }
     
-    @FXML
-    void handleReturn() {
+    @FXML void handleReturn() {
     	Main.rootLayout.setCenter(null);
     }
     

@@ -7,10 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javafx.scene.control.Alert.AlertType;
 import model.Block;
 import model.Loan;
 import model.LoanTable;
 import model.Loans;
+import utils.ViewUtils;
 
 public class LoanDAO implements CRUD_operation<Loan, String>{
     private Connection connection;
@@ -61,7 +64,6 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
     
 	@Override
     public void save( Loan loan) {
-		
         String queryLoan = "INSERT INTO PRESTAMO (ID, FECHA, ESPECIFICACIONES, ID_SALA, ID_USUARIO, ID_EQUIPO, ESTADO) " +
                               "VALUES (SEQ_PRESTAMO.NEXTVAL, ?, ?, ?, ?, ?, ?)";
         String queryLoanBlock = "INSERT INTO PRESTAMO_BLOQUE (ID_PRESTAMO, ID_BLOQUE) VALUES (?, ?)";
@@ -166,7 +168,22 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
         return loans;
 	}
 
-
+	public boolean updateState(Loans entity, String state) {
+		String query = "UPDATE PRESTAMO"
+				+ " SET ESTADO = ?"
+				+ " WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity.getId());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
+					+ "- Qué el estado está bien escrito.", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
+	
 	public ArrayList<LoanTable> fetchLoand(Boolean type) {
         ArrayList<LoanTable> loansView = new ArrayList<>();
         String query;
@@ -211,19 +228,14 @@ public class LoanDAO implements CRUD_operation<Loan, String>{
 	@Override
 	public boolean update(Loan entity) {
 		return false;
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public boolean authenticate(String id) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

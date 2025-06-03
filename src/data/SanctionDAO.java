@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Sanction;
 
@@ -17,14 +18,28 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
     }
 	@Override
 	public void save(Sanction entity) {
-		// TODO Auto-generated method stub
-		
+    	String querySancion = "INSERT INTO SANCION"
+    			+ " (ID, TIPO_SANCION, DESCRIPCION, FECHA_FIN, MONTO, ESTADO, ID_PRESTAMO)"
+    			+ " VALUES (SEQ_SANCION_ID.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+
+	    	try (PreparedStatement pstmt = connection.prepareStatement(querySancion)) {
+				pstmt.setString(1, entity.getTypeSanction());
+	            pstmt.setString(2, entity.getDescription());
+	            pstmt.setDate(3, Date.valueOf(entity.getEndDate()));
+	            pstmt.setLong(4, entity.getAmount());
+	            pstmt.setString(5, entity.getState());
+	            pstmt.setLong(6, entity.getIdLoanDevice());
+	
+	            pstmt.executeUpdate();
+	    	} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	}
 	
 	public ArrayList<Sanction> fetchUser(String userId) {
         ArrayList<Sanction> sanctions = new ArrayList<>();
-        String query = "SELECT s.ID, s.TIPO_SANCION, s.DESCRIPCION, s.FECHA_SANCION"
-        		+", s.FECHA_FIN, s.MONTO, s.ESTADO, s.ID_PRESTAMO"
+        String query = "SELECT s.ID, s.TIPO_SANCION, s.DESCRIPCION,"
+        		+" s.FECHA_FIN, s.MONTO, s.ESTADO, s.ID_PRESTAMO"
                 + " FROM SANCION s JOIN PRESTAMO p ON s.ID_PRESTAMO = p.ID JOIN USUARIO u ON p.ID_USUARIO = u.ID"
                 + " WHERE u.ID = ?";
  
@@ -35,15 +50,13 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
             	Long id = rs.getLong(1);
                 String typeSanction = rs.getString(2);
                 String descripcion = rs.getString(3);
-                Date sanctionDate = rs.getDate(4);
-                Date endDate = rs.getDate(5);
-                int amount = rs.getInt(6);
-                String state = rs.getString(7);  
-                Long idLoanDevice = rs.getLong(8);
+                LocalDate endDate = rs.getDate(4).toLocalDate();
+                int amount = rs.getInt(5);
+                String state = rs.getString(6);  
+                Long idLoanDevice = rs.getLong(7);
                 
                 Sanction sanction = new Sanction(
-                		id, typeSanction, 
-                		descripcion, sanctionDate, 
+                		id, typeSanction, descripcion,
                 		endDate, amount, 
                 		state, idLoanDevice);
                 
@@ -59,8 +72,8 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
 	@Override
 	public ArrayList<Sanction> fetch() {
         ArrayList<Sanction> sanctions = new ArrayList<>();
-        String query = "SELECT ID, TIPO_SANCION, DESCRIPCION, FECHA_SANCION"
-        		+", FECHA_FIN, MONTO, ESTADO, ID_PRESTAMO"
+        String query = "SELECT ID, TIPO_SANCION, DESCRIPCION,"
+        		+" FECHA_FIN, MONTO, ESTADO, ID_PRESTAMO"
                 + " FROM SANCION";
         
         try (Statement stmt = connection.createStatement();
@@ -70,15 +83,13 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
             	Long id = rs.getLong(1);
                 String typeSanction = rs.getString(2);
                 String descripcion = rs.getString(3);
-                Date sanctionDate = rs.getDate(4);
-                Date endDate = rs.getDate(5);
-                int amount = rs.getInt(6);
-                String state = rs.getString(7);  
-                Long idLoanDevice = rs.getLong(8);
+                LocalDate endDate = rs.getDate(4).toLocalDate();;
+                int amount = rs.getInt(5);
+                String state = rs.getString(6);  
+                Long idLoanDevice = rs.getLong(7);
                 
                 Sanction sanction = new Sanction(
-                		id, typeSanction, 
-                		descripcion, sanctionDate, 
+                		id, typeSanction, descripcion, 
                 		endDate, amount, 
                 		state, idLoanDevice);
                 sanctions.add(sanction);

@@ -9,7 +9,6 @@ import java.security.SecureRandom;
 import data.SessionManager;
 import data.UserDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
@@ -37,22 +36,19 @@ public class PasswordRecoveryController {
         return String.valueOf(code);
     }
     
-	@FXML
-	public void initialize() {
+	@FXML void initialize() {
 		this.Name = SessionManager.getInstance().getName();
 		this.Email = SessionManager.getInstance().getEmail();
 		name.setText(Name);
 	}
 	
-	@FXML
-	void handleReturnLogin() {
+	@FXML void handleReturnLogin() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
         ViewUtils.loadView("/views/Login.fxml");
 	}
 	
-	@FXML
-	void handleSend() {
+	@FXML void handleSend() {
 	    generatedCode = generateRecoveryCode();
 
 	    // Primero actualizamos la interfaz
@@ -124,21 +120,18 @@ public class PasswordRecoveryController {
 	    });
 	}
 
-
-	
 	void handleVerifyCode() {
 	    String Code = code.getText().trim();
 	    if (Code.equals(generatedCode)) {
 	        handleRestore();
 	    } else {
-	    	AlertWindow("Código Incorrecto",
+	    	ViewUtils.AlertWindow(null, "Código Incorrecto",
 	                "El código de recuperación que introdujiste es incorrecto. Inténtalo nuevamente.",
 	                AlertType.ERROR);
 	    }
 	}
 	
-	@FXML
-	void handleRestore() {
+	@FXML void handleRestore() {
 		text1.setVisible(false);
 		forward.setVisible(false);
 		code.setVisible(false);
@@ -157,12 +150,12 @@ public class PasswordRecoveryController {
 		System.out.println("VERIFYPASSWORD");
 		System.out.println(password1+" "+password2);
 		if(password1.isEmpty() || password2.isEmpty()) {
-			AlertWindow("Error", "Por favor, complete todos los campos.", AlertType.WARNING);
+			ViewUtils.AlertWindow(null, "Error", "Por favor, complete todos los campos.", AlertType.WARNING);
 			return;
 		}
 	    if (password1.equals(password2)) {
 	        if (!password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!*]).{8,20}$")) {
-	        	AlertWindow(
+	        	ViewUtils.AlertWindow(null,
 	        		    "Formato inválido", 
 	        		    "La contraseña debe tener:\n" +
 	        		    "- Entre 8 y 20 caracteres\n" +
@@ -180,22 +173,20 @@ public class PasswordRecoveryController {
 		            Stage currentStage = (Stage) rootPane.getScene().getWindow();
 		            currentStage.close();
 		            
-		            AlertWindow("Éxito", "Tu contraseña se actualizó correctamente", AlertType.INFORMATION);
+		            ViewUtils.AlertWindow(null, "Éxito", "Tu contraseña se actualizó correctamente", AlertType.INFORMATION);
 		            ViewUtils.loadView("/views/Login.fxml");
 		        } else {
-		        	AlertWindow("Error", "No se pudo actualizar la contraseña", AlertType.ERROR);
+		        	ViewUtils.AlertWindow(null, "Error", "No se pudo actualizar la contraseña", AlertType.ERROR);
 		        }
 	        }
 	    } else {
-	        AlertWindow("Contraseñas no coinciden",
+	    	ViewUtils.AlertWindow(null, "Contraseñas no coinciden",
 	                "Las contraseñas ingresadas no son iguales. Por favor, verifícalas.",
 	                AlertType.WARNING);
 	    }
 	}
 
-	
-	@FXML
-	void handleForward() {
+	@FXML void handleForward() {
 	    generatedCode = generateRecoveryCode();
 	    String affair = "Tu código de cambio de contraseña es " + generatedCode;
 	    String body = "Un paso más para cambiar tu contraseña\n\n" +
@@ -212,13 +203,4 @@ public class PasswordRecoveryController {
 	        System.out.println("Reenviado");
 	    });
 	}
-
-	
-    private void AlertWindow(String text, String content, AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(null);
-        alert.setHeaderText(text);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
 }

@@ -36,8 +36,7 @@ public class RequestController {
     @FXML private Label sala, ubicacion, descripcion, capacidad;
     @FXML private GridPane gripe;
     @FXML private DatePicker datePicker;
-    @FXML private ListView<Block> blocks;
-    @FXML private ListView<Block> myBlocks;
+    @FXML private ListView<Block> blocks, myBlocks;
     @FXML private TextArea specsText;
 
     private ArrayList<Block> blocksArray;
@@ -52,7 +51,7 @@ public class RequestController {
     private UserDAO userDao = new UserDAO(database);
     private LocalDate  date;
 
-    @FXML public void initialize() {
+    @FXML void initialize() {
         Object dato = Main.datoGlobal;
         if (dato instanceof Resources) {
             resource = (Resources) dato;
@@ -207,10 +206,5 @@ public class RequestController {
     	}
 
     }
-    
-    @FXML void handleReturn() {
-    	ViewUtils.cargarGrid("/views/RequestConsultation.fxml", Main.rootLayout);
-    }
-
 }
 

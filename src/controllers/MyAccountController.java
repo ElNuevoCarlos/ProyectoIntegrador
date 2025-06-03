@@ -10,7 +10,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
@@ -77,28 +77,28 @@ public class MyAccountController {
 		if (Name.isEmpty() || TI.isEmpty() || NumIdentification.isEmpty() || Pro_dep.isEmpty() || Phone.isEmpty()
 				|| Email.isEmpty() || Role.isEmpty() || Password1.isEmpty() || Password2.isEmpty()) {
 
-			showAlert("Error", "Campos vacíos", "Por favor, complete todos los campos.");
+			ViewUtils.AlertWindow("Error", "Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
 			return;
 		}
 		String regexEmail = "^[a-zA-Z0-9._%+-]+@udi\\.edu\\.co$";
 		if (!Email.matches(regexEmail)) {
-			showAlert("Error", "Correo inválido", "El correo debe tener el formato usuario@udi.edu.co");
+			ViewUtils.AlertWindow("Error", "Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
 			return;
 		}
 		if (!NumIdentification.matches("\\d{6,10}")) {
-			showAlert("Error", "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.");
+			ViewUtils.AlertWindow("Error", "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
 			return;
 		}
 		if (!Phone.matches("\\d{10}")) {
-			showAlert("Error", "Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.");
+			ViewUtils.AlertWindow("Error", "Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
 			return;
 		}
 		if (Password1.equals(Password2)) {
 			if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
-				showAlert("Formato inválido", "Contraseña insegura",
+				ViewUtils.AlertWindow("Formato inválido", "Contraseña insegura",
 						"La contraseña debe tener:\n" + "- Entre 8 y 20 caracteres\n"
 								+ "- Al menos una letra mayúscula\n" + "- Al menos una letra minúscula\n"
-								+ "- Al menos un número\n" + "- Al menos un carácter especial (@#$%^&+=!)");
+								+ "- Al menos un número\n" + "- Al menos un carácter especial (@#$%^&+=!)", AlertType.ERROR);
 				return;
 			} else {
 				ArrayList<String> modifiedData = new ArrayList<>();
@@ -132,8 +132,8 @@ public class MyAccountController {
 					sessionManager.setUser(sessionManager.getId(), Name, Role, Email);
 					if (ViewUtils.showConfirmation("Confirmación", "¿Desea actualizar " + modifiedData + "?")) {
 						userDao.update(newUser); 
-						showAlert("Actualizado", "Información actualizada",
-								"Los datos "+ modifiedData + " actualizados exitosamente.");
+						ViewUtils.AlertWindow("Actualizado", "Información actualizada",
+								"Los datos "+ modifiedData + " actualizados exitosamente.", AlertType.INFORMATION);
 						modifiedData.clear();
 						otherData.set(0, NumIdentification);
 						otherData.set(1, TI);
@@ -150,26 +150,18 @@ public class MyAccountController {
 						}
 						
 					} else {
-						showAlert("Cancelado", "Actualización cancelada", "No se realizaron cambios");
+						ViewUtils.AlertWindow("Cancelado", "Actualización cancelada", "No se realizaron cambios", AlertType.INFORMATION);
 					}
 				} else {
-				    showAlert("Sin cambios", "Ningún dato fue modificado",
-				              "No se detectaron cambios en la información. Verifique e intente de nuevo si desea actualizar algún dato.");
+					ViewUtils.AlertWindow("Sin cambios", "Ningún dato fue modificado",
+				              "No se detectaron cambios en la información. Verifique e intente de nuevo si desea actualizar algún dato.", AlertType.ERROR);
 				    return;
 				}
 			}
 		} else {
-			showAlert("Error", "Contraseñas no coinciden",
-					"Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.");
+			ViewUtils.AlertWindow("Error", "Contraseñas no coinciden",
+					"Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
 			return;
 		}
-	}
-	
-	private void showAlert(String title, String head, String message) {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		alert.setTitle(title);
-		alert.setHeaderText(head);
-		alert.setContentText(message);
-		alert.showAndWait();
 	}
 }

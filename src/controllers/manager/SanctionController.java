@@ -42,7 +42,6 @@ public class SanctionController {
 		
 		tipo_sancion.setCellValueFactory(new PropertyValueFactory<>("typeSanction"));
 		descripcion.setCellValueFactory(new PropertyValueFactory<>("description"));
-		fecha_sancion.setCellValueFactory(new PropertyValueFactory<>("sanctionDate"));
 		fecha_fin.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 		monto.setCellValueFactory(new PropertyValueFactory<>("amount"));
 		id_prestamo.setCellValueFactory(new PropertyValueFactory<>("idLoanDevice"));
@@ -59,19 +58,16 @@ public class SanctionController {
     
     private void filtro() {
         String prestamo = prestamoField.getText().toLowerCase();
-        String fechaSancion = fechaSancionField.getText().toLowerCase();
         String tipoSancion = tipoSancionField.getText().toLowerCase();
 
         listaFiltrada.setPredicate(sanction -> {
             String idPrestamoStr = String.valueOf(sanction.getIdLoanDevice()).toLowerCase();
-            String fechaSancionStr = sanction.getSanctionDate().toString().toLowerCase();
             String tipoSancionStr = sanction.getTypeSanction().toLowerCase();
 
             boolean bPrestamo = idPrestamoStr.contains(prestamo);
-            boolean bFechaSancion = fechaSancionStr.contains(fechaSancion);
             boolean bTipoSancion = tipoSancionStr.contains(tipoSancion);
 
-            return bPrestamo && bFechaSancion && bTipoSancion;
+            return bPrestamo && bTipoSancion;
         });
     }
     

@@ -21,11 +21,6 @@ public class MenuAdministrativeController {
     public void data() {
         this.user.setText(sessionManager.getName());
         this.job.setText(sessionManager.getRole());
-        /*
-    	for (User user : userManager.getUsers()) {
-    		System.out.println(user.role);
-    	}
-    	*/
     }
     
 }

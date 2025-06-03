@@ -200,8 +200,6 @@ public class UserDAO implements CRUD_operation<User, String>{
 		}	
 		return true;
 	}
-	
-	
 
 	@Override
 	public void delete(String id) {

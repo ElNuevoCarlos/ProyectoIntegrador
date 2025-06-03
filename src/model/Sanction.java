@@ -1,31 +1,30 @@
 package model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Sanction {
-    private long id, idLoanDevice;
+    private Long id, idLoanDevice;
     private String typeSanction, description, state;
-    private Date sanctionDate, endDate;
+    private LocalDate endDate;
     private int amount;
     
-    public Sanction(long id, String typeSanction, String description, Date sanctionDate, Date endDate, 
+    public Sanction(Long id, String typeSanction, String description, LocalDate endDate, 
     		int amount, String state, long idLoanDevice) {
         super();
         this.id = id;
         this.typeSanction = typeSanction;
         this.description = description;
-        this.sanctionDate = sanctionDate;
         this.endDate = endDate;
         this.amount = amount;
         this.state = state;
         this.idLoanDevice = idLoanDevice;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
 		this.id = id;
 	}
 
-	public void setIdLoanDevice(long idLoanDevice) {
+	public void setIdLoanDevice(Long idLoanDevice) {
 		this.idLoanDevice = idLoanDevice;
 	}
 
@@ -41,11 +40,7 @@ public class Sanction {
 		this.state = state;
 	}
 
-	public void setSanctionDate(Date sanctionDate) {
-		this.sanctionDate = sanctionDate;
-	}
-
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
@@ -69,11 +64,7 @@ public class Sanction {
         return state;
     }
 
-    public Date getSanctionDate() {
-        return sanctionDate;
-    }
-
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
