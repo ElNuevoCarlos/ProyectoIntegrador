@@ -20,13 +20,6 @@ public class Sanction {
         this.idLoanDevice = idLoanDevice;
     }
     
-    public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setIdLoanDevice(Long idLoanDevice) {
-		this.idLoanDevice = idLoanDevice;
-	}
 
 	public void setTypeSanction(String typeSanction) {
 		this.typeSanction = typeSanction;
@@ -34,18 +27,6 @@ public class Sanction {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
 	}
 
 	public long getId() {

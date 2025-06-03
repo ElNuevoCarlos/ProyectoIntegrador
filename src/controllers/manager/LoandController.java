@@ -81,7 +81,7 @@ public class LoandController {
 		
 		ObservableList<Loans> prestamos = FXCollections.observableArrayList();
 		
-		for (Loans loan : loanDao.fetchLoandTwo()) { 
+		for (Loans loan : loanDao.fetchLoandTwo(null, null)) { 
 			if (loan.getSpecs() == null) loan.setSpecs("Sin especificaciones");
 			prestamos.add(loan);
 		}

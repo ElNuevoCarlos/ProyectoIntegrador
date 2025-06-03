@@ -130,7 +130,7 @@ public class LoginController {
             		ViewUtils.loadView("/views/SuperManager.fxml");
             		break;
             	default:
-            		ViewUtils.loadView("/views/TeacherAdmin.fxml");
+            		ViewUtils.loadView("/views/Teacher/Menu.fxml");
             }
 		} else ViewUtils.AlertWindow(null,
     			null, 

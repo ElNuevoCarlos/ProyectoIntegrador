@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
 	public static Object datoGlobal;
+	public static boolean datoGlobalTwo;
 	public static Pane pane;
 	public static BorderPane rootLayout;
 
