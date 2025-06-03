@@ -22,7 +22,7 @@ public class ViewUtils {
             Main.rootLayout = loader.load();
             Scene scene = new Scene(Main.rootLayout);
             secondStage.setScene(scene);
-            Image icon = new Image(ViewUtils.class.getResourceAsStream("/img/teacher.png"));
+            Image icon = new Image(ViewUtils.class.getResourceAsStream("/img/logo.png"));
             secondStage.getIcons().add(icon);
             secondStage.show();
         } catch (IOException e) {
@@ -44,7 +44,9 @@ public class ViewUtils {
 		alert.setTitle(title);
 		alert.setHeaderText(null);
 		alert.setContentText(message);
-
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(ViewUtils.class.getResourceAsStream("/img/logo.png"))); 
+        
 		ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
 		return result == ButtonType.OK;
 	}
@@ -56,7 +58,7 @@ public class ViewUtils {
         alert.setContentText(content);
         
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image(ViewUtils.class.getResourceAsStream("/img/teacher.png"))); 
+        stage.getIcons().add(new Image(ViewUtils.class.getResourceAsStream("/img/logo.png"))); 
         
         alert.showAndWait();
     }

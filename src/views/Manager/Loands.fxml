@@ -51,17 +51,18 @@
    <children>
       <TableView fx:id="tableDisponibles" editable="true" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="9" GridPane.rowIndex="2" GridPane.rowSpan="5">
          <columns>
-            <TableColumn fx:id="salaDisponible" prefWidth="50.0" text="Sala" />
-            <TableColumn fx:id="capacidadDisponible" prefWidth="40.0" text="Capacidad" />
-            <TableColumn fx:id="ubicacionDisponible" prefWidth="75.0" text="Ubicación" />
-            <TableColumn fx:id="descripcionDisponible" prefWidth="75.0" text="Descripción" />
+            <TableColumn fx:id="salaDisponible" prefWidth="77.0" text="Sala" />
+            <TableColumn fx:id="capacidadDisponible" prefWidth="92.0" text="Capacidad" />
+            <TableColumn fx:id="ubicacionDisponible" prefWidth="105.0" text="Ubicación" />
+            <TableColumn fx:id="descripcionDisponible" prefWidth="135.0" text="Descripción" />
+            <TableColumn fx:id="estadoDisponible" prefWidth="111.0" text="Estado" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
       <Button focusTraversable="false" mnemonicParsing="false" onAction="#pedir" styleClass="Managerbutton" text="Pedir" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Salas Disponibles" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Listado de Salas" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <font>
             <Font name="Calibri Light Italic" size="20.0" />
          </font>
@@ -110,5 +111,6 @@
             <Insets top="-6.0" />
          </GridPane.margin>
       </Button>
+      <TextField fx:id="estadoDisponibleField" focusTraversable="false" promptText="Estado" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="7" />
    </children>
 </GridPane>

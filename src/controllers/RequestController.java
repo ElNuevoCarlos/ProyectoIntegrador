@@ -1,11 +1,9 @@
 package controllers;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import application.Main;
 import data.BlockDAO;
 import data.DataBase;
@@ -73,20 +71,12 @@ public class RequestController {
         	ubicacion.setText(resource.getLocationTrademark());
         	capacidad.setText(resource.getTypeCapacity());
         	descripcion.setText(resource.getDescription());
-        	/*
-            info.setText("Dispositivo: " + resource.getName() + "\n"
-                    + "Marca: " + resource.getLocationTrademark() + "\n"
-                    + "Tipo dispositivo: " + resource.getTypeCapacity() + "\n"
-                    + "Descripción: " + resource.getDescription());
-                    */
         }
 
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                return;
-            }
-
+            if (newValue == null) return;
+            
             if (newValue.isBefore(LocalDate.now()) || newValue.isAfter(LocalDate.now().plusDays(15))) {
             	ViewUtils.AlertWindow(
                     "Fecha inválida",
@@ -149,7 +139,7 @@ public class RequestController {
         	        Dialog<Long> dialog = new Dialog<>();
         	        
         	        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        	        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/teacher.png")));
+        	        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
         	        
         	        GridPane grid = new GridPane();
         	        

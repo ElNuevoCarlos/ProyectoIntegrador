@@ -33,68 +33,34 @@ import model.LoanTable;
 import utils.ViewUtils;
 
 public class MyLoansController {
-    @FXML
-    private GridPane gripe;
+    @FXML private GridPane gripe;
 
-    @FXML 
-    private TableView<LoanTable> tableLoan;
+    @FXML private TableView<LoanTable> tableLoan;
 
-    @FXML 
-    private TableColumn<LoanTable, Long> idColumn;
-
-    @FXML 
-    private TableColumn<LoanTable, Timestamp> dateColumn;
+    @FXML private TableColumn<LoanTable, Long> idColumn;
+    @FXML private TableColumn<LoanTable, Timestamp> dateColumn;
+    @FXML private TableColumn<LoanTable, String> nameColumn;
+    @FXML private TableColumn<LoanTable, String> locationColumn;
+    @FXML private TableColumn<LoanTable, String> stateColumn;
     
-    @FXML 
-    private TableColumn<LoanTable, String> nameColumn;
-
-    @FXML 
-    private TableColumn<LoanTable, String> locationColumn;
-
-    @FXML 
-    private TableColumn<LoanTable, String> stateColumn;
+    @FXML private Label title;
     
-    @FXML
-    private Label title;
+    @FXML private TextField nameText;
+    @FXML private TextField stateText;
+    @FXML private TextField buildingText;
+    @FXML private TextField flatText;
+    @FXML private TextField typeText;
     
-    @FXML 
-    private TextField nameText;
+    @FXML private DatePicker startInterval;
+    @FXML private DatePicker endInterval;
     
-    @FXML
-    private TextField stateText;
+    @FXML private ContextMenu menuName;
+    @FXML private ContextMenu menuState;
+    @FXML private ContextMenu menuBuilding;
+    @FXML private ContextMenu menuFlat;
+    @FXML private ContextMenu menuType;
     
-    @FXML
-    private TextField buildingText;
-    
-    @FXML
-    private TextField flatText;
-    
-    @FXML
-    private TextField typeText;
-    
-    @FXML
-    private DatePicker startInterval;
-    
-    @FXML 
-    private DatePicker endInterval;
-    
-    @FXML
-    private ContextMenu menuName;
-    
-    @FXML
-    private ContextMenu menuState;
-    
-    @FXML
-    private ContextMenu menuBuilding;
-    
-    @FXML
-    private ContextMenu menuFlat;
-    
-    @FXML
-    private ContextMenu menuType;
-    
-    @FXML
-    private Button filterButton;
+    @FXML private Button filterButton;
     
 	private Connection database = DataBase.getInstance().getConnection();
 	private LoanDAO loanDAO = new LoanDAO(database);
@@ -103,8 +69,7 @@ public class MyLoansController {
 
     ObservableList<LoanTable> Loans = FXCollections.observableArrayList();
 
-    @FXML
-    public void initialize() {  	
+    @FXML void initialize() {  	
     	tableLoan.setRowFactory(tv -> {
     	    TableRow<LoanTable> row = new TableRow<>();
 
@@ -131,8 +96,7 @@ public class MyLoansController {
     	});
     }
     
-    @FXML
-    void handleHall() {
+    @FXML void handleHall() {
     	buildingText.setVisible(true);
     	flatText.setVisible(true);
     	typeText.setVisible(false);
@@ -159,8 +123,7 @@ public class MyLoansController {
 		tableLoan.setItems(Loans);
     }
     
-    @FXML
-    void handleDevices() {
+    @FXML void handleDevices() {
     	buildingText.setVisible(false);
     	flatText.setVisible(false);
     	typeText.setVisible(true);
@@ -221,8 +184,7 @@ public class MyLoansController {
         }
     }
 
-    @FXML
-    void handleFilter() {
+    @FXML void handleFilter() {
     	String name = nameText.getText().trim();
         String state = stateText.getText().trim();
         LocalDate start = startInterval.getValue();

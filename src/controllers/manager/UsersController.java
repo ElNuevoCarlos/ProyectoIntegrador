@@ -196,7 +196,7 @@ public class UsersController {
         Dialog<User> dialog = new Dialog<>();
         
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/teacher.png")));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
         
         GridPane grid = new GridPane();
         
@@ -341,7 +341,7 @@ public class UsersController {
 	        Dialog<User> dialog = new Dialog<>();
 	        
 	        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-	        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/teacher.png")));
+	        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
 	        
 	        GridPane grid = new GridPane();
 	        

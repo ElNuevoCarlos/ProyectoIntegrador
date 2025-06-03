@@ -20,7 +20,7 @@ public class Main extends Application {
             rootLayout = root.load();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-    		Image icon = new Image(getClass().getResourceAsStream("/img/teacher.png"));
+    		Image icon = new Image(getClass().getResourceAsStream("/img/logo.png"));
     		primaryStage.getIcons().add(icon);
             primaryStage.setResizable(false);
             primaryStage.show();

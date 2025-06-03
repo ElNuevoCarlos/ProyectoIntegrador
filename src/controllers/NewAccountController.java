@@ -35,8 +35,7 @@ public class NewAccountController {
     private Connection database = DataBase.getInstance().getConnection();
     private UserDAO userDao = new UserDAO(database);
 	
-	@FXML
-	public void initialize() {
+	@FXML void initialize() {
 		rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
 	    ObservableList<String> itemsTI = FXCollections.observableArrayList(
 	        "CC", "CE"
@@ -118,10 +117,8 @@ public class NewAccountController {
 	}
 	
 	@FXML void handleLogin() {
-    	// CIERRA LA VENTANA ACTUAL
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
-        // CIERRA LA VENTANA ACTUAL
         ViewUtils.loadView("/views/Login.fxml");
 	}
 }
