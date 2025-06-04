@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import utils.ViewUtils;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import model.User;
 
@@ -45,7 +44,7 @@ public class UserDAO {
 	
 	            int rowsAffected = pstmt.executeUpdate();
 	            if (rowsAffected > 0) {
-	                this.AlertWindow(null, "Cuenta creada con éxito", AlertType.INFORMATION);
+	                ViewUtils.AlertWindow(null, null, "Cuenta creada con éxito", AlertType.INFORMATION);
 	            }
 	    	} catch (SQLException e) {
 				e.printStackTrace();
@@ -145,7 +144,6 @@ public class UserDAO {
         
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
-        	
             while (rs.next()) {
                 String nombre_completo = rs.getString("NOMBRE_COMPLETO");
                 String numero_identificacion = rs.getString("NUMERO_IDENTIFICACION");
@@ -208,15 +206,6 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
-
-    private void AlertWindow(String text, String content, AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(null);
-        alert.setHeaderText(text);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-    
     
     
     

@@ -25,7 +25,6 @@ public class ResourcesDAO {
         String query;
 
         if (type) {
-        	
             query = "SELECT s.NOMBRE, s.CAPACIDAD ,u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, s.DESCRIPCION, s.ID, s.ESTADO\r\n"
             		+ "FROM SALA s JOIN UBICACION u ON s.ID_UBICACION = u.ID\r\n"
             		+ second;

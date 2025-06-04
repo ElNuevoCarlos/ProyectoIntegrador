@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Sanction;
+import model.SanctionInfo;
 
 public class SanctionDAO {
     private Connection connection;
@@ -69,29 +70,27 @@ public class SanctionDAO {
         return sanctions;
 	}
 
-	public ArrayList<Sanction> fetch() {
-        ArrayList<Sanction> sanctions = new ArrayList<>();
-        String query = "SELECT ID, TIPO_SANCION, DESCRIPCION,"
-        		+" FECHA_FIN, MONTO, ESTADO, ID_PRESTAMO"
-                + " FROM SANCION";
-        
+	public ArrayList<SanctionInfo> fetch() {
+        ArrayList<SanctionInfo> sanctions = new ArrayList<>();
+        String query = "SELECT S.TIPO_SANCION, S.DESCRIPCION, S.ESTADO, P.FECHA, S.FECHA_FIN, S.MONTO, U.CORREO_INSTITUCIONAL"
+                + " FROM SANCION S JOIN PRESTAMO P ON S.ID_PRESTAMO = P.ID"
+                + " JOIN USUARIO U ON P.ID_USUARIO = U.ID";
+
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
         	
             while (rs.next()) {
-            	Long id = rs.getLong(1);
-                String typeSanction = rs.getString(2);
-                String descripcion = rs.getString(3);
-                LocalDate endDate = rs.getDate(4).toLocalDate();;
-                int amount = rs.getInt(5);
-                String state = rs.getString(6);  
-                Long idLoanDevice = rs.getLong(7);
+                String typeSanction = rs.getString(1);
+                String descripcion = rs.getString(2);
+                String state = rs.getString(3);  
+                LocalDate dateLoan = rs.getDate(4).toLocalDate();;
+                LocalDate endDate = rs.getDate(5).toLocalDate();;
+                int amount = rs.getInt(6);
+                String emailClient = rs.getString(7);
                 
-                Sanction sanction = new Sanction(
-                		id, typeSanction, descripcion, 
-                		endDate, amount, 
-                		state, idLoanDevice);
-                sanctions.add(sanction);
+                SanctionInfo sanctionInfo = new SanctionInfo(typeSanction, descripcion, state, dateLoan, endDate, amount, emailClient);
+                
+                sanctions.add(sanctionInfo);
            
             }
         } catch (SQLException e) {

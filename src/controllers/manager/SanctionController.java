@@ -12,7 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.Sanction;
+import model.SanctionInfo;
 import utils.ViewUtils;
 
 public class SanctionController {
@@ -20,31 +20,32 @@ public class SanctionController {
     @FXML private TextField fechaSancionField;
     @FXML private TextField tipoSancionField;
 
-    @FXML private TableView<Sanction> tableSanctions;
-    @FXML private TableColumn<Sanction, String> tipo_sancion;
-    @FXML private TableColumn<Sanction, String> descripcion;
-    @FXML private TableColumn<Sanction, String> fecha_sancion;
-    @FXML private TableColumn<Sanction, String> fecha_fin;
-    @FXML private TableColumn<Sanction, String> monto;
-    @FXML private TableColumn<Sanction, String> id_prestamo;
+    @FXML private TableView<SanctionInfo> tableSanctions;
+    @FXML private TableColumn<SanctionInfo, String> tipo_sancion;
+    @FXML private TableColumn<SanctionInfo, String> descripcion;
+    @FXML private TableColumn<SanctionInfo, String> fecha_sancion;
+    @FXML private TableColumn<SanctionInfo, String> fecha_fin;
+    @FXML private TableColumn<SanctionInfo, String> monto;
+    @FXML private TableColumn<SanctionInfo, String> emailClient;
     
-    private FilteredList<Sanction> listaFiltrada;
+    private FilteredList<SanctionInfo> listaFiltrada;
     
     private Connection database = DataBase.getInstance().getConnection();
     private SanctionDAO sanctionDao = new SanctionDAO(database);
 
     @FXML public void initialize() {
-		ObservableList<Sanction> sanctions = FXCollections.observableArrayList();
+		ObservableList<SanctionInfo> sanctions = FXCollections.observableArrayList();
 		
-		for (Sanction sanction : sanctionDao.fetch()) { 
-			sanctions.add(sanction);
+		for (SanctionInfo sanctioninfo : sanctionDao.fetch()) { 
+			sanctions.add(sanctioninfo);
 		}
 		
 		tipo_sancion.setCellValueFactory(new PropertyValueFactory<>("typeSanction"));
 		descripcion.setCellValueFactory(new PropertyValueFactory<>("description"));
+		fecha_sancion.setCellValueFactory(new PropertyValueFactory<>("dateLoan"));
 		fecha_fin.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 		monto.setCellValueFactory(new PropertyValueFactory<>("amount"));
-		id_prestamo.setCellValueFactory(new PropertyValueFactory<>("idLoanDevice"));
+		emailClient.setCellValueFactory(new PropertyValueFactory<>("emailClient"));
         
 	    listaFiltrada = new FilteredList<>(sanctions, p -> true);
 	    
@@ -61,7 +62,7 @@ public class SanctionController {
         String tipoSancion = tipoSancionField.getText().toLowerCase();
 
         listaFiltrada.setPredicate(sanction -> {
-            String idPrestamoStr = String.valueOf(sanction.getIdLoanDevice()).toLowerCase();
+            String idPrestamoStr = String.valueOf(sanction.getEmailClient()).toLowerCase();
             String tipoSancionStr = sanction.getTypeSanction().toLowerCase();
 
             boolean bPrestamo = idPrestamoStr.contains(prestamo);
@@ -71,8 +72,8 @@ public class SanctionController {
         });
     }
     
-    private Sanction selectSanction() {
-    	Sanction sanction = tableSanctions.getSelectionModel().getSelectedItem();
+    private SanctionInfo selectSanction() {
+    	SanctionInfo sanction = tableSanctions.getSelectionModel().getSelectedItem();
     	if (sanction == null) {
     		ViewUtils.AlertWindow(null, null, "Debe primero seleccionar una sanción", AlertType.ERROR);
     		return null;
@@ -80,15 +81,15 @@ public class SanctionController {
     	return sanction;
     }
     @FXML private void actualizar() {
-    	Sanction sanction = selectSanction();
-    	if (sanction != null) {
+    	SanctionInfo sanctionInfo = selectSanction();
+    	if (sanctionInfo != null) {
     		
     	}
     	
     }
     @FXML private void eliminar() {
-    	Sanction sanction = selectSanction();
-    	if (sanction != null) {
+    	SanctionInfo sanctionInfo = selectSanction();
+    	if (sanctionInfo != null) {
     		
     	}
     }

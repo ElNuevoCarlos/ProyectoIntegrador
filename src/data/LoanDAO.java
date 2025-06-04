@@ -23,9 +23,8 @@ public class LoanDAO {
 
 	public ArrayList<LoanTable> MyLoansView(Long idUser, Boolean type, StringBuilder second) {
         ArrayList<LoanTable> loansView = new ArrayList<>();
-        
         String query;
-
+        
         if (type) {
             query = "SELECT p.ID, s.NOMBRE, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES, s.CAPACIDAD "
                   + "FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
@@ -129,7 +128,7 @@ public class LoanDAO {
         }
     }
     
-	public ArrayList<Loans> fetchLoandTwo(Long teacher, StringBuilder more) {
+	public ArrayList<Loans> fetchLoan(Long teacher, StringBuilder more) {
         ArrayList<Loans> loans = new ArrayList<>();
         String query = "SELECT p.ID, s.NOMBRE, us.CORREO_INSTITUCIONAL, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION,"
         		+ " p.ESTADO, p.ESPECIFICACIONES"
@@ -185,42 +184,6 @@ public class LoanDAO {
 			return false;
 		}	
 		return true;
-	}
-	
-	public ArrayList<LoanTable> fetchLoand(Boolean type) {
-        ArrayList<LoanTable> loansView = new ArrayList<>();
-        String query;
-
-        if (type) {
-            query = "SELECT p.ID, s.NOMBRE, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES, s.CAPACIDAD"
-                  + " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
-                  + "JOIN UBICACION u ON s.ID_UBICACION = u.ID ";
-        } else {
-            query = "SELECT p.ID, e.NOMBRE, p.FECHA, e.TIPO_DISPOSITIVO, p.ESTADO, p.ESPECIFICACIONES, NULL "
-                  + "FROM PRESTAMO p JOIN EQUIPO e ON p.ID_EQUIPO = e.ID ";
-        }
-
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Long id = rs.getLong(1);
-                String name = rs.getString(2);
-                Timestamp ts = rs.getTimestamp(3);
-                String locationType = rs.getString(4);
-                String state = rs.getString(5); 
-                String specs = rs.getString(6);
-                String capacity = String.valueOf(rs.getInt(7)); 
-                
-                LocalDate date = ts.toLocalDateTime().toLocalDate();
-                
-                LoanTable loanView = new LoanTable(id, name, date,locationType, state, specs, capacity);
-                loansView.add(loanView);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return loansView;
 	}
 }
 

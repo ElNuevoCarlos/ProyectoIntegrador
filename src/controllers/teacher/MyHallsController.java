@@ -35,7 +35,7 @@ public class MyHallsController {
     	
 		ObservableList<Loans> myList = FXCollections.observableArrayList();
 		
-		for (Loans loan : loanDao.fetchLoandTwo(sessionManager.getId(), new StringBuilder())) { 
+		for (Loans loan : loanDao.fetchLoan(sessionManager.getId(), new StringBuilder())) { 
 			myList.add(loan);
 		}
 
