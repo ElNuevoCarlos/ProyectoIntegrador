@@ -131,19 +131,15 @@ public class LoanDAO {
     
 	public ArrayList<Loans> fetchLoandTwo(Long teacher, StringBuilder more) {
         ArrayList<Loans> loans = new ArrayList<>();
-        String query;
-        if (teacher != null) {
-            query = "SELECT p.ID, s.NOMBRE, us.CORREO_INSTITUCIONAL, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES"
-                  + " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
-          		  + "JOIN USUARIO us ON p.ID_USUARIO = us.ID "
-                  + "JOIN UBICACION u ON s.ID_UBICACION = u.ID "+ more;
-        } else {
-        	query = "SELECT p.ID, s.NOMBRE, us.CORREO_INSTITUCIONAL, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES"
-                  + " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID"
-          		  + " JOIN USUARIO us ON p.ID_USUARIO = us.ID"
-                  + " JOIN UBICACION u ON s.ID_UBICACION = u.ID"
-          		  + " WHERE p.ID_USUARIO = "+teacher;
-        }
+        String query = "SELECT p.ID, s.NOMBRE, us.CORREO_INSTITUCIONAL, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION,"
+        		+ " p.ESTADO, p.ESPECIFICACIONES"
+        		+ " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
+        		+ " JOIN USUARIO us ON p.ID_USUARIO = us.ID\r\n"
+        		+ " JOIN UBICACION u ON s.ID_UBICACION = u.ID";
+
+        	if (teacher != null) {
+        	    query += " WHERE p.ID_USUARIO = " + teacher;
+        	}
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             ResultSet rs = pstmt.executeQuery();

@@ -30,7 +30,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import model.Block;
 import model.LoanTable;
 import model.Resources;
@@ -77,7 +76,6 @@ public class ModifyLoanController {
 	
 	private ArrayList<Block> blocksArray;
 	private ArrayList<Block> myBlocksInitial;
-	
 	
 	@FXML void initialize() {
 	    Object dato = Main.datoGlobal;
