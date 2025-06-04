@@ -95,7 +95,6 @@ public class ModifyLoanController {
 	    	String[] partsLocation = loan.getLocationType().split("-");
 	    	info.setText("Sala: " +loan.getName()+"\n"+"Fecha:" + loan.getDate() + "\n" +"Capacidad: "+ loan.getCapacity() + "\n"+ "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" + "Estado: " + loan.getState() + "\n" +"Especificaciones: " + loan.getSpecs());
 	    	buildingText.setPromptText("Edificio");
-	        GridPane.setColumnSpan(buildingText, 1);
 	    	flatText.setVisible(true);
 	    	capacityText.setPromptText("Capacidad");
 	    	fillTable(resourcesDAO.ResourcesView(true, new StringBuilder()), "SALA", "CAPACIDAD","UBICACION");
@@ -107,7 +106,6 @@ public class ModifyLoanController {
 	    	blocksArray = blockDAO.findAvailableBlocks(loan.getDate(), "p.ID_EQUIPO = (SELECT ID_EQUIPO FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
 	    	capacityText.setEditable(true);
 	    	buildingText.setPromptText("Tipo");
-	        GridPane.setColumnSpan(buildingText, 3);
 	    	flatText.setVisible(false);
 	    	capacityText.setPromptText("Marca");
 	    	info.setText("Dispostivo: " +loan.getName()+"\n"+"Fecha:" + loan.getDate() + "\n"+ "Tipo: " + loan.getLocationType() + "\n" + "Estado: " + loan.getState() +"\n" + "Especificaciones: " + loan.getSpecs());

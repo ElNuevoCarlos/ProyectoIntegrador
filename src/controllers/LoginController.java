@@ -2,6 +2,7 @@ package controllers;
 
 import java.sql.Connection;
 
+import application.Main;
 import data.DataBase;
 import data.SessionManager;
 import data.UserDAO;
@@ -127,7 +128,8 @@ public class LoginController {
             		ViewUtils.loadView("/views/Manager/Menu.fxml");
                 	break;
             	case "SUPERENCARGADO":
-            		ViewUtils.loadView("/views/SuperManager.fxml");
+            		Main.isSuperManager = true;
+            		ViewUtils.loadView("/views/Manager/Menu.fxml");
             		break;
             	default:
             		ViewUtils.loadView("/views/Teacher/Menu.fxml");

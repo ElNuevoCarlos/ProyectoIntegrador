@@ -10,13 +10,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Sanction;
 
-public class SanctionDAO implements CRUD_operation<Sanction, String>{
+public class SanctionDAO {
     private Connection connection;
 
     public SanctionDAO(Connection connection) {
         this.connection = connection;
     }
-	@Override
+
 	public void save(Sanction entity) {
     	String querySancion = "INSERT INTO SANCION"
     			+ " (ID, TIPO_SANCION, DESCRIPCION, FECHA_FIN, MONTO, ESTADO, ID_PRESTAMO)"
@@ -69,7 +69,6 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
         return sanctions;
 	}
 
-	@Override
 	public ArrayList<Sanction> fetch() {
         ArrayList<Sanction> sanctions = new ArrayList<>();
         String query = "SELECT ID, TIPO_SANCION, DESCRIPCION,"
@@ -102,24 +101,13 @@ public class SanctionDAO implements CRUD_operation<Sanction, String>{
         return sanctions;
 	}
 
-	@Override
+
 	public boolean update(Sanction entity) {
 		return false;
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean authenticate(String id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }
 
 

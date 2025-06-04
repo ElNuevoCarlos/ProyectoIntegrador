@@ -90,7 +90,7 @@ public class UsersController {
         });
         
         rol.setOnEditCommit(event -> {
-        	if (event.getNewValue().equals("ENCARGADO")) {
+        	if (!Main.isSuperManager && event.getNewValue().equals("ENCARGADO")) {
         		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
         		return;
         	}
@@ -379,7 +379,7 @@ public class UsersController {
 	            	String roleUser = user.getRol();
 	            	
 	            	if (!roleUser.equals(rol)) {
-		            	if (rol.equals("ENCARGADO")) {
+		            	if (!Main.isSuperManager && rol.equals("ENCARGADO")) {
 		            		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes definir nuevos Encargados", AlertType.ERROR);
 		            		return null;
 		            	}

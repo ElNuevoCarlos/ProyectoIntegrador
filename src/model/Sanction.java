@@ -19,7 +19,6 @@ public class Sanction {
         this.state = state;
         this.idLoanDevice = idLoanDevice;
     }
-    
 
 	public void setTypeSanction(String typeSanction) {
 		this.typeSanction = typeSanction;

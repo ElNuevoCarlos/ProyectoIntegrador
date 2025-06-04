@@ -27,10 +27,12 @@ public class MyAccountController {
 	
 	@FXML private GridPane grip;
 	
-	@FXML private Label nameText, numIdentificationText, tiText, emailText, phoneText, roleText, pro_depText, password1Text,
-			password2Text, title;
+	@FXML private Label nameText, numIdentificationText, 
+	tiText, emailText, phoneText, roleText, 
+	pro_depText, password1Text, password2Text, title;
 	
-	@FXML private TextField name, numIdentification, email, phone, pro_dep, password1, password2;
+	@FXML private TextField name, numIdentification, email, 
+	phone, pro_dep, password1, password2;
 	
 	@FXML private ComboBox<String> ti, role;
 	
