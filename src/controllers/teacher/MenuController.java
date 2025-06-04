@@ -29,7 +29,7 @@ public class MenuController {
 	
     @FXML void handleMyLoans() {
     	Main.datoGlobalTwo = true;
-    	ViewUtils.cargarGrid("/views/Manager/MenuLoands.fxml", rootPane);
+    	ViewUtils.cargarGrid("/views/MyLoans.fxml", rootPane);
     }
     
     @FXML void handleRequestConsultation() {

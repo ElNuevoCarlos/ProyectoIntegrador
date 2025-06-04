@@ -2,6 +2,7 @@ package controllers.teacher;
 
 import java.sql.Connection;
 
+import application.Main;
 import data.DataBase;
 import data.LoanDAO;
 import data.SessionManager;
@@ -70,7 +71,8 @@ public class MyHallsController {
     @FXML void actualizar() {
     	Loans loan = selectResource();
     	if (loan != null) {
-    		
+        	Main.datoGlobal = loan;
+        	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
     	}
     }
 
