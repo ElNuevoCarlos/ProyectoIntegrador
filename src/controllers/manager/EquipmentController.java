@@ -28,10 +28,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Equipment;
 import model.EqupmentInfo;
-import model.Hall;
-import model.Loans;
-import model.Location;
-import model.Resources;
 import model.Sanction;
 import model.User;
 import utils.ViewUtils;
@@ -254,20 +250,26 @@ public class EquipmentController {
                 		Marca.isEmpty() || 
                 		Serie.isEmpty() ||
                 		Description.isEmpty() ||
-                		State.isEmpty()) {
+                		State.isEmpty() || Category == null) {
                 	ViewUtils.AlertWindow(null, "Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
                     return null;
                 }
-                if (resourcesDao.AuthenticateHall(Name)) {
-                	ViewUtils.AlertWindow(null, "Sala existente", "La sala "+Name+" ya estaba registrada.", AlertType.ERROR);
-                	return null;
-                }
-
-                /*
                 
-                resourcesDao.saveHall(new Hall(null, Name, id_location, String.valueOf(Capacity), Description, State));
-                */
-                ViewUtils.AlertWindow(null, "Sala creada", "La sala "+Name+" ha sido registrada con éxito.", AlertType.INFORMATION);
+                if (Category.equals("Dispositivo")) {
+                	if (Tipo == null) {
+                		ViewUtils.AlertWindow(null, "FALTA EL TIPO DE DISPOSITIVO", "Debe especificar el tipo de dispositivo.", AlertType.ERROR);
+                		return null;
+                	}
+                } else if (Category.equals("Computadora de Mesa")) {
+                	if (Tipo != null) {
+                		ViewUtils.AlertWindow(null, "NO USES TIPO DE DISPOSITIVO", "No puedes elegir un tipo de dispositivo en este caso.", AlertType.ERROR);
+                		return null;
+                	}
+                }
+                
+                resourcesDao.saveEquipment(new Equipment(null, Name, Category, Tipo, Marca, Serie, State, Description, null));
+                
+                ViewUtils.AlertWindow(null, "Equipo creado", "El equipo "+Name+" ha sido registrado con éxito.", AlertType.INFORMATION);
             }
             return null;
         });

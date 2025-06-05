@@ -163,12 +163,33 @@ public class ResourcesDAO {
         return list;
     }
 	
+	public void saveEquipment(Equipment equipment) {
+    	String query = "INSERT INTO EQUIPO"
+    			+ " (ID, NOMBRE, CATEGORIA, TIPO_DISPOSITIVO, MARCA, NUMERO_SERIE, ESTADO, DESCRIPCION, ID_SALA)"
+    			+ " VALUES (SEQ_EQUIPO_ID.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+	    	try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+				pstmt.setString(1, equipment.getName());
+	            pstmt.setString(2, equipment.getCategory());
+	            pstmt.setString(3, equipment.getDeviceType());
+	            pstmt.setString(4, equipment.getBrand());
+	            pstmt.setString(6, equipment.getSerialNumber());
+	            pstmt.setString(7, equipment.getState());
+	            pstmt.setString(8, equipment.getDescription());
+	            pstmt.setString(9, null);
+	            
+	            pstmt.executeUpdate();
+	    	} catch (SQLException e) {
+	    		ViewUtils.AlertWindow(null, "Ocurrio un error", e.getMessage(), AlertType.INFORMATION);
+			}
+	}
+	
     public void saveHall(Hall hall) {
-    	String queryLocation = "INSERT INTO SALA"
+    	String query = "INSERT INTO SALA"
     			+ " (ID, NOMBRE, ID_UBICACION, CAPACIDAD, ESTADO, DESCRIPCION)"
     			+ " VALUES (SEQ_SALA_ID.NEXTVAL, ?, ?, ?, ?, ?)";
 
-	    	try (PreparedStatement pstmt = connection.prepareStatement(queryLocation)) {
+	    	try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 				pstmt.setString(1, hall.getName());
 	            pstmt.setLong(2, hall.getIdLocation());
 	            pstmt.setString(3, hall.getCapacity());
