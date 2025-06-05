@@ -179,20 +179,20 @@ public class EquipmentController {
         grid.setPadding(new Insets(20, 20, 10, 10));
     	
         TextField nameField = new TextField();
-        nameField.setPromptText("Nombre - Ejemplo: Sala 105");
+        nameField.setPromptText("Nombre - Ejemplo: ASUS");
         
-        ComboBox<Integer> capacityField = new ComboBox<>();
-        ObservableList<Integer> listCapacity = FXCollections.observableArrayList(10, 20, 30, 40, 50);
-        capacityField.setItems(listCapacity);
-        capacityField.setPromptText("Capacidad");
-        capacityField.setPrefWidth(100);
+        ComboBox<String> tipoField = new ComboBox<>();
+        ObservableList<String> listTipo = FXCollections.observableArrayList(
+        		"PORTÁTIL", "CÁMARA", "MICRÓFONO", "VÍDEO PROYECTOR", "HDMI", "ETHERNET");
+        tipoField.setItems(listTipo);
+        tipoField.setPromptText("Tipo de Dispositivo");
+        tipoField.setPrefWidth(150);
 
         HBox BoxOne = new HBox(5); 
-        BoxOne.getChildren().addAll(nameField, capacityField);
+        BoxOne.getChildren().addAll(nameField, tipoField);
         
         grid.add(BoxOne, 0, 1, 2, 1);
         
-        // ------------------------------- Estado
     	ComboBox<String> stateField = new ComboBox<>();
     	
 	    ObservableList<String> itemsState = FXCollections.observableArrayList(
@@ -202,34 +202,37 @@ public class EquipmentController {
 	    stateField.setPrefWidth(140);
 	    stateField.setItems(itemsState);
 	    
-	 // ------------------------------- Ubicación
-    	ComboBox<String> locateField = new ComboBox<>();
+    	ComboBox<String> categoryField = new ComboBox<>();
     	
-	    ObservableList<String> itemslocate = FXCollections.observableArrayList(
-		        "Edificio A", "Edificio B"
+	    ObservableList<String> itemsCategory = FXCollections.observableArrayList(
+		        "Dispositivo", "Computadora de Mesa"
 		    );
+	    categoryField.setPromptText("Categoria");
+	    categoryField.setPrefWidth(140);
+	    categoryField.setItems(itemsCategory);
 	    
-	    locateField.setPromptText("Edificio");
-	    locateField.setPrefWidth(100);
-	    locateField.setItems(itemslocate);
-	    locateField.setEditable(true);
-	    
-	    TextField floorField = new TextField();
-	    floorField.setPrefWidth(50);
-	    floorField.setPromptText("Piso");
-	    
-     // ------------------------------- Ubicación
         HBox Box = new HBox(5); 
-        Box.getChildren().addAll(locateField, floorField, stateField);
+        Box.getChildren().addAll(categoryField, stateField);
         
         grid.add(Box, 0, 2, 2, 1);
         
+	    TextField brandField = new TextField();
+	    brandField.setPrefWidth(100);
+	    brandField.setPromptText("Marca");
+	    
+        grid.add(brandField, 0, 3);
+        
+	    TextField seriesField = new TextField();
+	    seriesField.setPrefWidth(100);
+	    seriesField.setPromptText("Serie");
+	    
+        grid.add(seriesField, 1, 3);
         
 	    TextField descField = new TextField();
 	    descField.setPrefWidth(100);
 	    descField.setPromptText("Descripción");
 	    
-        grid.add(descField, 0, 3, 2, 2);
+        grid.add(descField, 0, 5, 2, 2);
         
 
         dialog.getDialogPane().setContent(grid);
@@ -240,20 +243,16 @@ public class EquipmentController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
         		String Name = nameField.getText().trim();
-        		String Locate = locateField.getValue() != null ? locateField.getValue().trim() : "";
+        		String Category = categoryField.getValue() != null ? categoryField.getValue().trim() : null;
         		String State = stateField.getValue() != null ? stateField.getValue().trim() : "";
-        		Integer Capacity = capacityField.getValue() != null ? capacityField.getValue() : 10;
+        		String Tipo = tipoField.getValue() != null ? tipoField.getValue() : null;
+        		String Marca = brandField.getText().trim();
+        		String Serie = seriesField.getText().trim();
         		String Description = descField.getText().trim();
-
-        		try {
-        		    Integer.parseInt(floorField.getText().trim() != null ? floorField.getText().trim(): "1");
-        		} catch (NumberFormatException e) {
-        		    ViewUtils.AlertWindow(null, "Formato inválido", "El piso debe ser un número entero.", AlertType.ERROR);
-        		    return null;
-        		}
         		
                 if (Name.isEmpty() || 
-                		Locate.isEmpty() || 
+                		Marca.isEmpty() || 
+                		Serie.isEmpty() ||
                 		Description.isEmpty() ||
                 		State.isEmpty()) {
                 	ViewUtils.AlertWindow(null, "Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
@@ -263,16 +262,11 @@ public class EquipmentController {
                 	ViewUtils.AlertWindow(null, "Sala existente", "La sala "+Name+" ya estaba registrada.", AlertType.ERROR);
                 	return null;
                 }
-                String floorString = floorField.getText().trim();
-                
-                if (!resourcesDao.AuthenticateBuildingFloor(Locate, floorString)) {
-                	resourcesDao.saveLocation(new Location(null, Locate, floorString));
-                }
 
-                Long id_location = resourcesDao.verifyLocation(Locate, floorString);
+                /*
                 
                 resourcesDao.saveHall(new Hall(null, Name, id_location, String.valueOf(Capacity), Description, State));
-                
+                */
                 ViewUtils.AlertWindow(null, "Sala creada", "La sala "+Name+" ha sido registrada con éxito.", AlertType.INFORMATION);
             }
             return null;
