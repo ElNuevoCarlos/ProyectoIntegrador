@@ -3,7 +3,6 @@ package controllers;
 import java.sql.Connection;
 
 import data.DataBase;
-import data.EmailService;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
