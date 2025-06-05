@@ -54,7 +54,7 @@ public class ResourcesDAO {
 	public ArrayList<EqupmentInfo> EquipmentLoanView() {
         ArrayList<EqupmentInfo> equipments = new ArrayList<>();
         
-        String query = "SELECT P.ID, E.NOMBRE, E.DESCRIPCION, U.CORREO_INSTITUCIONAL, P.ESPECIFICACIONES, E.NUMERO_SERIE, P.FECHA, P.ESTADO"
+        String query = "SELECT P.ID, E.NOMBRE, E.DESCRIPCION, U.CORREO_INSTITUCIONAL, P.ESPECIFICACIONES, E.NUMERO_SERIE, P.FECHA, P.ESTADO, E.TIPO_DISPOSITIVO, E.MARCA"
             		+ " FROM EQUIPO E JOIN PRESTAMO P ON P.ID_EQUIPO = E.ID"
             		+ " JOIN USUARIO U ON P.ID_USUARIO = U.ID";
 
@@ -69,8 +69,15 @@ public class ResourcesDAO {
                    String series = rs.getString(6); 
                    LocalDate dateLoan = rs.getDate(7).toLocalDate();;
             	   String state = rs.getString(8);
+            	   String type = rs.getString(9);
+            	   String brand = rs.getString(10);
 
-            	   EqupmentInfo equipment = new EqupmentInfo(id, name, description, emailClient, specs, series, dateLoan, state);
+            	   EqupmentInfo equipment = new EqupmentInfo(id, 
+            			   name, description, 
+            			   emailClient, specs, 
+            			   series, dateLoan, 
+            			   state, type, brand);
+            	   
                    equipments.add(equipment);
                }
            } catch (SQLException e) {

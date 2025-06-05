@@ -28,12 +28,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import model.Block;
+import model.Equipment;
+import model.EqupmentInfo;
 import model.Loan;
 import model.Resources;
 import utils.ViewUtils;
 
 public class RequestEquipmentController {
-    @FXML private Label sala, ubicacion, descripcion, capacidad;
+    @FXML private Label nombre, tipo, marca, descripcion;
     @FXML private GridPane gripe;
     @FXML private DatePicker datePicker;
     @FXML private ListView<Block> blocks, myBlocks;
@@ -42,7 +44,7 @@ public class RequestEquipmentController {
     private ArrayList<Block> blocksArray;
     private ObservableList<Block> myBlocksArray;
 
-    private Resources resource;
+    private Equipment resource;
 
     private Connection database = DataBase.getInstance().getConnection();
     private SessionManager sessionManager = SessionManager.getInstance();
@@ -53,24 +55,19 @@ public class RequestEquipmentController {
 
     @FXML void initialize() {
         Object dato = Main.datoGlobal;
-        if (dato instanceof Resources) {
-            resource = (Resources) dato;
+        if (dato instanceof Equipment) {
+            resource = (Equipment) dato;
         }
 
         myBlocksArray = FXCollections.observableArrayList();
         
         myBlocks.setItems(myBlocksArray);
-        if (resource.getTypeResource()) {
-        	sala.setText(resource.getName());
-        	ubicacion.setText(resource.getLocationTrademark());
-        	capacidad.setText(resource.getTypeCapacity()+" Personas");
-        	descripcion.setText(resource.getDescription());
-        } else {
-        	sala.setText(resource.getName());
-        	ubicacion.setText(resource.getLocationTrademark());
-        	capacidad.setText(resource.getTypeCapacity());
-        	descripcion.setText(resource.getDescription());
-        }
+
+        nombre.setText(resource.getName());
+        tipo.setText(resource.getDeviceType());
+        marca.setText(resource.getBrand());
+        descripcion.setText(resource.getDescription());
+
 
 
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -88,11 +85,8 @@ public class RequestEquipmentController {
             }
 
             myBlocks.getItems().clear();
-            if (resource.getTypeResource()) {
-                blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_SALA = " + resource.getIdResource());
-            } else {
-                blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_EQUIPO = " + resource.getIdResource());
-            }
+            blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_EQUIPO = " + resource.getId());
+
 
             ObservableList<Block> observableList = FXCollections.observableArrayList(blocksArray);
             blocks.setItems(observableList);
@@ -133,66 +127,15 @@ public class RequestEquipmentController {
     	}
     	if (ViewUtils.showConfirmation("Confirmación", "¿Desea hacer la reserva de " + resource.getName() + ", en los horarios " + myBlocksArray + "?")) {
         	Loan loan;
-        	if (resource.getTypeResource()) {
-            	if (sessionManager.getRole().equals("ENCARGADO") || sessionManager.getRole().equals("SUPERENCARGADO")) {
-        	        Dialog<Long> dialog = new Dialog<>();
-        	        
-        	        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        	        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
-        	        
-        	        GridPane grid = new GridPane();
-        	        
-        	        grid.setHgap(10);
-        	        grid.setVgap(10);
-        	        grid.setPadding(new Insets(20, 20, 10, 10));
-        	        
-        	        TextField numberField = new TextField();
-        	        
-        	        grid.add(new Label("Debe colocar el numero de documento del docente a asignar."), 0, 0, 2, 1);
-        	        
-        	        grid.add(new Label("Numero de documento:"), 0, 1);
-        	        grid.add(numberField, 1, 1);
-        	        dialog.getDialogPane().setContent(grid);
-        	        
-        	        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
-        	        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
-        	        
-        	        dialog.setResultConverter(dialogButton -> {
-        	            if (dialogButton == saveButtonType) {
-        	            	try {
-        	            		Long number = Long.parseLong(numberField.getText().trim());
-        	            		 return userDao.verifyId(number);
-        	            	} catch (NumberFormatException e) {
-        	            		ViewUtils.AlertWindow(null, null, "Tienes que escribir un numero de documento valido.", AlertType.ERROR);
-        	                }
-        	                return null;
-        	            }
-        	            return null;
-        	        });
-        	        
-        	        Optional<Long> result = dialog.showAndWait();
-        	        
-        	        result.ifPresent(number -> {
-        	        	if (number != null) {
-            	        	loanDAO.save(new Loan(null, resource.getIdResource(), number, null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray));
-            	            ViewUtils.AlertWindow(null, null, "Al Docente "+number+" Se le ha asignado el prestamo con exito.", AlertType.INFORMATION);
-        	        	} else {
-        	        		ViewUtils.AlertWindow(null, null, "No hay docentes con ese numero de documento.", AlertType.ERROR);
-        	        	}
-        	        });
-        	        return;
-            	} else {
-            		loan = new Loan(null, resource.getIdResource(), sessionManager.getId(), null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
-            	}
-        	} else {
-        		loan = new Loan(null, null, sessionManager.getId(), resource.getIdResource(), date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
-        	}
+
+        	loan = new Loan(null, null, sessionManager.getId(), resource.getId(), date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
+        	
         	loanDAO.save(loan);
         	myBlocks.getItems().clear();
         	ViewUtils.AlertWindow(
         		    "Reserva solicitada",
         		    "Reserva pendiente",
-        		    "La reserva de la sala está solicitada para los bloques, esperando a que sea aprobada.",
+        		    "La reserva del equipo está solicitada para los bloques, esperando a que sea aprobada.",
         		    AlertType.INFORMATION
         		);
 

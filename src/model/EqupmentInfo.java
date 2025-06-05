@@ -5,11 +5,11 @@ import java.time.LocalDate;
 public class EqupmentInfo {
 	private Long id;
 	private LocalDate dateLoan;
-	private String name, description, emailClient, specs, serialNumber, state;
+	private String name, description, emailClient, specs, serialNumber, state, type, brand;
 	
 	
 	public EqupmentInfo(Long id, String name, String description, String emailClient,
-			String specs, String serialNumber, LocalDate dateLoan, String state) {
+			String specs, String serialNumber, LocalDate dateLoan, String state, String type, String brand) {
 		
 		super();
 		this.id = id;
@@ -20,6 +20,8 @@ public class EqupmentInfo {
 		this.serialNumber = serialNumber;
 		this.dateLoan = dateLoan;
 		this.state = state;
+		this.type = type;
+		this.brand = brand;
 	}
 	
 	public Long getId() {
@@ -56,5 +58,11 @@ public class EqupmentInfo {
 	
 	public String getState() {
 		return state;
+	}
+	public String getType() {
+		return type;
+	}
+	public String getBrand() {
+		return brand;
 	}
 }

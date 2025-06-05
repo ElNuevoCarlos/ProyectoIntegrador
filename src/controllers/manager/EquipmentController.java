@@ -299,7 +299,7 @@ public class EquipmentController {
             	return;
         	}
         	Main.datoGlobal = resource;
-        	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
+        	ViewUtils.cargarGrid("/views/RequestEquipment.fxml", Main.rootLayout);
     	}
     }
     @FXML void aprobar() {

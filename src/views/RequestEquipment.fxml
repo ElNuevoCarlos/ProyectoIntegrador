@@ -71,27 +71,42 @@
             <Font name="Candara Light" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="sala" alignment="TOP_LEFT" textAlignment="CENTER" translateX="165.0" translateY="-60.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+      <Label fx:id="nombre" contentDisplay="RIGHT" prefHeight="22.0" prefWidth="75.0" textAlignment="RIGHT" translateX="165.0" translateY="-60.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="18.0" />
          </font>
+         <padding>
+            <Insets right="-120.0" />
+         </padding>
       </Label>
-      <Label fx:id="ubicacion" alignment="TOP_LEFT" textAlignment="CENTER" translateX="190.0" translateY="-10.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+      <Label fx:id="tipo" alignment="TOP_LEFT" prefHeight="22.0" prefWidth="127.0" textAlignment="CENTER" translateX="190.0" translateY="-10.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="18.0" />
          </font>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets right="-80.0" />
+         </padding>
       </Label>
-      <Label fx:id="capacidad" alignment="TOP_LEFT" textAlignment="CENTER" translateX="175.0" translateY="35.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+      <Label fx:id="marca" alignment="TOP_LEFT" prefHeight="22.0" prefWidth="102.0" textAlignment="CENTER" translateX="175.0" translateY="35.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="18.0" />
          </font>
+         <padding>
+            <Insets right="-90.0" />
+         </padding>
       </Label>
-      <Label fx:id="descripcion" alignment="TOP_LEFT" textAlignment="CENTER" translateX="185.0" translateY="80.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+      <Label fx:id="descripcion" alignment="TOP_LEFT" prefHeight="22.0" prefWidth="117.0" textAlignment="CENTER" translateX="185.0" translateY="80.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="18.0" />
          </font>
+         <padding>
+            <Insets right="-120.0" />
+         </padding>
       </Label>
-      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecciona para cuando necesites la sala para ver la disponibilidad" textAlignment="CENTER" wrappingWidth="248.0390625" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecciona para cuando necesites el equipo para ver la disponibilidad" textAlignment="CENTER" translateY="-5.0" wrappingWidth="248.0390625" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font name="Candara Light" size="15.0" />
          </font>
@@ -106,29 +121,29 @@
             <Font name="Candara Light" size="15.0" />
          </font>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de la Sala" translateX="190.0" translateY="-80.0" wrappingWidth="130.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre del Equipo" translateX="190.0" translateY="-80.0" wrappingWidth="130.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="16.0" />
          </font>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ubicación" translateX="160.0" translateY="-30.0" wrappingWidth="69.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo de Dispositivo" translateX="190.0" translateY="-30.0" wrappingWidth="129.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="16.0" />
          </font>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacidad" translateX="190.0" translateY="15.0" wrappingWidth="130.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Marca" translateX="190.0" translateY="15.0" wrappingWidth="124.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="16.0" />
          </font>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción" translateX="190.0" translateY="60.0" wrappingWidth="130.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción" translateX="190.0" translateY="60.0" wrappingWidth="122.0390625" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <font>
             <Font name="Candara Light" size="16.0" />
          </font>
       </Text>
       <ImageView fitHeight="250.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="5">
          <image>
-            <Image url="@../../resources/img/class.png" />
+            <Image url="@../../resources/img/dispositivos.png" />
          </image>
       </ImageView>
    </children>
