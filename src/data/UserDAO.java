@@ -53,7 +53,7 @@ public class UserDAO {
     }
 
     
-    // Aa1234567# CONTRASEÑA CPINTO5@UDI.EDU.CO
+    // Aa1234567# CONTRASEÑA CPINTO5@UDI.EDU.CO   Brayan1#
 	public String verifyEmail(String email) {
 	    String name = null;
 	    String sql = "{ ? = call TECHLEND.verifyEmail(?) }";       
