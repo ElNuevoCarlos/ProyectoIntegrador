@@ -18,7 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import model.User;
+import utils.SecurityUtils;
 import utils.ViewUtils;
 
 public class MyAccountController {
@@ -41,7 +43,9 @@ public class MyAccountController {
 	private Connection database = DataBase.getInstance().getConnection();
 	private UserDAO userDao = new UserDAO(database);
 	private SessionManager sessionManager = SessionManager.getInstance();
-	private ArrayList<String> otherData;
+	private String[] otherData;
+	private String decryptedPassword;
+	private String encryptedPassword;
 	
 	@FXML void initialize() {
 	    Object dato = Main.datoGlobal;
@@ -53,16 +57,24 @@ public class MyAccountController {
 		ti.setItems(itemsTi);
 		ObservableList<String> itemsRole = FXCollections.observableArrayList("DOCENTE", "ADMINISTRATIVO");
 		role.setItems(itemsRole);
-		otherData = userDao.otherData(sessionManager.getEmail());
+		otherData = userDao.otherData(sessionManager.getEmail()).split("!", 5);
+		
+        try {
+            decryptedPassword = SecurityUtils.decrypt(otherData[2]);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ViewUtils.AlertWindow("Error", "Descifrado fallido", "Ocurrió un error al descifrar la contraseña. Inténtalo de nuevo.", AlertType.ERROR);
+        }
 		name.setText(sessionManager.getName());
-		numIdentification.setText(otherData.get(0));
-		ti.setValue(otherData.get(1));
+		numIdentification.setText(otherData[0]);
+		ti.setValue(otherData[1]);
 		email.setText(sessionManager.getEmail());
-		phone.setText(otherData.get(4));
+		phone.setText(otherData[4]);
 		role.setValue(sessionManager.getRole());
-		password1.setText(otherData.get(2));
-		password2.setText(otherData.get(2));
-		pro_dep.setText(otherData.get(3));
+		password1.setText(decryptedPassword);
+		password2.setText(decryptedPassword);
+		pro_dep.setText(otherData[3]);
 	}
 	
 	@FXML void handleSave() {
@@ -107,16 +119,16 @@ public class MyAccountController {
 				if (!Name.equals(sessionManager.getName())) {
 					modifiedData.add(nameText.getText());
 				}
-				if (!TI.equals(otherData.get(1))) {
+				if (!TI.equals(otherData[1])) {
 					modifiedData.add(tiText.getText());
 				}
-				if (!NumIdentification.equals(otherData.get(0))) {
+				if (!NumIdentification.equals(otherData[0])) {
 					modifiedData.add(numIdentificationText.getText());
 				}
-				if (!Pro_dep.equals(otherData.get(3))) {
+				if (!Pro_dep.equals(otherData[3])) {
 					modifiedData.add(pro_depText.getText());
 				}
-				if (!Phone.equals(otherData.get(4))) {
+				if (!Phone.equals(otherData[4])) {
 					modifiedData.add(phoneText.getText());
 				}
 				if (!Email.equals(sessionManager.getEmail())) {
@@ -125,23 +137,30 @@ public class MyAccountController {
 				if (!Role.equals(sessionManager.getRole())) {
 					modifiedData.add(roleText.getText());
 				}
-				if (!Password1.equals(otherData.get(2))) {
+				if (!Password1.equals(decryptedPassword)) {
 					modifiedData.add(password1Text.getText());
 				}
 				
 				if (!modifiedData.isEmpty()) {
-					User newUser = new User(Name, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, sessionManager.getId());
+	        		try {
+	        		    encryptedPassword = SecurityUtils.encrypt(Password1);
+
+	        		} catch (Exception e) {
+	        		    e.printStackTrace();
+	        		    ViewUtils.AlertWindow("Error", "Cifrado fallido", "Ocurrió un error al procesar la contraseña. Inténtalo de nuevo.", AlertType.ERROR);
+	        		}
+					User newUser = new User(Name, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, encryptedPassword, sessionManager.getId());
 					sessionManager.setUser(sessionManager.getId(), Name, Role, Email);
 					if (ViewUtils.showConfirmation("Confirmación", "¿Desea actualizar " + modifiedData + "?")) {
 						userDao.update(newUser); 
 						ViewUtils.AlertWindow("Actualizado", "Información actualizada",
 								"Los datos "+ modifiedData + " actualizados exitosamente.", AlertType.INFORMATION);
 						modifiedData.clear();
-						otherData.set(0, NumIdentification);
-						otherData.set(1, TI);
-						otherData.set(2, Password1);
-						otherData.set(3, Pro_dep);
-						otherData.set(4, Phone);
+						otherData[0] = NumIdentification;
+						otherData[1] = TI;
+						otherData[2] = Password1;
+						otherData[3] = Pro_dep;
+						otherData[4] = Phone;
 						
 						if (!(editUser == null)) {
 							String[] partesUptate = Name.split("\\s+");

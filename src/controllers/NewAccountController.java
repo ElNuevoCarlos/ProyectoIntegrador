@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.User;
+import utils.SecurityUtils;
 import utils.ViewUtils;
 
 public class NewAccountController {
@@ -42,7 +43,7 @@ public class NewAccountController {
 	}
 	
 	@FXML void handleNewAccount() {
-		String Name = name.getText().trim();
+		String FirstName = name.getText().trim();
 		String LastName = lastName.getText().trim();
 		String TI = ti.getValue() != null ? ti.getValue().trim() : "";
 		String NumIdentification = numIdentification.getText().trim();
@@ -53,7 +54,7 @@ public class NewAccountController {
 		String Password1 = password1.getText().trim();
 		String Password2 = password2.getText().trim();
 		
-        if (Name.isEmpty() || 
+        if (FirstName.isEmpty() || 
         		LastName.isEmpty() || 
         		TI.isEmpty() || 
         		NumIdentification.isEmpty() || 
@@ -120,10 +121,10 @@ public class NewAccountController {
 
         		</body>
         		</html>
-        		""", Name);
+        		""", FirstName);
 
 
-        EmailService.sendMessage(Email, affair, htmlBody);
+//        EmailService.sendMessage(Email, affair, htmlBody);
         if (!NumIdentification.matches("\\d{6,10}")) {
         	ViewUtils.AlertWindow("Error", "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
         	return;
@@ -143,10 +144,24 @@ public class NewAccountController {
                         "- Al menos un carácter especial (@#$%^&+=!)", AlertType.ERROR);
                     return;
         	} else {
-        		String fullName = Name +" "+ LastName;
+        		try {
+        		    String encryptedPassword = SecurityUtils.encrypt(Password1);
+        		    String Name = FirstName + " " + LastName;
+        		    User newUser = new User(
+        		        Name, NumIdentification, TI, Email, 
+        		        Pro_dep, Phone, "ACTIVA", Role, encryptedPassword, null
+        		    );
+        		    userDao.save(newUser);
+
+        		    Stage currentStage = (Stage) rootPane.getScene().getWindow();
+        		    currentStage.close();
+        		    ViewUtils.loadView("/views/Login.fxml");
+
+        		} catch (Exception e) {
+        		    e.printStackTrace();
+        		    ViewUtils.AlertWindow("Error", "Cifrado fallido", "Ocurrió un error al procesar la contraseña. Inténtalo de nuevo.", AlertType.ERROR);
+        		}
         		
-        		User newUser = new User(fullName, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, null);
-        		userDao.save(newUser);
         	}
         } else {
         	ViewUtils.AlertWindow("Error", "Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
