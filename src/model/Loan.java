@@ -9,7 +9,7 @@ public class Loan {
     private LocalDate date;
     private String specs, state;
     private ObservableList<Block> blocks;
-
+    
     public Loan(Long id, Long idHall, Long idUser, Long idEquipment, 
     		LocalDate date, String specs, String state, ObservableList<Block> blocks) {
         this.id = id;

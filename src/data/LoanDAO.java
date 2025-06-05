@@ -170,13 +170,13 @@ public class LoanDAO {
         return loans;
 	}
 
-	public boolean updateState(Loans entity, String state) {
+	public boolean updateState(Long entity, String state) {
 		String query = "UPDATE PRESTAMO"
 				+ " SET ESTADO = ?"
 				+ " WHERE ID = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 			pstmt.setString(1, state);
-			pstmt.setLong(2, entity.getId());
+			pstmt.setLong(2, entity);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"

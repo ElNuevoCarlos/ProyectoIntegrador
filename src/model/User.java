@@ -1,25 +1,29 @@
 package model;
 
 public class User {
-    public String name, identificationNumber, identificationType,
-        institutionalEmail, programDepartment, phone, status, role, password;
-    public Long id;
+	public String nombre_completo, numero_identificacion, tipo_identificacion, 
+	correo_institucional, programa_departamento, telefono, estado, rol, password;
+	public Long id;
+	
+	public User(String nombre_completo, String numero_identificacion, String tipo_identificacion, 
+			String correo_institucional, String programa_departamento, 
+			String telefono, String estado, String rol, String password, Long  id) {
+		super();
+		this.nombre_completo = nombre_completo;
+		this.numero_identificacion = numero_identificacion;
+		this.tipo_identificacion = tipo_identificacion;
+		this.correo_institucional = correo_institucional;
+		this.programa_departamento = programa_departamento;
+		this.telefono = telefono;
+		this.estado = estado;
+		this.rol = rol;
+		this.password = password;
+		this.id = id;
+	}
 
-    public User(String name, String identificationNumber, String identificationType,
-                String institutionalEmail, String programDepartment,
-                String phone, String status, String role, String password, Long id) {
-        super();
-        this.name = name;
-        this.identificationNumber = identificationNumber;
-        this.identificationType = identificationType;
-        this.institutionalEmail = institutionalEmail;
-        this.programDepartment = programDepartment;
-        this.phone = phone;
-        this.status = status;
-        this.role = role;
-        this.password = password;
-        this.id = id;
-    }
+	public String getNombre_completo() {
+		return nombre_completo;
+	}
 
     public String getName() {
         return name;
@@ -57,6 +61,9 @@ public class User {
     public String getPassword() {
         return password;
     }
+	public void setNombre_completo(String nombre_completo) {
+		this.nombre_completo = nombre_completo;
+	}
 
     public Long getId() {
         return id;

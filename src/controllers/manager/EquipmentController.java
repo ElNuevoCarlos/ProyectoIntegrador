@@ -26,28 +26,27 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.Hall;
-import model.Loans;
-import model.Location;
-import model.Resources;
+import model.Equipment;
+import model.EqupmentInfo;
 import model.Sanction;
 import model.User;
 import utils.ViewUtils;
 
-public class LoandController {
-    @FXML private TableView<Loans> tablePrestados;
-    @FXML private TableColumn<Loans, String> docentePrestado, especificacionesPrestado, 
-    											fechaPrestado, salaPrestado, ubicacionPrestado, estadoPrestado;
+public class EquipmentController {
+	
+    @FXML private TableView<Equipment> tableDisponibles;
+    @FXML private TableColumn<Equipment, String> nombreTableOne, tipoTableOne, categoriatipoTableOne, marcaTableOne, serieTableOne, estadoTableOne, descripcionTableOne;
     
-    @FXML private TableView<Resources> tableDisponibles;
-    @FXML private TableColumn<Resources, String> capacidadDisponible, salaDisponible, ubicacionDisponible, descripcionDisponible, estadoDisponible;
     
-    @FXML private TextField salaDisponibleField, ubicacionDisponibleField, estadoDisponibleField, 
-    						salaPrestadoField, ubicacionPrestadoField, 
-    						docentePrestadoField, estadoPrestadoField;
+    @FXML private TableView<EqupmentInfo> tablePrestados;
+    @FXML private TableColumn<EqupmentInfo, String> nombreTableTwo, descripcionTableTwo, docenteTableTwo, especificacionesTableTwo, serieTableTwo, entregadoTableTwo, estadoTableTwo;
     
-    private FilteredList<Resources> listaFiltradaDisponible;
-    private FilteredList<Loans> listaFiltradaPrestados;
+    
+    @FXML private TextField nombreTablaOneField, tipoTablaOneField, marcaTablaOneField, serieTablaOneField, estadoTablaOneField, 
+    nombreTablaTwoField, correoTablaTwoField, serieTablaTwoField, entregadoTablaTwoField, estadoTablaTwoField;
+    
+    private FilteredList<Equipment> listaFiltradaDisponible;
+    private FilteredList<EqupmentInfo> listaFiltradaPrestados;
     
     private Connection database = DataBase.getInstance().getConnection();
     private ResourcesDAO resourcesDao = new ResourcesDAO(database);
@@ -55,100 +54,114 @@ public class LoandController {
     private SanctionDAO sanctionDao = new SanctionDAO(database);
     
     @FXML void initialize() {
-		// ------------------------------- Salas Disponibles
+		// ------------------------------- Equipos Disponibles
     	
-		ObservableList<Resources> disponibles = FXCollections.observableArrayList();
+		ObservableList<Equipment> disponibles = FXCollections.observableArrayList();
 		
-		for (Resources resource : resourcesDao.ResourcesView(true, new StringBuilder())) { 
-			disponibles.add(resource);
+		for (Equipment equipment : resourcesDao.EquipmentView()) { 
+			disponibles.add(equipment);
 		}
 		
-		capacidadDisponible.setCellValueFactory(new PropertyValueFactory<>("typeCapacity"));
-		salaDisponible.setCellValueFactory(new PropertyValueFactory<>("name"));
-		ubicacionDisponible.setCellValueFactory(new PropertyValueFactory<>("locationTrademark"));
-		descripcionDisponible.setCellValueFactory(new PropertyValueFactory<>("description"));
-		estadoDisponible.setCellValueFactory(new PropertyValueFactory<>("state"));
-
+		nombreTableOne.setCellValueFactory(new PropertyValueFactory<>("name"));
+		tipoTableOne.setCellValueFactory(new PropertyValueFactory<>("deviceType"));
+		categoriatipoTableOne.setCellValueFactory(new PropertyValueFactory<>("category"));
+		marcaTableOne.setCellValueFactory(new PropertyValueFactory<>("brand"));
+		serieTableOne.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
+		estadoTableOne.setCellValueFactory(new PropertyValueFactory<>("state"));
+		descripcionTableOne.setCellValueFactory(new PropertyValueFactory<>("description"));
+		
 		listaFiltradaDisponible = new FilteredList<>(disponibles, p -> true);
 	    
-		salaDisponibleField.textProperty().addListener((obs, oldVal, newVal) -> filtroDisponibles());
-		ubicacionDisponibleField.textProperty().addListener((obs, oldVal, newVal) -> filtroDisponibles());
-		estadoDisponibleField.textProperty().addListener((obs, oldVal, newVal) -> filtroDisponibles());
+		nombreTablaOneField.textProperty().addListener((obs, oldVal, newVal) -> filtroDisponibles());
+		tipoTablaOneField.textProperty().addListener((obs, oldVal, newVal) -> filtroDisponibles());
+		marcaTablaOneField.textProperty().addListener((obs, oldVal, newVal) -> filtroDisponibles());
+		serieTablaOneField.textProperty().addListener((obs, oldVal, newVal) -> filtroDisponibles());
+		estadoTablaOneField.textProperty().addListener((obs, oldVal, newVal) -> filtroDisponibles());
 		
 		tableDisponibles.setItems(listaFiltradaDisponible);
 		
 		// ------------------------------- Prestamos
 		
-		ObservableList<Loans> prestamos = FXCollections.observableArrayList();
+		ObservableList<EqupmentInfo> prestamos = FXCollections.observableArrayList();
 		
-		for (Loans loan : loanDao.fetchLoan(null, new StringBuilder())) { 
+		for (EqupmentInfo loan : resourcesDao.EquipmentLoanView()) { 
 			if (loan.getSpecs() == null) loan.setSpecs("Sin especificaciones");
 			prestamos.add(loan);
 		}
-        
-	    docentePrestado.setCellValueFactory(new PropertyValueFactory<>("emailUser"));
-	    especificacionesPrestado.setCellValueFactory(new PropertyValueFactory<>("specs"));
-	    fechaPrestado.setCellValueFactory(new PropertyValueFactory<>("date"));
-	    salaPrestado.setCellValueFactory(new PropertyValueFactory<>("nameHall"));
-	    ubicacionPrestado.setCellValueFactory(new PropertyValueFactory<>("location"));
-	    estadoPrestado.setCellValueFactory(new PropertyValueFactory<>("state"));
-		
+
+	    nombreTableTwo.setCellValueFactory(new PropertyValueFactory<>("name"));
+	    descripcionTableTwo.setCellValueFactory(new PropertyValueFactory<>("description"));
+	    docenteTableTwo.setCellValueFactory(new PropertyValueFactory<>("emailClient"));
+	    especificacionesTableTwo.setCellValueFactory(new PropertyValueFactory<>("specs"));
+	    serieTableTwo.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
+	    entregadoTableTwo.setCellValueFactory(new PropertyValueFactory<>("dateLoan"));
+	    estadoTableTwo.setCellValueFactory(new PropertyValueFactory<>("state"));
+
 		listaFiltradaPrestados = new FilteredList<>(prestamos, p -> true);
 		
-		salaPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
-		ubicacionPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
-		docentePrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
-		estadoPrestadoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
-
+	    nombreTablaTwoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
+	    correoTablaTwoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
+	    serieTablaTwoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
+	    entregadoTablaTwoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
+	    estadoTablaTwoField.textProperty().addListener((obs, oldVal, newVal) -> filtroPrestados());
+	    
 		tablePrestados.setItems(listaFiltradaPrestados);
     }
     
     private void filtroPrestados() {
-        String sala = salaPrestadoField.getText().toLowerCase();
-        String ubicacion = ubicacionPrestadoField.getText().toLowerCase();
-        String email = docentePrestadoField.getText().toLowerCase();
-        String estado = estadoPrestadoField.getText().toLowerCase();
+        String nombre = nombreTablaTwoField.getText().toLowerCase();
+        String correo = correoTablaTwoField.getText().toLowerCase();
+        String serie = serieTablaTwoField.getText().toLowerCase();
+        String fecha = entregadoTablaTwoField.getText().toLowerCase();
+        String estado = estadoTablaTwoField.getText().toLowerCase();
         
         listaFiltradaPrestados.setPredicate(resource -> {
-            boolean bSala = resource.getNameHall().toLowerCase().contains(sala);
-            boolean bUbicacion = resource.getLocation().toLowerCase().contains(ubicacion);
-            boolean bEmail = resource.getEmailUser().toLowerCase().contains(email);
+            boolean bNombre = resource.getName().toLowerCase().contains(nombre);
+            boolean bCorreo = resource.getEmailClient().toLowerCase().contains(correo);
+            boolean bSerie = resource.getSerialNumber().toLowerCase().contains(serie);
+            boolean bFecha = resource.getDateLoan().toString().toLowerCase().contains(fecha);
             boolean bEstado = resource.getState().toLowerCase().contains(estado);
             
-            return bSala && bUbicacion && bEmail && bEstado;
+            return bNombre && bCorreo && bSerie && bFecha && bEstado;
         });
     }
     
     private void filtroDisponibles() {
-        String sala = salaDisponibleField.getText().toLowerCase();
-        String ubicacion = ubicacionDisponibleField.getText().toLowerCase();
-        String estado = estadoDisponibleField.getText().toLowerCase();
-
+        String nombre = nombreTablaOneField.getText().toLowerCase();
+        String tipo = tipoTablaOneField.getText().toLowerCase();
+        String marca = marcaTablaOneField.getText().toLowerCase();
+        String serie = serieTablaOneField.getText().toLowerCase();
+        String estado = estadoTablaOneField.getText().toLowerCase();
+        
         listaFiltradaDisponible.setPredicate(resource -> {
-            boolean bSala = resource.getName().toLowerCase().contains(sala);
-            boolean bUbicacion = resource.getLocationTrademark().toLowerCase().contains(ubicacion);
+            boolean bNombre = resource.getName().toLowerCase().contains(nombre);
+            boolean bTipo = resource.getDeviceType().toLowerCase().contains(tipo);
+            boolean bMarca = resource.getBrand().toLowerCase().contains(marca);
+            boolean bSerie = resource.getSerialNumber().toLowerCase().contains(serie);
             boolean bEstado = resource.getState().toLowerCase().contains(estado);
             
-            return bSala && bUbicacion && bEstado;
+            return bNombre && bTipo && bMarca && bSerie && bEstado;
         });
     }
 
-    private Resources selectResource() {
-    	Resources resource = tableDisponibles.getSelectionModel().getSelectedItem();
-    	if (resource == null) {
-    		ViewUtils.AlertWindow(null, null, "Debe seleccionar primero una sala.", AlertType.ERROR);
+    private Equipment selectResource() {
+    	Equipment equipment = tableDisponibles.getSelectionModel().getSelectedItem();
+    	if (equipment == null) {
+    		ViewUtils.AlertWindow(null, null, "Debe seleccionar primero un equipo", AlertType.ERROR);
     		return null;
     	}
-    	return resource;
+    	return equipment;
     }
-    private Loans selectLoan() {
-    	Loans loan = tablePrestados.getSelectionModel().getSelectedItem();
+    
+    private EqupmentInfo selectLoan() {
+    	EqupmentInfo loan = tablePrestados.getSelectionModel().getSelectedItem();
     	if (loan == null) {
     		ViewUtils.AlertWindow(null, null, "Debe seleccionar primero un prestamo.", AlertType.ERROR);
     		return null;
     	}
     	return loan;
     }
+    
     @FXML void añadir() {
         Dialog<User> dialog = new Dialog<>();
         
@@ -162,20 +175,20 @@ public class LoandController {
         grid.setPadding(new Insets(20, 20, 10, 10));
     	
         TextField nameField = new TextField();
-        nameField.setPromptText("Nombre - Ejemplo: Sala 105");
+        nameField.setPromptText("Nombre - Ejemplo: ASUS");
         
-        ComboBox<Integer> capacityField = new ComboBox<>();
-        ObservableList<Integer> listCapacity = FXCollections.observableArrayList(10, 20, 30, 40, 50);
-        capacityField.setItems(listCapacity);
-        capacityField.setPromptText("Capacidad");
-        capacityField.setPrefWidth(100);
+        ComboBox<String> tipoField = new ComboBox<>();
+        ObservableList<String> listTipo = FXCollections.observableArrayList(
+        		"PORTÁTIL", "CÁMARA", "MICRÓFONO", "VÍDEO PROYECTOR", "HDMI", "ETHERNET");
+        tipoField.setItems(listTipo);
+        tipoField.setPromptText("Tipo de Dispositivo");
+        tipoField.setPrefWidth(150);
 
         HBox BoxOne = new HBox(5); 
-        BoxOne.getChildren().addAll(nameField, capacityField);
+        BoxOne.getChildren().addAll(nameField, tipoField);
         
         grid.add(BoxOne, 0, 1, 2, 1);
         
-        // ------------------------------- Estado
     	ComboBox<String> stateField = new ComboBox<>();
     	
 	    ObservableList<String> itemsState = FXCollections.observableArrayList(
@@ -185,34 +198,37 @@ public class LoandController {
 	    stateField.setPrefWidth(140);
 	    stateField.setItems(itemsState);
 	    
-	 // ------------------------------- Ubicación
-    	ComboBox<String> locateField = new ComboBox<>();
+    	ComboBox<String> categoryField = new ComboBox<>();
     	
-	    ObservableList<String> itemslocate = FXCollections.observableArrayList(
-		        "Edificio A", "Edificio B"
+	    ObservableList<String> itemsCategory = FXCollections.observableArrayList(
+		        "Dispositivo", "Computadora de Mesa"
 		    );
+	    categoryField.setPromptText("Categoria");
+	    categoryField.setPrefWidth(140);
+	    categoryField.setItems(itemsCategory);
 	    
-	    locateField.setPromptText("Edificio");
-	    locateField.setPrefWidth(100);
-	    locateField.setItems(itemslocate);
-	    locateField.setEditable(true);
-	    
-	    TextField floorField = new TextField();
-	    floorField.setPrefWidth(50);
-	    floorField.setPromptText("Piso");
-	    
-     // ------------------------------- Ubicación
         HBox Box = new HBox(5); 
-        Box.getChildren().addAll(locateField, floorField, stateField);
+        Box.getChildren().addAll(categoryField, stateField);
         
         grid.add(Box, 0, 2, 2, 1);
         
+	    TextField brandField = new TextField();
+	    brandField.setPrefWidth(100);
+	    brandField.setPromptText("Marca");
+	    
+        grid.add(brandField, 0, 3);
+        
+	    TextField seriesField = new TextField();
+	    seriesField.setPrefWidth(100);
+	    seriesField.setPromptText("Serie");
+	    
+        grid.add(seriesField, 1, 3);
         
 	    TextField descField = new TextField();
 	    descField.setPrefWidth(100);
 	    descField.setPromptText("Descripción");
 	    
-        grid.add(descField, 0, 3, 2, 2);
+        grid.add(descField, 0, 5, 2, 2);
         
 
         dialog.getDialogPane().setContent(grid);
@@ -223,69 +239,67 @@ public class LoandController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
         		String Name = nameField.getText().trim();
-        		String Locate = locateField.getValue() != null ? locateField.getValue().trim() : "";
+        		String Category = categoryField.getValue() != null ? categoryField.getValue().trim() : null;
         		String State = stateField.getValue() != null ? stateField.getValue().trim() : "";
-        		Integer Capacity = capacityField.getValue() != null ? capacityField.getValue() : 10;
+        		String Tipo = tipoField.getValue() != null ? tipoField.getValue() : null;
+        		String Marca = brandField.getText().trim();
+        		String Serie = seriesField.getText().trim();
         		String Description = descField.getText().trim();
-
-        		try {
-        		    Integer.parseInt(floorField.getText().trim() != null ? floorField.getText().trim(): "1");
-        		} catch (NumberFormatException e) {
-        		    ViewUtils.AlertWindow(null, "Formato inválido", "El piso debe ser un número entero.", AlertType.ERROR);
-        		    return null;
-        		}
         		
                 if (Name.isEmpty() || 
-                		Locate.isEmpty() || 
+                		Marca.isEmpty() || 
+                		Serie.isEmpty() ||
                 		Description.isEmpty() ||
-                		State.isEmpty()) {
+                		State.isEmpty() || Category == null) {
                 	ViewUtils.AlertWindow(null, "Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
                     return null;
                 }
-                if (resourcesDao.AuthenticateHall(Name)) {
-                	ViewUtils.AlertWindow(null, "Sala existente", "La sala "+Name+" ya estaba registrada.", AlertType.ERROR);
-                	return null;
+                
+                if (Category.equals("Dispositivo")) {
+                	if (Tipo == null) {
+                		ViewUtils.AlertWindow(null, "FALTA EL TIPO DE DISPOSITIVO", "Debe especificar el tipo de dispositivo.", AlertType.ERROR);
+                		return null;
+                	}
+                } else if (Category.equals("Computadora de Mesa")) {
+                	if (Tipo != null) {
+                		ViewUtils.AlertWindow(null, "NO USES TIPO DE DISPOSITIVO", "No puedes elegir un tipo de dispositivo en este caso.", AlertType.ERROR);
+                		return null;
+                	}
                 }
-                String floorString = floorField.getText().trim();
                 
-                if (!resourcesDao.AuthenticateBuildingFloor(Locate, floorString)) {
-                	resourcesDao.saveLocation(new Location(null, Locate, floorString));
-                }
-
-                Long id_location = resourcesDao.verifyLocation(Locate, floorString);
+                resourcesDao.saveEquipment(new Equipment(null, Name, Category, Tipo, Marca, Serie, State, Description, null));
                 
-                resourcesDao.saveHall(new Hall(null, Name, id_location, String.valueOf(Capacity), Description, State));
-                
-                ViewUtils.AlertWindow(null, "Sala creada", "La sala "+Name+" ha sido registrada con éxito.", AlertType.INFORMATION);
+                ViewUtils.AlertWindow(null, "Equipo creado", "El equipo "+Name+" ha sido registrado con éxito.", AlertType.INFORMATION);
             }
             return null;
         });
         dialog.showAndWait();
         initialize();
     }
+    
     @FXML void eliminar() {
-    	Resources resource = selectResource();
+    	Equipment resource = selectResource();
     	if (resource != null) {
-    		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar la sala "+resource.getName()+"?")) {
+    		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar el quipo "+resource.getName()+"?")) {
     			System.out.println("Elimino");
     		}
-    		
     		// Si tiene prestamos aprobados no se puede eliminar
     	}
     }
+    
     @FXML void pedir() {
-    	Resources resource = selectResource();
+    	Equipment resource = selectResource();
     	if (resource != null) {
         	if (resource.getState().equals("En Mantenimiento")) {
-            	ViewUtils.AlertWindow(null, "En Mantenimiento", "No puedes pedir una sala en mantenimiento.", AlertType.ERROR);
+            	ViewUtils.AlertWindow(null, "En Mantenimiento", "No puedes pedir un equipo en mantenimiento.", AlertType.ERROR);
             	return;
         	}
         	Main.datoGlobal = resource;
-        	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
+        	ViewUtils.cargarGrid("/views/RequestEquipment.fxml", Main.rootLayout);
     	}
     }
     @FXML void aprobar() {
-    	Loans loan = selectLoan();
+    	EqupmentInfo loan = selectLoan();
     	if (loan != null) {
     		if (loan.getState().equals("APROBADO")) {
     			ViewUtils.AlertWindow(null, "Ya esta aprobado", "El prestamo ya estaba aprobado.", AlertType.ERROR);
@@ -297,18 +311,20 @@ public class LoandController {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está finalizado, ya no se puede aprobar", AlertType.ERROR);
     			return;
     		}
-    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar el prestamo de "+loan.getEmailUser()+"\n"
-    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar el prestamo de "+loan.getEmailClient()+"\n"
+    				+ "- Equipo: "+loan.getName()+"\n- Marca: "+loan.getBrand()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
     			if (loanDao.updateState(loan.getId(), "APROBADO")) {
     				initialize();
-    				ViewUtils.AlertWindow(null, "Prestamo Aprobado", "El prestamo de "+loan.getEmailUser()+" ha sido aprobado con éxito.", AlertType.INFORMATION);
+    				ViewUtils.AlertWindow(null, "Prestamo Aprobado", "El prestamo de "+loan.getEmailClient()+" ha sido aprobado con éxito.", AlertType.INFORMATION);
     			}
     		}
     	}
+    	
     }
+    
     @FXML void devolvio() {
-    	Loans loan = selectLoan();
+    	EqupmentInfo loan = selectLoan();
     	if (loan != null) {
     		if (loan.getState().equals("RECHAZADO")) {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está rechazado, no puede usar este boton.", AlertType.ERROR);
@@ -320,18 +336,19 @@ public class LoandController {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está SOLICITADO, no puede devolverlo si no ha sido aprobado.", AlertType.ERROR);
     			return;
     		}
-    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar la entrega del prestamo de "+loan.getEmailUser()+"\n"
-    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar la entrega del prestamo de "+loan.getEmailClient()+"\n"
+    				+ "- Equipo: "+loan.getName()+"\n- Marca: "+loan.getBrand()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
     			if (loanDao.updateState(loan.getId(), "FINALIZADO")) {
     				initialize();
-    				ViewUtils.AlertWindow(null, "Prestamo Finalizado", "El prestamo de "+loan.getEmailUser()+" ha finalizado con éxito.", AlertType.INFORMATION);
+    				ViewUtils.AlertWindow(null, "Prestamo Finalizado", "El prestamo de "+loan.getEmailClient()+" ha finalizado con éxito.", AlertType.INFORMATION);
     			}
     		}
     	}
     }
+    
     @FXML void rechazar() {
-    	Loans loan = selectLoan();
+    	EqupmentInfo loan = selectLoan();
     	if (loan != null) {
     		if (loan.getState().equals("RECHAZADO")) {
     			ViewUtils.AlertWindow(null, "Ya está rechazado", "El prestamo ya estaba rechazado.", AlertType.ERROR);
@@ -340,18 +357,19 @@ public class LoandController {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está finalizado, ya no se puede rechazar", AlertType.ERROR);
     			return;
     		}
-    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de rechazar el prestamo de "+loan.getEmailUser()+"\n"
-    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de rechazar el prestamo de "+loan.getEmailClient()+"\n"
+    				+ "- Sala: "+loan.getName()+"\n- Marca: "+loan.getBrand()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
     			if (loanDao.updateState(loan.getId(), "RECHAZADO")) {
     				initialize();
-    				ViewUtils.AlertWindow(null, "Prestamo Rechazado", "El prestamo de "+loan.getEmailUser()+" ha sido rechazado.", AlertType.INFORMATION);
+    				ViewUtils.AlertWindow(null, "Prestamo Rechazado", "El prestamo de "+loan.getEmailClient()+" ha sido rechazado.", AlertType.INFORMATION);
     			}
     		}
     	}
     }
+    
     @FXML void sancionar() {
-    	Loans loan = selectLoan();
+    	EqupmentInfo loan = selectLoan();
     	if (loan != null) {
     		if (loan.getState().equals("FINALIZADO")) {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo ya está finalizado.", AlertType.ERROR);
