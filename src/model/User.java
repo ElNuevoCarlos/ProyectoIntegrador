@@ -1,15 +1,16 @@
 package model;
 
 public class User {
-	public String nombre_completo, numero_identificacion, tipo_identificacion, 
+	public String nombre, apellido, numero_identificacion, tipo_identificacion, 
 	correo_institucional, programa_departamento, telefono, estado, rol, password;
 	public Long id;
 	
-	public User(String nombre_completo, String numero_identificacion, String tipo_identificacion, 
+	public User(String nombre, String apellido, String numero_identificacion, String tipo_identificacion, 
 			String correo_institucional, String programa_departamento, 
 			String telefono, String estado, String rol, String password, Long  id) {
 		super();
-		this.nombre_completo = nombre_completo;
+		this.nombre = nombre;
+		this.apellido = apellido;
 		this.numero_identificacion = numero_identificacion;
 		this.tipo_identificacion = tipo_identificacion;
 		this.correo_institucional = correo_institucional;
@@ -21,8 +22,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getNombre_completo() {
-		return nombre_completo;
+	public String getNombre() {
+		return nombre;
+	}
+	
+	public String getApellido() {
+		return apellido;
 	}
 
 	public String getNumero_identificacion() {
@@ -61,8 +66,12 @@ public class User {
 		return id;
 	}
 
-	public void setNombre_completo(String nombre_completo) {
-		this.nombre_completo = nombre_completo;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 
 	public void setNumero_identificacion(String numero_identificacion) {
