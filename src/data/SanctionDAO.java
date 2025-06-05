@@ -8,8 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javafx.scene.control.Alert.AlertType;
 import model.Sanction;
 import model.SanctionInfo;
+import utils.ViewUtils;
 
 public class SanctionDAO {
     private Connection connection;
@@ -70,11 +72,11 @@ public class SanctionDAO {
         return sanctions;
 	}
 
-	public ArrayList<SanctionInfo> fetch() {
+	public ArrayList<SanctionInfo> fetch(String more) {
         ArrayList<SanctionInfo> sanctions = new ArrayList<>();
-        String query = "SELECT S.TIPO_SANCION, S.DESCRIPCION, S.ESTADO, P.FECHA, S.FECHA_FIN, S.MONTO, U.CORREO_INSTITUCIONAL"
+        String query = "SELECT S.TIPO_SANCION, S.DESCRIPCION, S.ESTADO, P.FECHA, S.FECHA_FIN, S.MONTO, U.CORREO_INSTITUCIONAL, S.ID"
                 + " FROM SANCION S JOIN PRESTAMO P ON S.ID_PRESTAMO = P.ID"
-                + " JOIN USUARIO U ON P.ID_USUARIO = U.ID";
+                + " JOIN USUARIO U ON P.ID_USUARIO = U.ID"+more;
 
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
@@ -87,8 +89,9 @@ public class SanctionDAO {
                 LocalDate endDate = rs.getDate(5).toLocalDate();;
                 int amount = rs.getInt(6);
                 String emailClient = rs.getString(7);
+                Long idLoan = rs.getLong(8);
                 
-                SanctionInfo sanctionInfo = new SanctionInfo(typeSanction, descripcion, state, dateLoan, endDate, amount, emailClient);
+                SanctionInfo sanctionInfo = new SanctionInfo(typeSanction, descripcion, state, dateLoan, endDate, amount, emailClient, idLoan);
                 
                 sanctions.add(sanctionInfo);
            
@@ -99,14 +102,37 @@ public class SanctionDAO {
 
         return sanctions;
 	}
-
-
-	public boolean update(Sanction entity) {
-		return false;
-		// TODO Auto-generated method stub
-		
+	public boolean update(SanctionInfo entity) {
+		String query = "UPDATE SANCION "
+				+ "SET TIPO_SANCION = ?, DESCRIPCION = ?, MONTO = ?, ESTADO = ?"
+				+ "WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, entity.getTypeSanction());
+			pstmt.setString(2, entity.getDescription());
+			pstmt.setInt(3, entity.getAmount());
+			pstmt.setString(4, entity.getState());
+			pstmt.setLong(5, entity.getidLoan());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
+					+ "- Qué ese dato no esté repetido.\n"
+					+ "- Verifique que escribió todo correctamente.", AlertType.ERROR);
+			return false;
+		}	
+		return true;
 	}
 
+	public boolean delete(Long entity) {
+		String sql = "DELETE SANCION WHERE ID = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, entity);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 }
 
 

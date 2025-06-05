@@ -51,39 +51,51 @@
    <children>
       <TableView fx:id="tableSanctions" editable="true" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="13" GridPane.rowIndex="8" GridPane.rowSpan="5">
          <columns>
-            <TableColumn fx:id="tipo_sancion" prefWidth="154.0" text="Tipo Sanción" />
-            <TableColumn fx:id="descripcion" prefWidth="154.0" text="Descripción" />
-            <TableColumn fx:id="fecha_sancion" prefWidth="154.0" text="Fecha Sanción" />
-            <TableColumn fx:id="fecha_fin" prefWidth="154.0" text="Fecha Fin" />
-            <TableColumn fx:id="monto" prefWidth="154.0" text="Monto" />
-            <TableColumn fx:id="emailClient" prefWidth="154.0" text="Docente" />
+            <TableColumn fx:id="tipo_sancion" prefWidth="130.0" text="Tipo Sanción" />
+            <TableColumn fx:id="descripcion" prefWidth="147.0" text="Descripción" />
+            <TableColumn fx:id="fecha_sancion" prefWidth="93.0" text="Fecha Sanción" />
+            <TableColumn fx:id="fecha_fin" prefWidth="90.0" text="Fecha Fin" />
+            <TableColumn fx:id="monto" prefWidth="72.0" text="Monto" />
+            <TableColumn fx:id="emailClient" prefWidth="120.0" text="Docente" />
+            <TableColumn fx:id="state" prefWidth="105.0" text="Estado" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button focusTraversable="false" mnemonicParsing="false" onAction="#actualizar" styleClass="Managerbutton" text="Actualizar" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="14" />
-      <Button focusTraversable="false" mnemonicParsing="false" onAction="#eliminar" style="-fx-background-color: RED;" styleClass="Managerbutton" text="Eliminar" GridPane.columnIndex="7" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="14" />
+      <Button focusTraversable="false" mnemonicParsing="false" onAction="#actualizar" styleClass="Managerbutton" text="Actualizar" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="14" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lista de sanciones" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <font>
             <Font name="Calibri Light Italic" size="20.0" />
          </font>
       </Text>
       <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="En caso de que desee buscar una sanción en particular, puede utilizar cualquiera de las tres casillas que se encuentran a continuación para localizarlo en la lista." textAlignment="CENTER" wrappingWidth="398.36181640625" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-      <TextField fx:id="prestamoField" alignment="CENTER" focusTraversable="false" promptText="Prestamo" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+      <TextField fx:id="prestamoField" alignment="CENTER" focusTraversable="false" promptText="Prestamo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
          <padding>
             <Insets bottom="9.0" />
          </padding>
       </TextField>
-      <TextField fx:id="fechaSancionField" alignment="CENTER" focusTraversable="false" promptText="Fecha Sanción" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+      <TextField fx:id="fechaSancionField" alignment="CENTER" focusTraversable="false" promptText="Fecha Sanción" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
          <padding>
             <Insets bottom="9.0" />
          </padding>
       </TextField>
-      <TextField fx:id="tipoSancionField" alignment="CENTER" focusTraversable="false" promptText="Tipo Sanción" GridPane.columnIndex="10" GridPane.columnSpan="3" GridPane.rowIndex="6">
+      <TextField fx:id="tipoSancionField" alignment="CENTER" focusTraversable="false" promptText="Tipo Sanción" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.rowIndex="6">
          <padding>
             <Insets bottom="9.0" />
          </padding>
       </TextField>
+      <TextField fx:id="estadoField" alignment="CENTER" focusTraversable="false" promptText="Estado" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.rowIndex="6">
+         <padding>
+            <Insets bottom="9.0" />
+         </padding>
+      </TextField>
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Posibles Estados" wrappingWidth="118.36181640625" GridPane.columnIndex="12" GridPane.columnSpan="3" GridPane.rowIndex="13" />
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="- ACTIVA" translateY="20.0" wrappingWidth="105.36181640625" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="13" />
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="- CUMPLIDA" translateY="35.0" wrappingWidth="99.36181640625" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="13" />
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="- CANCELADA" translateY="50.0" wrappingWidth="99.36181640625" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="13" />
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipos de Sanciones" wrappingWidth="118.36181640625" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="- MAL ESTADO" translateY="20.0" wrappingWidth="105.36181640625" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+      <Text fill="#6f6f6f" strokeType="OUTSIDE" strokeWidth="0.0" text="- ENTREGA TARDE" translateY="40.0" wrappingWidth="114.36181640625" GridPane.columnIndex="1" GridPane.rowIndex="13" />
    </children>
 </GridPane>

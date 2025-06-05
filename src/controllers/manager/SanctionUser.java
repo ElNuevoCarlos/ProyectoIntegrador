@@ -2,31 +2,45 @@ package controllers.manager;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.util.Optional;
+
 import application.Main;
 import data.DataBase;
 import data.SanctionDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.Sanction;
+import model.SanctionInfo;
 import model.User;
+import utils.ViewUtils;
 
 public class SanctionUser {
     @FXML private Text name, id;
-    @FXML private TableView<Sanction> tableSanctions;
-    @FXML private TableColumn<Sanction, String> tipo_sancion;
-    @FXML private TableColumn<Sanction, String> descripcion;
-    @FXML private TableColumn<Sanction, Date> fecha_sancion;
-    @FXML private TableColumn<Sanction, Date> fecha_fin;
-    @FXML private TableColumn<Sanction, Integer> monto;
-    @FXML private TableColumn<Sanction, String> estado;
-    @FXML private TableColumn<Sanction, Long> id_prestamo;
+    @FXML private TableView<SanctionInfo> tableSanctions;
+    @FXML private TableColumn<SanctionInfo, String> tipo_sancion;
+    @FXML private TableColumn<SanctionInfo, String> descripcion;
+    @FXML private TableColumn<SanctionInfo, Date> fecha_sancion;
+    @FXML private TableColumn<SanctionInfo, Date> fecha_fin;
+    @FXML private TableColumn<SanctionInfo, Integer> monto;
+    @FXML private TableColumn<SanctionInfo, String> estado;
     @FXML private GridPane gridPane;
   
     private Connection database = DataBase.getInstance().getConnection();
@@ -48,54 +62,113 @@ public class SanctionUser {
     	name.setText(primerNombre + " " +primerApellido);
     	id.setText(user.getNumero_identificacion());
   	
-		ObservableList<Sanction> sanctions = FXCollections.observableArrayList();
+		ObservableList<SanctionInfo> sanctions = FXCollections.observableArrayList();
+		String query = " WHERE U.ID = "+user.getId();
 
-		for (Sanction sanction : sanctionDao.fetchUser(user.getNumero_identificacion())) { 
+		for (SanctionInfo sanction : sanctionDao.fetch(query)) { 
 			sanctions.add(sanction);
 		}
-		
-	    tipo_sancion.setCellValueFactory(new PropertyValueFactory<>("typeSanction"));
-	    descripcion.setCellValueFactory(new PropertyValueFactory<>("description"));
-	    fecha_sancion.setCellValueFactory(new PropertyValueFactory<>("sanctionDate"));
-	    fecha_fin.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-	    monto.setCellValueFactory(new PropertyValueFactory<>("amount"));
-	    estado.setCellValueFactory(new PropertyValueFactory<>("state"));
-	    id_prestamo.setCellValueFactory(new PropertyValueFactory<>("idLoanHall"));
 	    
-	    tipo_sancion.setCellFactory(TextFieldTableCell.forTableColumn());
-	    descripcion.setCellFactory(TextFieldTableCell.forTableColumn());
-	    
-	    tipo_sancion.setOnEditCommit(event -> { 
-		    Sanction sanction = event.getRowValue();
-		    String type = sanction.getTypeSanction();
-	    	
-		    sanction.setTypeSanction(event.getNewValue());
-		    Boolean verifyUpdate = sanctionDao.update(sanction); /// FALTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		    if (!verifyUpdate) sanction.setTypeSanction(type);
-	    }); 
-	    
-	    descripcion.setOnEditCommit(event -> { 
-		    Sanction sanction = event.getRowValue();
-		    String description = sanction.getDescription();
-	    	
-		    sanction.setDescription(event.getNewValue());
-		    Boolean verifyUpdate = sanctionDao.update(sanction);
-		    if (!verifyUpdate) sanction.setDescription(description);
-	    }); 
-        
-
+		tipo_sancion.setCellValueFactory(new PropertyValueFactory<>("typeSanction"));
+		descripcion.setCellValueFactory(new PropertyValueFactory<>("description"));
+		fecha_sancion.setCellValueFactory(new PropertyValueFactory<>("dateLoan"));
+		fecha_fin.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+		monto.setCellValueFactory(new PropertyValueFactory<>("amount"));
+		estado.setCellValueFactory(new PropertyValueFactory<>("state"));
+       
 		tableSanctions.setItems(sanctions);
     }
 
     @FXML void añadir() {
+
     	
     }
     
     @FXML void actualizar() {
+    	SanctionInfo sanctionInfo = tableSanctions.getSelectionModel().getSelectedItem();
+    	if (sanctionInfo != null) {
+    		
+	        Dialog<SanctionInfo> dialog = new Dialog<>();
+	        
+	        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+	        stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logo.png")));
+	        
+	        GridPane grid = new GridPane();
+	        
+	        grid.setHgap(10);
+	        grid.setVgap(10);
+	        grid.setPadding(new Insets(20, 20, 10, 10));
+	
+	        ComboBox<String> typeSanctionField = new ComboBox<>();
+	        
+		    ObservableList<String> itemsTypeSanction = FXCollections.observableArrayList(
+			        "MAL ESTADO", "ENTREGA TARDE"
+			    );
+		    typeSanctionField.setPromptText("Tipo de Sanción");
+		    typeSanctionField.setPrefWidth(155);
+		    typeSanctionField.setItems(itemsTypeSanction);
 
-    }
-    
-    @FXML void eliminar() {
+	        TextField descriptionField = new TextField(sanctionInfo.getDescription());
+	        TextField amountField = new TextField(String.valueOf(sanctionInfo.getAmount()));
 
+	        ComboBox<String> stateField = new ComboBox<>();
+		    ObservableList<String> itemsState = FXCollections.observableArrayList(
+			        "ACTIVA", "CUMPLIDA", "CANCELADA"
+			    );
+
+		    stateField.setPromptText("Estado de Sanción");
+		    stateField.setPrefWidth(155);
+		    stateField.setItems(itemsState);
+		   
+	        grid.add(new Label("Descripción:"), 0, 1);
+	        grid.add(descriptionField, 1, 1);
+	        grid.add(new Label("Monto:"), 0, 3);
+	        grid.add(amountField, 1, 3);
+	        
+	        HBox box = new HBox(5); 
+	        box.getChildren().addAll(typeSanctionField, stateField);
+	        
+	        grid.add(box, 0, 4, 2, 2);
+	        dialog.getDialogPane().setContent(grid);
+	        
+	        ButtonType saveButtonType = new ButtonType("Guardar", ButtonData.OK_DONE);
+	        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+	        
+	        dialog.setResultConverter(dialogButton -> {
+	            if (dialogButton == saveButtonType) {
+	            	String description = descriptionField.getText().trim();
+	            	String typesanction = typeSanctionField.getValue() != null ? typeSanctionField.getValue() : sanctionInfo.getTypeSanction();
+	            	String state = stateField.getValue() != null ? stateField.getValue() : sanctionInfo.getState();
+	            	
+	            	int amount;
+	            	try {
+	            	    amount = Integer.parseInt(amountField.getText().trim());
+	            	} catch (NumberFormatException e) {
+	            		ViewUtils.AlertWindow(null, "Valor no admitido", "Coloque un monto valido.", AlertType.ERROR);
+	            		return null;
+	            	}
+	            	
+	            	sanctionInfo.setDescription(description);
+	            	sanctionInfo.setTypeSanction(typesanction);
+	            	sanctionInfo.setState(state);
+	            	sanctionInfo.setAmount(amount);
+	                
+	                return sanctionInfo;
+	            }
+	            return null;
+	        });
+	        
+	        Optional<SanctionInfo> result = dialog.showAndWait();
+	        result.ifPresent(updatedCourse -> {
+	            if (sanctionDao.update(updatedCourse)) {
+		            initialize();
+		            ViewUtils.AlertWindow(null, null, "Sanción actualizada con éxito.", AlertType.INFORMATION);
+	            }
+	        });
+	        
+    	} else {
+    		ViewUtils.AlertWindow(null, null, "Debe primero seleccionar una sanción", AlertType.ERROR);
+    	}
     }
+ 
 }
