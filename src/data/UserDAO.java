@@ -145,7 +145,7 @@ public class UserDAO {
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
-                String nombre_completo = rs.getString("NOMBRE_COMPLETO");
+                String nombre = rs.getString("NOMBRE_COMPLETO");
                 String numero_identificacion = rs.getString("NUMERO_IDENTIFICACION");
                 String tipo_identificacion = rs.getString("TIPO_IDENTIFICACION");
                 String correo_institucional = rs.getString("CORREO_INSTITUCIONAL");
