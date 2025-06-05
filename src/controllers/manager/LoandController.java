@@ -300,7 +300,7 @@ public class LoandController {
     		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar el prestamo de "+loan.getEmailUser()+"\n"
     				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
-    			if (loanDao.updateState(loan, "APROBADO")) {
+    			if (loanDao.updateState(loan.getId(), "APROBADO")) {
     				initialize();
     				ViewUtils.AlertWindow(null, "Prestamo Aprobado", "El prestamo de "+loan.getEmailUser()+" ha sido aprobado con éxito.", AlertType.INFORMATION);
     			}
@@ -323,7 +323,7 @@ public class LoandController {
     		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar la entrega del prestamo de "+loan.getEmailUser()+"\n"
     				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
-    			if (loanDao.updateState(loan, "FINALIZADO")) {
+    			if (loanDao.updateState(loan.getId(), "FINALIZADO")) {
     				initialize();
     				ViewUtils.AlertWindow(null, "Prestamo Finalizado", "El prestamo de "+loan.getEmailUser()+" ha finalizado con éxito.", AlertType.INFORMATION);
     			}
@@ -343,7 +343,7 @@ public class LoandController {
     		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de rechazar el prestamo de "+loan.getEmailUser()+"\n"
     				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
-    			if (loanDao.updateState(loan, "RECHAZADO")) {
+    			if (loanDao.updateState(loan.getId(), "RECHAZADO")) {
     				initialize();
     				ViewUtils.AlertWindow(null, "Prestamo Rechazado", "El prestamo de "+loan.getEmailUser()+" ha sido rechazado.", AlertType.INFORMATION);
     			}

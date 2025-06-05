@@ -303,8 +303,7 @@ public class EquipmentController {
     	}
     }
     @FXML void aprobar() {
-    	/*
-    	Loans loan = selectLoan();
+    	EqupmentInfo loan = selectLoan();
     	if (loan != null) {
     		if (loan.getState().equals("APROBADO")) {
     			ViewUtils.AlertWindow(null, "Ya esta aprobado", "El prestamo ya estaba aprobado.", AlertType.ERROR);
@@ -316,20 +315,20 @@ public class EquipmentController {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está finalizado, ya no se puede aprobar", AlertType.ERROR);
     			return;
     		}
-    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar el prestamo de "+loan.getEmailUser()+"\n"
-    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar el prestamo de "+loan.getEmailClient()+"\n"
+    				+ "- Equipo: "+loan.getName()+"\n- Marca: "+loan.getBrand()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
-    			if (loanDao.updateState(loan, "APROBADO")) {
+    			if (loanDao.updateState(loan.getId(), "APROBADO")) {
     				initialize();
-    				ViewUtils.AlertWindow(null, "Prestamo Aprobado", "El prestamo de "+loan.getEmailUser()+" ha sido aprobado con éxito.", AlertType.INFORMATION);
+    				ViewUtils.AlertWindow(null, "Prestamo Aprobado", "El prestamo de "+loan.getEmailClient()+" ha sido aprobado con éxito.", AlertType.INFORMATION);
     			}
     		}
     	}
-    	*/
+    	
     }
+    
     @FXML void devolvio() {
-    	/*
-    	Loans loan = selectLoan();
+    	EqupmentInfo loan = selectLoan();
     	if (loan != null) {
     		if (loan.getState().equals("RECHAZADO")) {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está rechazado, no puede usar este boton.", AlertType.ERROR);
@@ -341,20 +340,19 @@ public class EquipmentController {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está SOLICITADO, no puede devolverlo si no ha sido aprobado.", AlertType.ERROR);
     			return;
     		}
-    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar la entrega del prestamo de "+loan.getEmailUser()+"\n"
-    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de aprobar la entrega del prestamo de "+loan.getEmailClient()+"\n"
+    				+ "- Equipo: "+loan.getName()+"\n- Marca: "+loan.getBrand()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
-    			if (loanDao.updateState(loan, "FINALIZADO")) {
+    			if (loanDao.updateState(loan.getId(), "FINALIZADO")) {
     				initialize();
-    				ViewUtils.AlertWindow(null, "Prestamo Finalizado", "El prestamo de "+loan.getEmailUser()+" ha finalizado con éxito.", AlertType.INFORMATION);
+    				ViewUtils.AlertWindow(null, "Prestamo Finalizado", "El prestamo de "+loan.getEmailClient()+" ha finalizado con éxito.", AlertType.INFORMATION);
     			}
     		}
     	}
-    	*/
     }
+    
     @FXML void rechazar() {
-    	/*
-    	Loans loan = selectLoan();
+    	EqupmentInfo loan = selectLoan();
     	if (loan != null) {
     		if (loan.getState().equals("RECHAZADO")) {
     			ViewUtils.AlertWindow(null, "Ya está rechazado", "El prestamo ya estaba rechazado.", AlertType.ERROR);
@@ -363,20 +361,19 @@ public class EquipmentController {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo está finalizado, ya no se puede rechazar", AlertType.ERROR);
     			return;
     		}
-    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de rechazar el prestamo de "+loan.getEmailUser()+"\n"
-    				+ "- Sala: "+loan.getNameHall()+"\n- Ubicación: "+loan.getLocation()+"\n- Especificaciones: "+loan.getSpecs())) {
+    		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de rechazar el prestamo de "+loan.getEmailClient()+"\n"
+    				+ "- Sala: "+loan.getName()+"\n- Marca: "+loan.getBrand()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
-    			if (loanDao.updateState(loan, "RECHAZADO")) {
+    			if (loanDao.updateState(loan.getId(), "RECHAZADO")) {
     				initialize();
-    				ViewUtils.AlertWindow(null, "Prestamo Rechazado", "El prestamo de "+loan.getEmailUser()+" ha sido rechazado.", AlertType.INFORMATION);
+    				ViewUtils.AlertWindow(null, "Prestamo Rechazado", "El prestamo de "+loan.getEmailClient()+" ha sido rechazado.", AlertType.INFORMATION);
     			}
     		}
     	}
-    	*/
     }
+    
     @FXML void sancionar() {
-    	/*
-    	Loans loan = selectLoan();
+    	EqupmentInfo loan = selectLoan();
     	if (loan != null) {
     		if (loan.getState().equals("FINALIZADO")) {
     			ViewUtils.AlertWindow(null, "No hay posibilidad", "El prestamo ya está finalizado.", AlertType.ERROR);
@@ -471,7 +468,6 @@ public class EquipmentController {
 	        });
 	        dialog.showAndWait();
     	}
-    	*/
     }
 }
     
