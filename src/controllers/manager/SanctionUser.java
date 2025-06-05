@@ -3,7 +3,6 @@ package controllers.manager;
 import java.sql.Connection;
 import java.sql.Date;
 import java.util.Optional;
-
 import application.Main;
 import data.DataBase;
 import data.SanctionDAO;
@@ -21,13 +20,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.Sanction;
 import model.SanctionInfo;
 import model.User;
 import utils.ViewUtils;
@@ -77,11 +74,6 @@ public class SanctionUser {
 		estado.setCellValueFactory(new PropertyValueFactory<>("state"));
        
 		tableSanctions.setItems(sanctions);
-    }
-
-    @FXML void añadir() {
-
-    	
     }
     
     @FXML void actualizar() {

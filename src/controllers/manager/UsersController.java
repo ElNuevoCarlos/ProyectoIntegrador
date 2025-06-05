@@ -174,13 +174,6 @@ public class UsersController {
     	return user;
     }
     
-    @FXML public void prestamos() {
-    	User user = selectUser();
-    	if (user != null) {
-    		
-    	}
-    }
-
     @FXML public void sanciones() {
     	User user = selectUser();
     	if (user != null) {

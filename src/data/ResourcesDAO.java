@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javafx.scene.control.Alert.AlertType;
+import model.Equipment;
+import model.EqupmentInfo;
 import model.Hall;
 import model.Location;
 import model.Resources;
@@ -20,18 +23,74 @@ public class ResourcesDAO {
         this.connection = connection;
     }
     
+	public ArrayList<Equipment> EquipmentView() {
+        ArrayList<Equipment> equipments = new ArrayList<>();
+        
+        String query = "SELECT ID, NOMBRE, TIPO_DISPOSITIVO, CATEGORIA, MARCA, NUMERO_SERIE, ESTADO, DESCRIPCION "
+            		+ " FROM EQUIPO";
+
+        try (Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
+               while (rs.next()) {
+            	   long id = rs.getLong(1);
+                   String name = rs.getString(2);
+                   String type = rs.getString(3);
+                   String category = rs.getString(4);
+                   String Brand = rs.getString(5); // Marca
+                   String Series = rs.getString(6);
+            	   String state = rs.getString(7);
+            	   String description = rs.getString(8);
+
+                   Equipment equipment = new Equipment(id, name, category, type, Brand, Series, state, description, null);
+                   equipments.add(equipment);
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+        return equipments;
+    }
+	
+	public ArrayList<EqupmentInfo> EquipmentLoanView() {
+        ArrayList<EqupmentInfo> equipments = new ArrayList<>();
+        
+        String query = "SELECT P.ID, E.NOMBRE, E.DESCRIPCION, U.CORREO_INSTITUCIONAL, P.ESPECIFICACIONES, E.NUMERO_SERIE, P.FECHA, P.ESTADO"
+            		+ " FROM EQUIPO E JOIN PRESTAMO P ON P.ID_EQUIPO = E.ID"
+            		+ " JOIN USUARIO U ON P.ID_USUARIO = U.ID";
+
+        try (Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
+               while (rs.next()) {
+            	   long id = rs.getLong(1);
+                   String name = rs.getString(2);
+                   String description = rs.getString(3);
+                   String emailClient = rs.getString(4);
+                   String specs = rs.getString(5);
+                   String series = rs.getString(6); 
+                   LocalDate dateLoan = rs.getDate(7).toLocalDate();;
+            	   String state = rs.getString(8);
+
+            	   EqupmentInfo equipment = new EqupmentInfo(id, name, description, emailClient, specs, series, dateLoan, state);
+                   equipments.add(equipment);
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+        return equipments;
+    }
+	
 	public ArrayList<Resources> ResourcesView(Boolean type, StringBuilder second) {
         ArrayList<Resources> loansDeviceList = new ArrayList<>();
         String query;
 
         if (type) {
-            query = "SELECT s.NOMBRE, s.CAPACIDAD ,u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, s.DESCRIPCION, s.ID, s.ESTADO\r\n"
-            		+ "FROM SALA s JOIN UBICACION u ON s.ID_UBICACION = u.ID\r\n"
-            		+ second;
+            query = "SELECT s.NOMBRE, s.CAPACIDAD ,u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, s.DESCRIPCION, s.ID, s.ESTADO"
+            		+ " FROM SALA s JOIN UBICACION u ON s.ID_UBICACION = u.ID "+ second;
         } else {
-            query = "SELECT NOMBRE, TIPO_DISPOSITIVO, MARCA, DESCRIPCION, ID\r\n"
-            		+ "FROM EQUIPO\r\n"
-            		+ "WHERE ESTADO = 'Disponible' AND CATEGORIA = 'DISPOSITIVO'" + second;
+            query = "SELECT NOMBRE, TIPO_DISPOSITIVO, MARCA, DESCRIPCION, ID"
+            		+ " FROM EQUIPO"
+            		+ " WHERE ESTADO = 'Disponible' AND CATEGORIA = 'DISPOSITIVO'" + second;
         }
 
         try (Statement stmt = connection.createStatement();
