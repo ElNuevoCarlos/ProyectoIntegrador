@@ -165,18 +165,17 @@ public class ResourcesDAO {
 	
 	public void saveEquipment(Equipment equipment) {
     	String query = "INSERT INTO EQUIPO"
-    			+ " (ID, NOMBRE, CATEGORIA, TIPO_DISPOSITIVO, MARCA, NUMERO_SERIE, ESTADO, DESCRIPCION, ID_SALA)"
-    			+ " VALUES (SEQ_EQUIPO_ID.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
+    			+ " (ID, NOMBRE, CATEGORIA, TIPO_DISPOSITIVO, MARCA, NUMERO_SERIE, ESTADO, DESCRIPCION)"
+    			+ " VALUES (SEQ_EQUIPO_ID.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
 
 	    	try (PreparedStatement pstmt = connection.prepareStatement(query)) {
 				pstmt.setString(1, equipment.getName());
 	            pstmt.setString(2, equipment.getCategory());
 	            pstmt.setString(3, equipment.getDeviceType());
 	            pstmt.setString(4, equipment.getBrand());
-	            pstmt.setString(6, equipment.getSerialNumber());
-	            pstmt.setString(7, equipment.getState());
-	            pstmt.setString(8, equipment.getDescription());
-	            pstmt.setString(9, null);
+	            pstmt.setString(5, equipment.getSerialNumber());
+	            pstmt.setString(6, equipment.getState());
+	            pstmt.setString(7, equipment.getDescription());
 	            
 	            pstmt.executeUpdate();
 	    	} catch (SQLException e) {
