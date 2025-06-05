@@ -19,14 +19,13 @@ public class BlockDAO {
     
 	public ArrayList<Block> findAvailableBlocks(LocalDate date, String hallDevice) {
 		ArrayList<Block> blocks = new ArrayList<>();
-		String query = "SELECT b.ID, b.HORA_INICIO, b.HORA_FIN\r\n"
-				+ "FROM BLOQUE b\r\n"
-				+ "WHERE b.ID NOT IN (\r\n"
-				+ "    SELECT pb.ID_BLOQUE\r\n"
-				+ "    FROM PRESTAMO_BLOQUE pb\r\n"
-				+ "    JOIN PRESTAMO p ON pb.ID_PRESTAMO = p.ID\r\n"
-				+ "    WHERE TRUNC(p.FECHA) = ? AND " + hallDevice + "\r\n"
-				+ ")";
+		String query = "SELECT b.ID, b.HORA_INICIO, b.HORA_FIN"
+				+ " FROM BLOQUE b"
+				+ " WHERE b.ID NOT IN ("
+				+ " SELECT pb.ID_BLOQUE"
+				+ " FROM PRESTAMO_BLOQUE pb"
+				+ " JOIN PRESTAMO p ON pb.ID_PRESTAMO = p.ID"
+				+ " WHERE TRUNC(p.FECHA) = ? AND " + hallDevice + ")";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
         	pstmt.setDate(1, java.sql.Date.valueOf(date));
             ResultSet rs = pstmt.executeQuery();
@@ -47,8 +46,8 @@ public class BlockDAO {
 	
 	public ArrayList<Block> findBlocksByLoanId(long idLoan) {
 		ArrayList<Block> blocks = new ArrayList<>();
-		String query = "SELECT b.ID, b.HORA_INICIO, b.HORA_FIN FROM BLOQUE b \r\n"
-				+ "WHERE b.ID IN (SELECT pb.ID_BLOQUE FROM PRESTAMO_BLOQUE pb WHERE pb.ID_PRESTAMO = ?)";
+		String query = "SELECT b.ID, b.HORA_INICIO, b.HORA_FIN FROM BLOQUE b"
+				+ " WHERE b.ID IN (SELECT pb.ID_BLOQUE FROM PRESTAMO_BLOQUE pb WHERE pb.ID_PRESTAMO = ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setLong(1, idLoan);
             ResultSet rs = pstmt.executeQuery();

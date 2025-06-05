@@ -59,7 +59,10 @@
          <contextMenu>
             <ContextMenu fx:id="menuCapacity" />
          </contextMenu></TextField>
-      <Label text="Edicion de prestamo" GridPane.columnIndex="3" />
+      <Label text="Edicion de prestamo" GridPane.columnIndex="3" GridPane.columnSpan="6" GridPane.halignment="CENTER">
+         <font>
+            <Font name="Candara Light Italic" size="20.0" />
+         </font></Label>
       <ListView fx:id="myBlocks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
       <TextArea fx:id="specs" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="7" GridPane.rowIndex="4" />
       <TableView fx:id="tableResources" focusTraversable="false" prefHeight="84.0" prefWidth="521.0" styleClass="tabla-centrada" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="2">

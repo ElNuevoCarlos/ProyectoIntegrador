@@ -7,11 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import utils.ViewUtils;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import model.User;
 
-public class UserDAO implements CRUD_operation<User, String>{
+public class UserDAO {
     private Connection connection;
 
     public UserDAO(Connection connection) {
@@ -45,7 +44,7 @@ public class UserDAO implements CRUD_operation<User, String>{
 	
 	            int rowsAffected = pstmt.executeUpdate();
 	            if (rowsAffected > 0) {
-	                this.AlertWindow(null, "Cuenta creada con éxito", AlertType.INFORMATION);
+	                ViewUtils.AlertWindow(null, null, "Cuenta creada con éxito", AlertType.INFORMATION);
 	            }
 	    	} catch (SQLException e) {
 				e.printStackTrace();
@@ -139,14 +138,12 @@ public class UserDAO implements CRUD_operation<User, String>{
 		}
 	}
 	
-	@Override
 	public ArrayList<User> fetch() {
         ArrayList<User> users = new ArrayList<>();
         String query = "SELECT * FROM USUARIO";
         
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
-        	
             while (rs.next()) {
                 String nombre_completo = rs.getString("NOMBRE_COMPLETO");
                 String numero_identificacion = rs.getString("NUMERO_IDENTIFICACION");
@@ -178,7 +175,6 @@ public class UserDAO implements CRUD_operation<User, String>{
         return users;
 	}
 
-	@Override
 	public boolean update(User user) {
 		String query = "UPDATE USUARIO SET NOMBRE_COMPLETO = ?, CORREO_INSTITUCIONAL = ?, TIPO_IDENTIFICACION = ?, NUMERO_IDENTIFICACION = ?, PASSWORD = ?, PROGRAMA_DEPARTAMENTO = ?, TELEFONO = ?, ROL = ? WHERE ID = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -201,7 +197,6 @@ public class UserDAO implements CRUD_operation<User, String>{
 		return true;
 	}
 
-	@Override
 	public void delete(String id) {
 		String sql = "DELETE USUARIO WHERE NUMERO_IDENTIFICACION = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -211,19 +206,40 @@ public class UserDAO implements CRUD_operation<User, String>{
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public boolean authenticate(String id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-    private void AlertWindow(String text, String content, AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(null);
-        alert.setHeaderText(text);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

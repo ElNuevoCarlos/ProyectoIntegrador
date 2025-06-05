@@ -13,9 +13,7 @@ import model.User;
 import utils.ViewUtils;
 
 
-public class ManagerTeacherController {
-	public static ManagerTeacherController instance;
-	
+public class MenuController {
     @FXML private BorderPane rootPane;
     @FXML private Text username, role;
     @FXML private ImageView menuImage;
@@ -30,7 +28,6 @@ public class ManagerTeacherController {
 	private SessionManager sessionManager = SessionManager.getInstance();
 
     @FXML void initialize() {
-    	instance = this;
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
 
 	    String[] partes = sessionManager.getName().split(" ");

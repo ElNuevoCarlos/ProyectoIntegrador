@@ -42,7 +42,6 @@ public class Loan {
         return date;
     }
 
-
     public String getSpecs() {
         return specs;
     }
