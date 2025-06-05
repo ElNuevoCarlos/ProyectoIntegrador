@@ -52,12 +52,12 @@ public class SanctionUser {
 	    	user = (User) dato;
 	    }
 	    
-	    String[] partes = user.getNombre_completo().split(" ");
+	    String[] partes = user.getFullName().split(" ");
 	    String primerNombre = partes[0];
 	    String primerApellido = partes.length > 2 ? partes[partes.length - 2] : partes[1];
         
     	name.setText(primerNombre + " " +primerApellido);
-    	id.setText(user.getNumero_identificacion());
+    	id.setText(user.getIdentificationNumber());
   	
 		ObservableList<SanctionInfo> sanctions = FXCollections.observableArrayList();
 		String query = " WHERE U.ID = "+user.getId();

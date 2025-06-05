@@ -69,11 +69,11 @@ public class UsersController {
         
         nombre.setOnEditCommit(event -> {
         	User user = event.getRowValue();
-        	String name = user.getNombre_completo();
+        	String name = user.getFullName();
         	
-        	user.setNombre_completo(event.getNewValue());
+        	user.setFullName(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
-        	if (!verifyUpdate) user.setNombre_completo(name);
+        	if (!verifyUpdate) user.setFullName(name);
         	else {
         		ViewUtils.AlertWindow(null, null, "El nombre del docente fue cambiado con exito.", AlertType.INFORMATION);
         	}
@@ -81,11 +81,11 @@ public class UsersController {
         
         correo.setOnEditCommit(event -> {
         	User user = event.getRowValue();
-        	String email = user.getCorreo_institucional();
+			String email = user.getInstitutionalEmail();
         	
-        	user.setCorreo_institucional(event.getNewValue());
+        	user.setInstitutionalEmail(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
-        	if (!verifyUpdate) user.setCorreo_institucional(email);
+        	if (!verifyUpdate) user.setInstitutionalEmail(email);
         	else ViewUtils.AlertWindow(null, null, "El correo del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
@@ -101,41 +101,41 @@ public class UsersController {
         	
         	
         	User user = event.getRowValue();
-        	String role = user.getRol();
+        	String role = user.getRole();
         	
-        	user.setRol(event.getNewValue());
+        	user.setRole(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
-        	if (!verifyUpdate) user.setRol(role);
+        	if (!verifyUpdate) user.setRole(role);
         	else ViewUtils.AlertWindow(null, null, "El rol del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
         programa.setOnEditCommit(event -> {
         	User user = event.getRowValue();
-        	String program = user.getPrograma_departamento();
+        	String program = user.getProgramDepartment();
         	
-        	user.setPrograma_departamento(event.getNewValue());
+        	user.setProgramDepartment(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
-        	if (!verifyUpdate) user.setPrograma_departamento(program);
+        	if (!verifyUpdate) user.setProgramDepartment(program);
         	else ViewUtils.AlertWindow(null, null, "El programa del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
         identificacion.setOnEditCommit(event -> {
         	User user = event.getRowValue();
-        	String id = user.getNumero_identificacion();
+        	String id = user.getIdentificationNumber();
         	
-        	user.setNumero_identificacion(event.getNewValue());
+        	user.setIdentificationNumber(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
-        	if (!verifyUpdate) user.setNumero_identificacion(id);
+        	if (!verifyUpdate) user.setIdentificationNumber(id);
         	else ViewUtils.AlertWindow(null, null, "La identificación del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
         contacto.setOnEditCommit(event -> {
         	User user = event.getRowValue();
-        	String phone = user.getTelefono();
+        	String phone = user.getPhone();
         	
-        	user.setTelefono(event.getNewValue());
+        	user.setPhone(event.getNewValue());
         	Boolean verifyUpdate = userDao.update(user);
-        	if (!verifyUpdate) user.setTelefono(phone);
+        	if (!verifyUpdate) user.setPhone(phone);
         	else ViewUtils.AlertWindow(null, null, "El contacto del docente fue cambiado con exito.", AlertType.INFORMATION);
         });
         
@@ -156,10 +156,10 @@ public class UsersController {
         String Contacto = contactoField.getText().toLowerCase();
 
         listaFiltrada.setPredicate(teacher -> {
-            boolean bCorreo = teacher.getCorreo_institucional().toLowerCase().contains(Correo);
-            boolean bNombre = teacher.getNombre_completo().toLowerCase().contains(Nombre);
-            boolean bId = teacher.getNumero_identificacion().toLowerCase().contains(Identificacion);
-            boolean bContacto = teacher.getTelefono().toLowerCase().contains(Contacto);
+            boolean bCorreo = teacher.getInstitutionalEmail().toLowerCase().contains(Correo);
+            boolean bNombre = teacher.getFullName().toLowerCase().contains(Nombre);
+            boolean bId = teacher.getIdentificationNumber().toLowerCase().contains(Identificacion);
+            boolean bContacto = teacher.getPhone().toLowerCase().contains(Contacto);
 
             return bCorreo && bNombre && bId && bContacto;
         });
@@ -177,9 +177,9 @@ public class UsersController {
     @FXML public void sanciones() {
     	User user = selectUser();
     	if (user != null) {
-        	user = new User(user.getNombre_completo(), user.getNumero_identificacion(), user.getTipo_identificacion(),
-        			user.getCorreo_institucional(), user.getPrograma_departamento(), user.getTelefono(), user.getEstado(),
-        			user.getRol(), user.getPassword(), user.getId());
+        	user = new User(user.getFullName(), user.getIdentificationNumber(), user.getIdentificationType(),
+        			user.getInstitutionalEmail(), user.getProgramDepartment(), user.getPhone(), user.getStatus(),
+        			user.getRole(), user.getPassword(), user.getId());
     		Main.datoGlobal = user;
     		ViewUtils.cargarGrid("/views/Manager/SanctionUser.fxml", Main.rootLayout);
     	}
@@ -342,11 +342,11 @@ public class UsersController {
 	        grid.setVgap(10);
 	        grid.setPadding(new Insets(20, 20, 10, 10));
 	
-	        TextField nameField = new TextField(user.getNombre_completo());
-	        TextField emailField = new TextField(user.getCorreo_institucional());
-	        TextField programaField = new TextField(user.getPrograma_departamento());
-	        TextField telefonoField = new TextField(user.getTelefono());
-	        TextField rolField = new TextField(user.getRol());
+	        TextField nameField = new TextField(user.getFullName());
+	        TextField emailField = new TextField(user.getInstitutionalEmail());
+	        TextField programaField = new TextField(user.getProgramDepartment());
+	        TextField telefonoField = new TextField(user.getPhone());
+	        TextField rolField = new TextField(user.getRole());
 	        TextField passwordField = new TextField(user.getPassword());
 	
 	        grid.add(new Label("Nombre:"), 0, 1);
@@ -369,7 +369,7 @@ public class UsersController {
 	        dialog.setResultConverter(dialogButton -> {
 	            if (dialogButton == saveButtonType) {
 	            	String rol = rolField.getText().trim();
-	            	String roleUser = user.getRol();
+	            	String roleUser = user.getRole();
 	            	
 	            	if (!roleUser.equals(rol)) {
 		            	if (!Main.isSuperManager && rol.equals("ENCARGADO")) {
@@ -389,12 +389,12 @@ public class UsersController {
 	                String contraseña = passwordField.getText().trim();
 	                
 	                return new User(name, 
-	                		user.getNumero_identificacion(), 
-	                		user.getTipo_identificacion(), 
+	                		user.getIdentificationNumber(), 
+	                		user.getIdentificationType(), 
 	                		email, 
 	                		programa, 
 	                		telefono, 
-	                		user.getEstado(), 
+	                		user.getStatus(), 
 	                		rol, 
 	                		contraseña, 
 	                		user.getId());
@@ -413,11 +413,11 @@ public class UsersController {
     @FXML public void eliminar() {
     	User user = selectUser();
     	if (user != null) {
-        	if (user.getRol().equals("ENCARGADO")) {
+			if (user.getRole().equals("ENCARGADO")) {
         		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes eliminar a otros Encargados", AlertType.ERROR);
         		return;
         	}
-        	else if (user.getRol().equals("SUPERENCARGADO")) {
+        	else if (user.getRole().equals("SUPERENCARGADO")) {
         		ViewUtils.AlertWindow(null, "Sin Autorización", "Tú no puedes eliminar a los Super Encargados", AlertType.ERROR);
         		return;
         	}
@@ -425,13 +425,13 @@ public class UsersController {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 	        alert.setTitle("Confirmación");
 	        alert.setContentText("Estás seguro de eliminar al docente?\n\n"+
-	        "- Docente: "+user.getNombre_completo()+"\n"+
-	        "- Identificación: "+user.getNumero_identificacion()+"\n"+
-	        "- Rol: "+user.getRol());
+	        "- Docente: "+user.getFullName()+"\n"+
+	        "- Identificación: "+user.getIdentificationNumber()+"\n"+
+	        "- Rol: "+user.getRole());
 	        Optional<ButtonType> result = alert.showAndWait();
 	
 	        if (result.get() == ButtonType.OK) {
-	    		userDao.delete(user.getNumero_identificacion());
+	    		userDao.delete(user.getIdentificationNumber());
 	    		initialize();
 	    		ViewUtils.AlertWindow(null, null, "El docente fue removido con éxito.", AlertType.INFORMATION);
 	        }
