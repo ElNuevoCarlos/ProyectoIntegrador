@@ -3,6 +3,8 @@ package data;
 import java.util.Properties;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
+import javafx.scene.control.Alert.AlertType;
+import utils.ViewUtils;
 
 public class EmailService {
 

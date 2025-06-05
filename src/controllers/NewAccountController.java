@@ -3,6 +3,7 @@ package controllers;
 import java.sql.Connection;
 
 import data.DataBase;
+import data.EmailService;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,6 +72,58 @@ public class NewAccountController {
         	ViewUtils.AlertWindow("Error", "Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
         	return;
         }
+        String affair = "¡Cuenta creada con éxito en TECHLEND!";
+        String htmlBody = String.format("""
+        		<!DOCTYPE html>
+        		<html>
+        		<head>
+        		  <meta charset="UTF-8">
+        		  <title>Confirmación de creación de cuenta</title>
+        		</head>
+        		<body style="margin:0;padding:0;font-family:'Segoe UI',Roboto,sans-serif;background-color:#f5f6fa;">
+
+        		  <div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:12px;overflow:hidden;">
+        		    <div style="background-color:#0b66ff;padding:30px;text-align:center;">
+        		      <img src="https://img.icons8.com/ios-filled/100/ffffff/checked--v1.png" alt="icono" style="width:60px;height:60px;" />
+        		      <h1 style="color:#ffffff;margin-top:10px;font-size:24px;">TECHLEND</h1>
+        		    </div>
+
+        		    <div style="padding:40px 30px;text-align:center;">
+        		      <h2 style="color:#222;font-size:22px;margin-bottom:20px;">Cuenta creada con éxito</h2>
+        		      <p style="color:#555;font-size:16px;">Hola, <strong>%s 👋</strong></p>
+        		      <p style="color:#777;font-size:15px;">
+        		        Tu cuenta ha sido creada correctamente. Ahora puedes iniciar sesión y comenzar a usar TECHLEND.
+        		      </p>
+
+        		      <div style="margin:30px auto;width:max-content;background:linear-gradient(90deg,#7ee8fa,#80ff72,#8ec5fc);padding:4px;border-radius:14px;">
+        		        <div style="padding:12px 30px;background-color:white;border-radius:10px;">
+        		          <span style="font-size:20px;color:#0b66ff;font-weight:bold;">¡Bienvenido a la comunidad TECHLEND!</span>
+        		        </div>
+        		      </div>
+
+        		      <hr style="margin:30px 0;border:none;border-top:1px solid #eee;">
+
+        		      <p style="font-size:14px;color:#444;">
+        		        Si no fuiste tú, por favor 
+        		        <a href="mailto:techlend27@gmail.com?subject=Cuenta%%20creada%%20no%%20solicitada&body=Hola%%2C%%20quiero%%20reportar%%20un%%20problema%%20con%%20la%%20creaci%%C3%%B3n%%20de%%20cuenta." 
+        		           style="color:#0b66ff;text-decoration:none;">
+        		          contáctanos aquí.
+        		        </a>
+        		      </p>
+        		    </div>
+
+        		    <div style="background-color:#1e1e1e;padding:20px;text-align:center;color:#999;font-size:13px;border-bottom-left-radius:12px;border-bottom-right-radius:12px;">
+        		      © 2025 TECHLEND. Todos los derechos reservados.<br>
+        		      Este correo fue generado automáticamente. No respondas a este mensaje.
+        		    </div>
+        		  </div>
+
+        		</body>
+        		</html>
+        		""", Name);
+
+
+        EmailService.sendMessage(Email, affair, htmlBody);
         if (!NumIdentification.matches("\\d{6,10}")) {
         	ViewUtils.AlertWindow("Error", "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
         	return;
