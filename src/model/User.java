@@ -1,114 +1,105 @@
 package model;
 
 public class User {
-	public String nombre, apellido, numero_identificacion, tipo_identificacion, 
-	correo_institucional, programa_departamento, telefono, estado, rol, password;
-	public Long id;
-	
-	public User(String nombre, String apellido, String numero_identificacion, String tipo_identificacion, 
-			String correo_institucional, String programa_departamento, 
-			String telefono, String estado, String rol, String password, Long  id) {
-		super();
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.numero_identificacion = numero_identificacion;
-		this.tipo_identificacion = tipo_identificacion;
-		this.correo_institucional = correo_institucional;
-		this.programa_departamento = programa_departamento;
-		this.telefono = telefono;
-		this.estado = estado;
-		this.rol = rol;
-		this.password = password;
-		this.id = id;
-	}
+    public String name, identificationNumber, identificationType,
+        institutionalEmail, programDepartment, phone, status, role, password;
+    public Long id;
 
-	public String getNombre() {
-		return nombre;
-	}
-	
-	public String getApellido() {
-		return apellido;
-	}
+    public User(String name, String identificationNumber, String identificationType,
+                String institutionalEmail, String programDepartment,
+                String phone, String status, String role, String password, Long id) {
+        super();
+        this.name = name;
+        this.identificationNumber = identificationNumber;
+        this.identificationType = identificationType;
+        this.institutionalEmail = institutionalEmail;
+        this.programDepartment = programDepartment;
+        this.phone = phone;
+        this.status = status;
+        this.role = role;
+        this.password = password;
+        this.id = id;
+    }
 
-	public String getNumero_identificacion() {
-		return numero_identificacion;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getTipo_identificacion() {
-		return tipo_identificacion;
-	}
 
-	public String getCorreo_institucional() {
-		return correo_institucional;
-	}
+    public String getIdentificationNumber() {
+        return identificationNumber;
+    }
 
-	public String getPrograma_departamento() {
-		return programa_departamento;
-	}
+    public String getIdentificationType() {
+        return identificationType;
+    }
 
-	public String getTelefono() {
-		return telefono;
-	}
+    public String getInstitutionalEmail() {
+        return institutionalEmail;
+    }
 
-	public String getEstado() {
-		return estado;
-	}
+    public String getProgramDepartment() {
+        return programDepartment;
+    }
 
-	public String getRol() {
-		return rol;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setNumero_identificacion(String numero_identificacion) {
-		this.numero_identificacion = numero_identificacion;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setTipo_identificacion(String tipo_identificacion) {
-		this.tipo_identificacion = tipo_identificacion;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setCorreo_institucional(String correo_institucional) {
-		this.correo_institucional = correo_institucional;
-	}
+    public void setIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
+    }
 
-	public void setPrograma_departamento(String programa_departamento) {
-		this.programa_departamento = programa_departamento;
-	}
+    public void setIdentificationType(String identificationType) {
+        this.identificationType = identificationType;
+    }
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+    public void setInstitutionalEmail(String institutionalEmail) {
+        this.institutionalEmail = institutionalEmail;
+    }
 
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
+    public void setProgramDepartment(String programDepartment) {
+        this.programDepartment = programDepartment;
+    }
 
-	public void setRol(String rol) {
-		this.rol = rol;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
-	
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
 

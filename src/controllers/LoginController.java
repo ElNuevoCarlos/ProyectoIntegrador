@@ -84,7 +84,7 @@ public class LoginController {
     		ViewUtils.AlertWindow(null, "El campo debe llenarse", null, AlertType.WARNING);
             return;
         }
-    	Name = userDao.verifyUser(Email);
+    	Name = userDao.verifyEmail(Email);
     	if (Name != null) {
         	email.setVisible(false);
             password.setVisible(true);
@@ -115,7 +115,7 @@ public class LoginController {
     	String verification = verificationResult[0];
     	String role = verificationResult[1];
     	long id = Long.parseLong(verificationResult[2]);
-		if (verification.equals("Y")) {
+		if (verification.equals("true")) {
 			
         	// CIERRA LA VENTANA ACTUAL
             Stage currentStage = (Stage) rootPane.getScene().getWindow();
