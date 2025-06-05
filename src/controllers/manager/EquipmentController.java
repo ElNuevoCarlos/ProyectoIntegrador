@@ -201,7 +201,7 @@ public class EquipmentController {
     	ComboBox<String> categoryField = new ComboBox<>();
     	
 	    ObservableList<String> itemsCategory = FXCollections.observableArrayList(
-		        "Dispositivo", "Computadora de Mesa"
+		        "DISPOSITIVO", "COMPUTADORA DE ESCRITORIO"
 		    );
 	    categoryField.setPromptText("Categoria");
 	    categoryField.setPrefWidth(140);
@@ -358,7 +358,7 @@ public class EquipmentController {
     			return;
     		}
     		if (ViewUtils.showConfirmation("Confirmación", "Está apunto de rechazar el prestamo de "+loan.getEmailClient()+"\n"
-    				+ "- Sala: "+loan.getName()+"\n- Marca: "+loan.getBrand()+"\n- Especificaciones: "+loan.getSpecs())) {
+    				+ "- Equipo: "+loan.getName()+"\n- Marca: "+loan.getBrand()+"\n- Especificaciones: "+loan.getSpecs())) {
     			
     			if (loanDao.updateState(loan.getId(), "RECHAZADO")) {
     				initialize();
