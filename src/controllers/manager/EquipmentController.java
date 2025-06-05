@@ -165,6 +165,7 @@ public class EquipmentController {
     	}
     	return loan;
     }
+    
     @FXML void añadir() {
         Dialog<User> dialog = new Dialog<>();
         
@@ -279,18 +280,17 @@ public class EquipmentController {
         dialog.showAndWait();
         initialize();
     }
+    
     @FXML void eliminar() {
-    	/*
-    	Resources resource = selectResource();
+    	Equipment resource = selectResource();
     	if (resource != null) {
-    		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar la sala "+resource.getName()+"?")) {
+    		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar el quipo "+resource.getName()+"?")) {
     			System.out.println("Elimino");
     		}
-    		
     		// Si tiene prestamos aprobados no se puede eliminar
     	}
-    	*/
     }
+    
     @FXML void pedir() {
     	/*
     	Resources resource = selectResource();
