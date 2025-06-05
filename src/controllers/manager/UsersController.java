@@ -52,13 +52,13 @@ public class UsersController {
 		for (User docente : userDao.fetch()) { 
 			teacher.add(docente);
 		}
-		
-		nombre.setCellValueFactory(new PropertyValueFactory<>("nombre_completo"));
-		correo.setCellValueFactory(new PropertyValueFactory<>("correo_institucional"));
-		rol.setCellValueFactory(new PropertyValueFactory<>("rol"));
-		programa.setCellValueFactory(new PropertyValueFactory<>("programa_departamento"));
-		identificacion.setCellValueFactory(new PropertyValueFactory<>("numero_identificacion"));
-		contacto.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+
+		nombre.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+		correo.setCellValueFactory(new PropertyValueFactory<>("institutionalEmail"));
+		rol.setCellValueFactory(new PropertyValueFactory<>("role"));
+		programa.setCellValueFactory(new PropertyValueFactory<>("programDepartment"));
+		identificacion.setCellValueFactory(new PropertyValueFactory<>("identificationNumber"));
+		contacto.setCellValueFactory(new PropertyValueFactory<>("phone"));
 		
         nombre.setCellFactory(TextFieldTableCell.forTableColumn());
         correo.setCellFactory(TextFieldTableCell.forTableColumn());
