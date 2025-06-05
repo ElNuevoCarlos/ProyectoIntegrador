@@ -292,17 +292,15 @@ public class EquipmentController {
     }
     
     @FXML void pedir() {
-    	/*
-    	Resources resource = selectResource();
+    	Equipment resource = selectResource();
     	if (resource != null) {
         	if (resource.getState().equals("En Mantenimiento")) {
-            	ViewUtils.AlertWindow(null, "En Mantenimiento", "No puedes pedir una sala en mantenimiento.", AlertType.ERROR);
+            	ViewUtils.AlertWindow(null, "En Mantenimiento", "No puedes pedir un equipo en mantenimiento.", AlertType.ERROR);
             	return;
         	}
         	Main.datoGlobal = resource;
         	ViewUtils.cargarGrid("/views/Request.fxml", Main.rootLayout);
     	}
-    	*/
     }
     @FXML void aprobar() {
     	/*
