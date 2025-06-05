@@ -35,7 +35,7 @@ public class UserDAO {
             cstmt.setString(5, user.getIdentificationNumber());
             cstmt.setString(6, user.getPhone());
             cstmt.setString(7, user.getProgramDepartment());
-            cstmt.setString(8, user.getName());
+            cstmt.setString(8, user.getFullName());
 
             int rowsAffected = cstmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -208,7 +208,7 @@ public class UserDAO {
 			pstmt.setString(6, user.getIdentificationNumber());
 			pstmt.setString(7, user.getPhone());
 			pstmt.setString(8, user.getProgramDepartment());
-			pstmt.setString(9, user.getName());
+			pstmt.setString(9, user.getFullName());
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0;
 		} catch (SQLException e) {
