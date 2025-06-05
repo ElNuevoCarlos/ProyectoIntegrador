@@ -17,8 +17,7 @@ public class DataBase {
 		try {
 			connection = DriverManager.getConnection(getConnectionString(), "TECHLEND", "xmbW4xXdX87Ts0");
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Error connecting to the database.");
+			throw new RuntimeException("Error connecting to the database."+e.getMessage());
 		}
 	}
     
