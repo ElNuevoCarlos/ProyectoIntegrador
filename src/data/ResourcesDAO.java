@@ -1,10 +1,12 @@
 package data;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -163,73 +165,94 @@ public class ResourcesDAO {
         return list;
     }
 	
+	
 	public void saveEquipment(Equipment equipment) {
-    	String query = "INSERT INTO EQUIPO"
-    			+ " (ID, NOMBRE, CATEGORIA, TIPO_DISPOSITIVO, MARCA, NUMERO_SERIE, ESTADO, DESCRIPCION)"
-    			+ " VALUES (SEQ_EQUIPO_ID.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+    	String sql = "{ call TECHLEND.saveEquipment(?, ?, ?, ?, ?, ?, ?) }";
 
-	    	try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-				pstmt.setString(1, equipment.getName());
-	            pstmt.setString(2, equipment.getCategory());
-	            pstmt.setString(3, equipment.getDeviceType());
-	            pstmt.setString(4, equipment.getBrand());
-	            pstmt.setString(5, equipment.getSerialNumber());
-	            pstmt.setString(6, equipment.getState());
-	            pstmt.setString(7, equipment.getDescription());
+	    	try (CallableStatement stmt = connection.prepareCall(sql)) {
+	    		stmt.setString(1, equipment.getName());
+	    		stmt.setString(2, equipment.getCategory());
+	    		stmt.setString(3, equipment.getDeviceType());
+	    		stmt.setString(4, equipment.getBrand());
+	    		stmt.setString(5, equipment.getSerialNumber());
+	    		stmt.setString(6, equipment.getDescription());
+	    		stmt.setLong(7, equipment.getIdHall());
 	            
-	            pstmt.executeUpdate();
+	            int rowsAffected = stmt.executeUpdate();
+	            if (rowsAffected > 0) {
+	            	ViewUtils.AlertWindow(
+	            		    "Éxito", 
+	            		    "Equipo creado", 
+	            		    "El equipo ha sido creado con éxito.", 
+	            		    AlertType.INFORMATION
+	            		);
+	            }
 	    	} catch (SQLException e) {
 	    		ViewUtils.AlertWindow(null, "Ocurrio un error", e.getMessage(), AlertType.INFORMATION);
 			}
 	}
 	
     public void saveHall(Hall hall) {
-    	String query = "INSERT INTO SALA"
-    			+ " (ID, NOMBRE, ID_UBICACION, CAPACIDAD, ESTADO, DESCRIPCION)"
-    			+ " VALUES (SEQ_SALA_ID.NEXTVAL, ?, ?, ?, ?, ?)";
+    	String sql = "{call saveHall(?, ?, ?, ?)}";
 
-	    	try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-				pstmt.setString(1, hall.getName());
-	            pstmt.setLong(2, hall.getIdLocation());
-	            pstmt.setString(3, hall.getCapacity());
-	            pstmt.setString(4, hall.getState());
-	            pstmt.setString(5, hall.getDescription());
-	            
-	            pstmt.executeUpdate();
-	    	} catch (SQLException e) {
-	    		ViewUtils.AlertWindow(null, "Ocurrio un error", e.getMessage(), AlertType.INFORMATION);
-			}
+    	try (CallableStatement cstmt = connection.prepareCall(sql)) {
+    	    cstmt.setString(1, hall.getName());
+    	    cstmt.setLong(2, hall.getIdLocation());
+    	    cstmt.setString(3, hall.getCapacity());
+    	    cstmt.setString(4, hall.getDescription());
+
+            int rowsAffected = cstmt.executeUpdate();
+            if (rowsAffected > 0) {
+            	ViewUtils.AlertWindow(
+            		    "Éxito", 
+            		    "Sala creado", 
+            		    "La sala ha sido creada con éxito.", 
+            		    AlertType.INFORMATION
+            		);
+            }
+    	} catch (SQLException e) {
+    	    ViewUtils.AlertWindow(null, "Ocurrió un error", e.getMessage(), AlertType.INFORMATION);
+    	}
+
     }
     
     public void saveLocation(Location location) {
-    	String queryLocation = "INSERT INTO UBICACION"
-    			+ " (ID, EDIFICIO, PISO)"
-    			+ " VALUES (SEQ_UBICACION_ID.NEXTVAL, ?, ?)";
+    	String sql = "{call saveLocation(?, ?)}";
 
-	    	try (PreparedStatement pstmt = connection.prepareStatement(queryLocation)) {
-				pstmt.setString(1, location.getBuilding());
-	            pstmt.setString(2, location.getFloor());
-	
-	            pstmt.executeUpdate();
-	    	} catch (SQLException e) {
-				e.printStackTrace();
-			}
+    	try (CallableStatement cstmt = connection.prepareCall(sql)) {
+    	    cstmt.setString(1, location.getBuilding());
+    	    cstmt.setString(2, location.getFloor());
+
+    	    cstmt.execute();
+    	} catch (SQLException e) {
+    		ViewUtils.AlertWindow(null, "Ocurrió un error", e.getMessage(), AlertType.INFORMATION);
+    	}
+
     }
+    
+	
 	public Long verifyLocation(String name, String floor) {
-		Long id = null;
-        String query = "SELECT ID FROM UBICACION WHERE UPPER(EDIFICIO) = ? AND PISO = ?";       
-        try (PreparedStatement pstmt = connection.prepareStatement(query)){
-        	pstmt.setString(1, name.toUpperCase());
-        	pstmt.setString(2, floor);
-        	ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                id = rs.getLong("ID");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return id; 
+	    Long id = null;
+	    String sql = "{ ? = call verifyLocation(?, ?) }";
+
+	    try (CallableStatement cstmt = connection.prepareCall(sql)) {
+	        cstmt.registerOutParameter(1, Types.BIGINT);
+	        cstmt.setString(2, name);
+	        cstmt.setString(3, floor);
+
+	        cstmt.execute();
+
+	        id = cstmt.getLong(1);
+	        if (cstmt.wasNull()) {
+	            id = null;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return id;
 	}
+
     
 	public boolean AuthenticateHall(String name) {
 		for (Hall hall : HallView()) {

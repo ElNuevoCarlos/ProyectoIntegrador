@@ -2,6 +2,7 @@ package data;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,11 +61,11 @@ public class LoanDAO {
         return loansView;
     }
 	
-    
+
+
     public void save(Loan loan) {
-        String queryLoan = "INSERT INTO PRESTAMO (ID, FECHA, ESPECIFICACIONES, ID_SALA, ID_USUARIO, ID_EQUIPO, ESTADO) " +
-                              "VALUES (SEQ_PRESTAMO.NEXTVAL, ?, ?, ?, ?, ?, ?)";
-        String queryLoanBlock = "INSERT INTO PRESTAMO_BLOQUE (ID_PRESTAMO, ID_BLOQUE) VALUES (?, ?)";
+        String sqlLoan = "{ call TECHLEND.saveLoan(?, ?, ?, ?, ?, ?) }";
+        String sqlBlock = "{ call TECHLEND.saveLoanBlocks(?, ?) }";
 
         try {
             connection.setAutoCommit(false); // Inicia la transacción
@@ -72,39 +73,33 @@ public class LoanDAO {
             Long idLoan = null;
 
             // Insertamos en PERSONA y obtenemos la clave generada
-            try (PreparedStatement pstmtPersona = connection.prepareStatement(queryLoan,new String[] { "ID" })) {
+            
+            try (CallableStatement cstmtLoan = connection.prepareCall(sqlLoan)) {
 
-                pstmtPersona.setDate(1, java.sql.Date.valueOf(loan.getDate()));
-                pstmtPersona.setString(2, loan.getSpecs());
+            	cstmtLoan.setDate(1, java.sql.Date.valueOf(loan.getDate()));
+            	cstmtLoan.setString(2, loan.getSpecs());
                 if (loan.getIdHall() != null) {
-                    pstmtPersona.setLong(3, loan.getIdHall());
+                	cstmtLoan.setLong(3, loan.getIdHall());
                 } else {
-                    pstmtPersona.setNull(3, java.sql.Types.BIGINT);
+                	cstmtLoan.setNull(3, java.sql.Types.BIGINT);
                 }
-                pstmtPersona.setLong(4, loan.getIdUser());
+                cstmtLoan.setLong(4, loan.getIdUser());
                 if (loan.getIdEquipment() != null) {
-                    pstmtPersona.setLong(5, loan.getIdEquipment());
+                	cstmtLoan.setLong(5, loan.getIdEquipment());
                 } else {
-                    pstmtPersona.setNull(5, java.sql.Types.BIGINT);
+                	cstmtLoan.setNull(5, java.sql.Types.BIGINT);
                 }
-                pstmtPersona.setString(6, loan.getState());
-
-                int rows = pstmtPersona.executeUpdate();
-                if (rows > 0) {
-                    try (ResultSet rs = pstmtPersona.getGeneratedKeys()) {
-                        if (rs.next()) {
-                        	idLoan = rs.getLong(1);
-                        }
-                    }
-                }
+                cstmtLoan.registerOutParameter(6, java.sql.Types.BIGINT);
+                cstmtLoan.executeUpdate();
+                idLoan = cstmtLoan.getLong(6);
             }
 
             if (idLoan != null) {
-                try (PreparedStatement pstmtBlock = connection.prepareStatement(queryLoanBlock)) {
+                try (CallableStatement cstmtBlock = connection.prepareCall(sqlBlock)) {
                     for (Block block : loan.getBlocks()) {
-                        pstmtBlock.setLong(1, idLoan);
-                        pstmtBlock.setLong(2, block.getId());
-                        pstmtBlock.executeUpdate();
+                    	cstmtBlock.setLong(1, idLoan);
+                    	cstmtBlock.setLong(2, block.getId());
+                    	cstmtBlock.executeUpdate();
                     }
                 }
             }
@@ -170,21 +165,23 @@ public class LoanDAO {
         return loans;
 	}
 
-	public boolean updateState(Long entity, String state) {
-		String query = "UPDATE PRESTAMO"
-				+ " SET ESTADO = ?"
-				+ " WHERE ID = ?";
-		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-			pstmt.setString(1, state);
-			pstmt.setLong(2, entity);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
-					+ "- Qué el estado está bien escrito.", AlertType.ERROR);
-			return false;
-		}	
-		return true;
+	public boolean updateState(Long id, String state) {
+	    String sql = "{ call TECHLEND.updateLoanState(?, ?) }";
+
+	    try (CallableStatement cstmt = connection.prepareCall(sql)) {
+	        cstmt.setLong(1, id);
+	        cstmt.setString(2, state);
+	        cstmt.execute();
+	    } catch (SQLException e) {
+	        ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
+	                + "- Que el estado esté bien escrito.\n"
+	                + "- Que el ID exista.", AlertType.ERROR);
+	        return false;
+	    }
+
+	    return true;
 	}
+
 }
 
 
