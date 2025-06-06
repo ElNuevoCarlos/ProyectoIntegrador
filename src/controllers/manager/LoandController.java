@@ -266,11 +266,17 @@ public class LoandController {
     @FXML void eliminar() {
     	Resources resource = selectResource();
     	if (resource != null) {
-    		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar la sala "+resource.getName()+"?")) {
-    			System.out.println("Elimino");
+    		if (resource.getState().equals("CANCELADO")) {
+    			ViewUtils.AlertWindow(null, "No se puede", "La sala "+resource.getName()+" ya fue eliminada.", AlertType.INFORMATION);
+    			return;
     		}
-    		
-    		// Si tiene prestamos aprobados no se puede eliminar
+    		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar la sala "+resource.getName()+"?\nAl eliminarla, todas las salas prestadas seran canceladas.")) {
+    			if (loanDao.updatesStateHall("No Disponible", resource.getIdResource())) {
+        			loanDao.updatesState(resource.getIdResource());
+        			initialize();
+        			ViewUtils.AlertWindow(null, "Sala Eliminada", "La sala "+resource.getName()+" fue eliminada con éxito.", AlertType.INFORMATION);
+    			}
+    		}
     	}
     }
     @FXML void pedir() {
@@ -278,6 +284,9 @@ public class LoandController {
     	if (resource != null) {
         	if (resource.getState().equals("En Mantenimiento")) {
             	ViewUtils.AlertWindow(null, "En Mantenimiento", "No puedes pedir una sala en mantenimiento.", AlertType.ERROR);
+            	return;
+        	} else if (resource.getState().equals("CANCELADO")) {
+            	ViewUtils.AlertWindow(null, "CANCELADA", "No puedes pedir una sala que fue eliminada.", AlertType.ERROR);
             	return;
         	}
         	Main.datoGlobal = resource;

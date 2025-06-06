@@ -170,6 +170,33 @@ public class LoanDAO {
         return loans;
 	}
 
+	public boolean updatesState(Long entity) {
+		String query = "UPDATE PRESTAMO"
+				+ " SET ESTADO = 'CANCELADO'"
+				+ " WHERE ID_SALA = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setLong(1, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
+	public boolean updatesStateHall(String state, Long entity) {
+		String query = "UPDATE SALA"
+				+ " SET ESTADO = ?"
+				+ " WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
 	public boolean updateState(Long entity, String state) {
 		String query = "UPDATE PRESTAMO"
 				+ " SET ESTADO = ?"
