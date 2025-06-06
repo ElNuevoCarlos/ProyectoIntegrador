@@ -28,6 +28,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Equipment;
 import model.EqupmentInfo;
+import model.Resources;
 import model.Sanction;
 import model.User;
 import utils.ViewUtils;
@@ -280,10 +281,20 @@ public class EquipmentController {
     @FXML void eliminar() {
     	Equipment resource = selectResource();
     	if (resource != null) {
-    		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar el quipo "+resource.getName()+"?")) {
-    			System.out.println("Elimino");
+    		if (resource.getState().equals("CANCELADO")) {
+    			ViewUtils.AlertWindow(null, "No se puede", "El equipo "+resource.getName()+" ya fue eliminado.", AlertType.INFORMATION);
+    			return;
     		}
-    		// Si tiene prestamos aprobados no se puede eliminar
+    		
+    		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar el equipo "+resource.getName()+"?")) {
+    			
+    			if (loanDao.updatesStateEquipment("No Disponible", resource.getId())) {
+        			loanDao.updateStateEquipment(resource.getId());
+        			initialize();
+        			ViewUtils.AlertWindow(null, "Equipo Eliminado", "El equipo "+resource.getName()+" fue eliminado con éxito.", AlertType.INFORMATION);
+    			}
+    			
+    		}
     	}
     }
     

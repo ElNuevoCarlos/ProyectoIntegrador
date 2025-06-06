@@ -164,6 +164,35 @@ public class LoanDAO {
 
         return loans;
 	}
+	
+	public boolean updateStateEquipment(Long entity) {
+		String query = "UPDATE PRESTAMO"
+				+ " SET ESTADO = 'CANCELADO'"
+				+ " WHERE ID_EQUIPO = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setLong(1, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
+	
+	public boolean updatesStateEquipment(String state, Long entity) {
+		String query = "UPDATE EQUIPO"
+				+ " SET ESTADO = ?"
+				+ " WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
 
 	public boolean updateState(Long id, String state) {
 	    String sql = "{ call TECHLEND.updateLoanState(?, ?) }";
@@ -180,6 +209,47 @@ public class LoanDAO {
 	    }
 
 	    return true;
+	public boolean updatesState(Long entity) {
+		String query = "UPDATE PRESTAMO"
+				+ " SET ESTADO = 'CANCELADO'"
+				+ " WHERE ID_SALA = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setLong(1, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
+	public boolean updatesStateHall(String state, Long entity) {
+		String query = "UPDATE SALA"
+				+ " SET ESTADO = ?"
+				+ " WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
+	public boolean updateState(Long entity, String state) {
+		String query = "UPDATE PRESTAMO"
+				+ " SET ESTADO = ?"
+				+ " WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
+					+ "- Qué el estado está bien escrito.", AlertType.ERROR);
+			return false;
+		}	
+		return true;
 	}
 
 }
