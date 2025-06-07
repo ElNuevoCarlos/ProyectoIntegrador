@@ -180,6 +180,8 @@ public class LoanDAO {
 		return true;
 	}
 	
+	
+	
 	public boolean updatesStateEquipment(String state, Long entity) {
 		String query = "UPDATE EQUIPO"
 				+ " SET ESTADO = ?"
