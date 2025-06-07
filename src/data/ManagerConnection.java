@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ManagerConnection {
+public class ManagerConnection implements DBConnection {
     private static ManagerConnection instance; //Singleton
     private Connection connection;
 	private final String username="studentPro";

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import javafx.scene.control.Alert.AlertType;
 import model.Sanction;
 import model.SanctionInfo;
-import model.User;
 import utils.ViewUtils;
 
 public class SanctionDAO {

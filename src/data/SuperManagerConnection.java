@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class SuperManagerConnection {
+public class SuperManagerConnection implements DBConnection {
     private static SuperManagerConnection instance; //Singleton
     private Connection connection;
 	private final String username="adminPro";
