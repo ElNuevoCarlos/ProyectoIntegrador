@@ -165,12 +165,13 @@ public class LoanDAO {
         return loans;
 	}
 	
-	public boolean updateStateEquipment(Long entity) {
+	public boolean updateStateEquipment(String state, Long entity) {
 		String query = "UPDATE PRESTAMO"
-				+ " SET ESTADO = 'CANCELADO'"
+				+ " SET ESTADO = ?"
 				+ " WHERE ID_EQUIPO = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-			pstmt.setLong(1, entity);
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
@@ -207,7 +208,6 @@ public class LoanDAO {
 	                + "- Que el ID exista.", AlertType.ERROR);
 	        return false;
 	    }
-
 	    return true;
 	}
 

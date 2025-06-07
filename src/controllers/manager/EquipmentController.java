@@ -288,7 +288,7 @@ public class EquipmentController {
     		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar el equipo "+resource.getName()+"?")) {
     			
     			if (loanDao.updatesStateEquipment("No Disponible", resource.getId())) {
-        			loanDao.updateStateEquipment(resource.getId());
+        			loanDao.updateStateEquipment("CANCELADO", resource.getId());
         			initialize();
         			ViewUtils.AlertWindow(null, "Equipo Eliminado", "El equipo "+resource.getName()+" fue eliminado con éxito.", AlertType.INFORMATION);
     			}

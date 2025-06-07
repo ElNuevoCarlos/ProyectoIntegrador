@@ -272,7 +272,7 @@ public class LoandController {
     		}
     		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar la sala "+resource.getName()+"?\nAl eliminarla, todas las salas prestadas seran canceladas.")) {
     			if (loanDao.updatesStateHall("No Disponible", resource.getIdResource())) {
-        			loanDao.updatesState(resource.getIdResource());
+        			loanDao.updatesStateHall("CANCELADO", resource.getIdResource());
         			initialize();
         			ViewUtils.AlertWindow(null, "Sala Eliminada", "La sala "+resource.getName()+" fue eliminada con éxito.", AlertType.INFORMATION);
     			}
