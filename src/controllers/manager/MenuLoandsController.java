@@ -15,7 +15,7 @@ public class MenuLoandsController {
     		if (Main.datoGlobalTwo) {
     			ViewUtils.cargarGrid("/views/Teacher/MyHalls.fxml", Main.rootLayout);
     		} else {
-    			ViewUtils.cargarGrid("/views/Teacher/Loans.fxml", Main.rootLayout);
+    			ViewUtils.cargarGrid("/views/Teacher/Equipment.fxml", Main.rootLayout);
     		}
     	}
     }
@@ -32,5 +32,6 @@ public class MenuLoandsController {
     		}
     	}
     }
+    
 
 }

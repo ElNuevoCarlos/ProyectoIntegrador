@@ -86,7 +86,7 @@ public class ResourcesDAO {
 
         return equipments;
     }
-	
+
 	public ArrayList<Resources> ResourcesView(Boolean type, StringBuilder second) {
         ArrayList<Resources> loansDeviceList = new ArrayList<>();
         String query;

@@ -80,7 +80,7 @@ public class LoansController {
     @FXML void pedir() {
     	Resources resource = selectResource();
     	if (resource != null) {
-    		if (resource.getState().equals("CANCELADO")) {
+    		if (resource.getState().equals("No Disponible")) {
             	ViewUtils.AlertWindow(null, "CANCELADA", "No puedes pedir una sala que fue eliminada.", AlertType.ERROR);
             	return;
     		} else if (resource.getState().equals("En Mantenimiento")) {

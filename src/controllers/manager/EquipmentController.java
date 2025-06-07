@@ -28,7 +28,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Equipment;
 import model.EqupmentInfo;
-import model.Resources;
 import model.Sanction;
 import model.User;
 import utils.ViewUtils;
