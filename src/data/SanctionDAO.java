@@ -127,17 +127,20 @@ public class SanctionDAO {
 		return true;
 	}
 
-	public boolean delete(Long entity) {
-		String sql = "DELETE SANCION WHERE ID = ?";
-		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-			stmt.setLong(1, entity);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+	public boolean delete(Long id) {
+	    String sql = "{CALL TECHLEND.deleteSancion(?)}";
+
+	    try (CallableStatement stmt = connection.prepareCall(sql)) {
+	        stmt.setLong(1, id); 
+	        stmt.execute();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+
+	    return true;
 	}
+
 }
 
 
