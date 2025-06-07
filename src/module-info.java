@@ -6,6 +6,7 @@ module Integrador {
     requires transitive javafx.graphics;
     requires jakarta.mail;
     requires jakarta.activation;
+	requires com.oracle.database.jdbc;
 
     opens model to javafx.base;
     opens controllers to javafx.fxml;
@@ -15,3 +16,5 @@ module Integrador {
     exports application;
     exports controllers;
 }
+
+
