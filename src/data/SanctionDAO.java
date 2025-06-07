@@ -1,5 +1,6 @@
 package data;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import javafx.scene.control.Alert.AlertType;
 import model.Sanction;
 import model.SanctionInfo;
+import model.User;
 import utils.ViewUtils;
 
 public class SanctionDAO {
@@ -19,21 +21,26 @@ public class SanctionDAO {
     public SanctionDAO(Connection connection) {
         this.connection = connection;
     }
-
+    
 	public void save(Sanction entity) {
-    	String querySancion = "INSERT INTO SANCION"
-    			+ " (ID, TIPO_SANCION, DESCRIPCION, FECHA_FIN, MONTO, ESTADO, ID_PRESTAMO)"
-    			+ " VALUES (SEQ_SANCION_ID.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+    	String sql = "{ call TECHLEND.saveSancion(?, ?, ?, ?, ?) }";
 
-	    	try (PreparedStatement pstmt = connection.prepareStatement(querySancion)) {
-				pstmt.setString(1, entity.getTypeSanction());
-	            pstmt.setString(2, entity.getDescription());
-	            pstmt.setDate(3, Date.valueOf(entity.getEndDate()));
-	            pstmt.setLong(4, entity.getAmount());
-	            pstmt.setString(5, entity.getState());
-	            pstmt.setLong(6, entity.getIdLoanDevice());
+	    	try (CallableStatement stmt = connection.prepareCall(sql)) {
+	    		stmt.setString(1, entity.getTypeSanction());
+	    		stmt.setString(2, entity.getDescription());
+	    		stmt.setDate(3, Date.valueOf(entity.getEndDate()));
+	    		stmt.setLong(4, entity.getAmount());
+	    		stmt.setLong(5, entity.getIdLoanDevice());
 	
-	            pstmt.executeUpdate();
+	            int rowsAffected = stmt.executeUpdate();
+	            if (rowsAffected > 0) {
+	            	ViewUtils.AlertWindow(
+	            		    "Éxito", 
+	            		    "Sanción creada", 
+	            		    "La sanción ha sido creada con éxito.", 
+	            		    AlertType.INFORMATION
+	            		);
+	            }
 	    	} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -103,16 +110,15 @@ public class SanctionDAO {
         return sanctions;
 	}
 	public boolean update(SanctionInfo entity) {
-		String query = "UPDATE SANCION "
-				+ "SET TIPO_SANCION = ?, DESCRIPCION = ?, MONTO = ?, ESTADO = ?"
-				+ "WHERE ID = ?";
-		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-			pstmt.setString(1, entity.getTypeSanction());
-			pstmt.setString(2, entity.getDescription());
-			pstmt.setInt(3, entity.getAmount());
-			pstmt.setString(4, entity.getState());
-			pstmt.setLong(5, entity.getidLoan());
-			pstmt.executeUpdate();
+		String sql = "{ call TECHLEND.updateSancion(?, ?, ?, ?, ?, ?) }";
+		try (CallableStatement stmt = connection.prepareCall(sql)) {
+			stmt.setLong(1, entity.getidLoan());
+			stmt.setString(2, entity.getTypeSanction());
+			stmt.setString(3, entity.getDescription());
+			stmt.setDate(4, Date.valueOf(entity.getEndDate()));
+			stmt.setInt(5, entity.getAmount());
+			stmt.setString(6, entity.getState());
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
 					+ "- Qué ese dato no esté repetido.\n"
