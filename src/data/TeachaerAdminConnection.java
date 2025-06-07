@@ -7,11 +7,14 @@ import java.sql.SQLException;
 public class TeachaerAdminConnection implements DBConnection {
     private static TeachaerAdminConnection instance; //Singleton
     private Connection connection;
-	private final String username="studentPro";
-	private final String password="studentPro";
-	private final String host = "192.168.254.215";
+	private final String username="US_DOCENTE_ADMINISTRATIVO";
+	private final String password="zsRui7Eg07uSPp";
+	private final String host = "localhost";
+	private final String service = "xe";
 	private final String port = "1521";
-	private final String service = "orcl";
+//	private final String host = "192.168.254.215";
+
+//	private final String service = "orcl";
 
     private TeachaerAdminConnection() {
         try {

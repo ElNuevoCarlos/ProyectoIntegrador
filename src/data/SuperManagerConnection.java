@@ -4,14 +4,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class SuperManagerConnection implements DBConnection {
+public class SuperManagerConnection implements DBConnection{
     private static SuperManagerConnection instance; //Singleton
     private Connection connection;
-	private final String username="adminPro";
-	private final String password="adminPro";
-	private final String host = "192.168.254.215";
+	private final String username="US_SUPERENCARGADO";
+	private final String password="MfqGOvD0wPengn";
+	private final String host = "localhost";
+	private final String service = "xe";
 	private final String port = "1521";
-	private final String service = "orcl";
+//	private final String host = "192.168.254.215";
+//	private final String service = "orcl";
 
 
 	
