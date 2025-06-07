@@ -1,0 +1,1031 @@
+1. 	TABLAS 
+
+1.1. CREACION DE LA TABLA USUARIO
+-- Tabla que almacena todos los usuarios del sistema, incluyendo docentes, administrativos y encargados
+CREATE TABLE TECHLEND.USUARIO (
+    ID NUMBER PRIMARY KEY, -- Identificador único del usuario
+
+    PASSWORD VARCHAR2(200) CONSTRAINT CUE_PAS_NN NOT NULL, -- Contraseña cifrada del usuario
+
+    ROL VARCHAR2(14) NOT NULL, -- Rol del usuario: DOCENTE, ADMINISTRATIVO, ENCARGADO, SUPERENCARGADO
+
+    ESTADO VARCHAR2(10) DEFAULT 'ACTIVA' NOT NULL, -- Estado de la cuenta: ACTIVA, SUSPENDIDA o BLOQUEADA
+
+    CORREO_INSTITUCIONAL VARCHAR2(50) CONSTRAINT CUE_CORINS_NN NOT NULL, -- Correo institucional único del usuario
+
+    TIPO_IDENTIFICACION VARCHAR2(2) NOT NULL, -- Tipo de documento: CC (Cédula de Ciudadanía), CE (Cédula de Extranjería)
+
+    NUMERO_IDENTIFICACION VARCHAR2(15) CONSTRAINT PER_NUMIDE_NN NOT NULL, -- Número del documento de identidad
+
+    TELEFONO VARCHAR2(10) CONSTRAINT PER_TEL_NN NOT NULL, -- Teléfono de contacto del usuario
+
+    PROGRAMA_DEPARTAMENTO VARCHAR2(50) CONSTRAINT PER_PRODEP_NN NOT NULL, -- Programa académico o departamento
+
+    NOMBRE_COMPLETO VARCHAR2(60) CONSTRAINT USU_NOM_NN NOT NULL, -- Nombre completo del usuario
+
+    -- Restricción: solo se permiten ciertos valores en el campo ROL
+    CONSTRAINT CUE_ROL_NN CHECK (
+        ROL IN ('DOCENTE', 'ADMINISTRATIVO', 'ENCARGADO', 'SUPERENCARGADO')
+    ),
+
+    -- Restricción: solo se permiten ciertos estados
+    CONSTRAINT CUE_EST_CK CHECK (
+        ESTADO IN ('ACTIVA', 'SUSPENDIDA', 'BLOQUEADA')
+    ),
+
+    -- Restricción: tipo de identificación debe ser CC o CE
+    CONSTRAINT PER_TIPIDE_NN CHECK (
+        TIPO_IDENTIFICACION IN ('CC', 'CE')
+    ),
+
+    -- Restricción: correo institucional único
+    CONSTRAINT CUE_CORINS_UNI UNIQUE (CORREO_INSTITUCIONAL),
+
+    -- Restricción: número de identificación único
+    CONSTRAINT PER_NUMIDE_UNI UNIQUE (NUMERO_IDENTIFICACION)
+);
+
+1.2. CREACION DE LA TABLA PRESTAMO
+-- Tabla que almacena los préstamos de salas o equipos en el sistema
+CREATE TABLE TECHLEND.PRESTAMO (
+    ID NUMBER PRIMARY KEY, -- Identificador único del préstamo
+
+    FECHA DATE CONSTRAINT PRESAL_FECINI_NN NOT NULL, -- Fecha en la que se realiza o solicita el préstamo
+
+    ESPECIFICACIONES VARCHAR2(100), -- Descripción adicional del préstamo (uso libre)
+
+    ID_SALA NUMBER, -- Sala asociada al préstamo (si aplica)
+
+    ID_USUARIO NUMBER CONSTRAINT PRESAL_IDCUE_NN NOT NULL, -- Usuario que realiza el préstamo (referencia a USUARIO)
+
+    ID_EQUIPO NUMBER, -- Equipo asociado al préstamo (si aplica)
+
+    ESTADO VARCHAR2(10) DEFAULT 'SOLICITADO' CONSTRAINT PRE_EST_NN NOT NULL, -- Estado actual del préstamo
+
+    -- Restricción: el préstamo debe ser de una sala o un equipo, pero no ambos al tiempo
+    CONSTRAINT PRE_ID_EQU_SAL_CK CHECK (
+        (ID_EQUIPO IS NOT NULL AND ID_SALA IS NULL) OR
+        (ID_EQUIPO IS NULL AND ID_SALA IS NOT NULL)
+    ),
+
+    -- Restricción: solo se permiten ciertos valores en el campo ESTADO
+    CONSTRAINT CK_EST_PRE CHECK (
+        ESTADO IN (
+            'SOLICITADO', 'APROBADO', 'RECHAZADO',
+            'ACTIVO', 'EN RETRASO', 'FINALIZADO', 'CANCELADO'
+        )
+    ),
+
+    -- Clave foránea: relaciona el préstamo con un usuario (USUARIO.ID)
+    CONSTRAINT PRESAL_IDCUE_FK FOREIGN KEY (ID_USUARIO)
+        REFERENCES TECHLEND.USUARIO (ID),
+
+    -- Clave foránea: relaciona el préstamo con una sala (SALA.ID)
+    CONSTRAINT PRESAL_IDSAL_FK FOREIGN KEY (ID_SALA)
+        REFERENCES TECHLEND.SALA (ID),
+
+    -- Clave foránea: relaciona el préstamo con un equipo (EQUIPO.ID)
+    CONSTRAINT PRE_ID_EQU_FK FOREIGN KEY (ID_EQUIPO)
+        REFERENCES TECHLEND.EQUIPO (ID)
+);
+
+
+1.3. CREACION DE LA TABLA SALA
+-- Tabla que almacena la información de las salas físicas disponibles para préstamo
+CREATE TABLE TECHLEND.SALA (
+    ID NUMBER PRIMARY KEY, -- Identificador único de la sala
+
+    NOMBRE VARCHAR2(20) CONSTRAINT SAL_NOM_NN NOT NULL, -- Nombre asignado a la sala (ej. "Sala 101")
+
+    ID_UBICACION NUMBER CONSTRAINT SAL_UBI_NN NOT NULL, -- Identificador de la ubicación (referencia a UBICACION)
+
+    CAPACIDAD VARCHAR2(3) CONSTRAINT SAL_CAP_NN NOT NULL, -- Capacidad máxima de personas en la sala
+
+    ESTADO VARCHAR2(16) DEFAULT 'Disponible' CONSTRAINT SAL_EST_NN NOT NULL, -- Estado actual: Disponible o No Disponible
+
+    DESCRIPCION VARCHAR2(500) CONSTRAINT SAL_DES_NN NOT NULL, -- Descripción libre de la sala (equipamiento, ubicación interna, etc.)
+
+    -- Restricción: solo se permiten los estados "Disponible" o "No Disponible"
+    CONSTRAINT CHK_ESTADO_SALA CHECK (
+        ESTADO IN ('Disponible', 'No Disponible')
+    ),
+
+    -- Clave foránea: relaciona la sala con una ubicación registrada
+    CONSTRAINT SAL_IDUBI_FK FOREIGN KEY (ID_UBICACION)
+        REFERENCES TECHLEND.UBICACION (ID)
+);
+
+
+1.4. CREACION DE LA TABLA EQUIPO
+-- Tabla que almacena los equipos tecnológicos disponibles para préstamo
+CREATE TABLE TECHLEND.EQUIPO (
+    ID NUMBER, -- Identificador único del equipo
+
+    NOMBRE VARCHAR2(30), -- Nombre del equipo (ej. "Laptop HP", "Cámara Canon")
+
+    CATEGORIA VARCHAR2(23), -- Categoría general: 'COMPUTADORA DE ESCRITORIO' o 'DISPOSITIVO'
+
+    TIPO_DISPOSITIVO VARCHAR2(15), -- Tipo específico de dispositivo (verifica con una lista permitida abajo)
+
+    MARCA VARCHAR2(20), -- Marca del equipo (ej. Dell, Canon, HP)
+
+    NUMERO_SERIE VARCHAR2(20), -- Número de serie único del equipo
+
+    ESTADO VARCHAR2(15) DEFAULT 'Disponible', -- Estado actual del equipo (ej. Disponible, Prestado)
+
+    DESCRIPCION VARCHAR2(100), -- Descripción general del equipo (uso, condiciones, detalles)
+
+    ID_SALA NUMBER, -- ID de la sala a la que está asignado el equipo (puede ser NULL si está en inventario general)
+
+    -- Restricción: la categoría debe ser una de las siguientes y no nula
+    CONSTRAINT EQU_CAT_CK_NN CHECK (
+        CATEGORIA IS NOT NULL AND 
+        CATEGORIA IN ('COMPUTADORA DE ESCRITORIO', 'DISPOSITIVO')
+    ),
+
+    -- Restricción: la descripción no puede ser nula
+    CONSTRAINT EQU_DES_NN CHECK (DESCRIPCION IS NOT NULL),
+
+    -- Restricción: el estado no puede ser nulo
+    CONSTRAINT EQU_EST_NN CHECK (ESTADO IS NOT NULL),
+
+    -- Clave primaria sobre el campo ID
+    CONSTRAINT EQU_ID_PK PRIMARY KEY (ID),
+
+    -- Restricción: la marca no puede ser nula
+    CONSTRAINT EQU_MAR_NN CHECK (MARCA IS NOT NULL),
+
+    -- Restricción: el nombre no puede ser nulo
+    CONSTRAINT EQU_NOM_NN CHECK (NOMBRE IS NOT NULL),
+
+    -- Restricción: el número de serie no puede ser nulo
+    CONSTRAINT EQU_NUMSER_NN CHECK (NUMERO_SERIE IS NOT NULL),
+
+    -- Restricción: el número de serie debe ser único
+    CONSTRAINT EQU_NUMSER_UNI UNIQUE (NUMERO_SERIE),
+
+    -- Restricción: solo se permiten ciertos tipos de dispositivo
+    CONSTRAINT EQU_TIPDIS_CK CHECK (
+        TIPO_DISPOSITIVO IN (
+            'PORTÁTIL', 
+            'CÁMARA', 
+            'MICRÓFONO', 
+            'VÍDEO PROYECTOR', 
+            'HDMI', 
+            'ETHERNET'
+        )
+    ),
+
+    -- Clave foránea: relación con la tabla SALA (puede ser NULL si no está asignado a ninguna sala)
+    CONSTRAINT EQU_IDSAL_FK FOREIGN KEY (ID_SALA)
+        REFERENCES TECHLEND.SALA(ID)
+);
+
+
+1.5. CREACION DE LA TABLA UBICACION
+-- Tabla que almacena las ubicaciones físicas (edificio y piso) donde se encuentran las salas
+
+CREATE TABLE TECHLEND.UBICACION (
+    ID NUMBER, -- Identificador único de la ubicación
+
+    EDIFICIO VARCHAR2(50), -- Nombre del edificio (ej. "Bloque A", "Edificio Central")
+
+    PISO VARCHAR2(10), -- Número o nombre del piso (ej. "1", "2", "Sótano")
+
+    -- Restricción: el nombre del edificio no puede ser nulo
+    CONSTRAINT UBI_EDI_NN CHECK (EDIFICIO IS NOT NULL),
+
+    -- Clave primaria sobre el campo ID
+    CONSTRAINT UBI_ID_NN PRIMARY KEY (ID),
+
+    -- Restricción: el piso no puede ser nulo
+    CONSTRAINT UBI_PIS_NN CHECK (PISO IS NOT NULL)
+);
+
+
+1.6. CREACION DE LA TABLA SANCION
+-- Tabla que almacena las sanciones impuestas a usuarios por incumplimiento de préstamos
+
+CREATE TABLE TECHLEND.SANCION (
+    ID NUMBER, -- Identificador único de la sanción
+
+    TIPO_SANCION VARCHAR2(50), -- Tipo de sanción (ej. "MULTA", "SUSPENSIÓN")
+
+    DESCRIPCION VARCHAR2(500), -- Descripción detallada del motivo de la sanción
+
+    FECHA_FIN DATE, -- Fecha en la que finaliza la sanción
+
+    MONTO FLOAT, -- Valor monetario de la sanción, si aplica
+
+    ESTADO VARCHAR2(20) DEFAULT 'ACTIVA', -- Estado actual de la sanción: ACTIVA, CUMPLIDA o CANCELADA
+
+    ID_PRESTAMO NUMBER, -- Referencia al préstamo relacionado con la sanción
+
+    -- Restricción: la descripción no puede ser nula
+    CONSTRAINT SAN_DES_NN CHECK (DESCRIPCION IS NOT NULL),
+
+    -- Restricción: el estado debe ser uno de los valores permitidos
+    CONSTRAINT SAN_EST_CK CHECK (ESTADO IN ('ACTIVA', 'CUMPLIDA', 'CANCELADA')),
+
+    -- Restricción: la fecha de fin no puede ser nula
+    CONSTRAINT SAN_FECFIN_NN CHECK (FECHA_FIN IS NOT NULL),
+
+    -- Clave primaria de la tabla
+    CONSTRAINT SAN_ID_PK PRIMARY KEY (ID),
+
+    -- Restricción: el tipo de sanción no puede ser nulo
+    CONSTRAINT SAN_TIP_NN CHECK (TIPO_SANCION IS NOT NULL),
+
+    -- Restricción: el estado no puede ser nulo
+    CONSTRAINT SYS_C004748 CHECK (ESTADO IS NOT NULL),
+
+    -- Restricción: el ID del préstamo no puede ser nulo
+    CONSTRAINT SYS_C004806 CHECK (ID_PRESTAMO IS NOT NULL),
+
+    -- Llave foránea que relaciona la sanción con un préstamo específico
+    CONSTRAINT SAN_IDPRESAL_FK FOREIGN KEY (ID_PRESTAMO) REFERENCES TECHLEND.PRESTAMO(ID)
+);
+
+
+1.7. CREACION DE LA TABLA ENCUESTA
+-- Tabla que almacena las encuestas de satisfacción sobre préstamos
+
+CREATE TABLE TECHLEND.ENCUESTA (
+    ID NUMBER, -- Identificador único de la encuesta
+
+    FUNCIONALIDAD VARCHAR2(19), -- Evaluación de la funcionalidad del equipo o servicio
+    -- Valores permitidos: 'EXCELENTE', 'BUENO', 'REGULAR', 'MALO', 'NO UTILICÉ EQUIPO(S)'
+
+    CALIDAD_SERVICIO VARCHAR2(21), -- Evaluación de la calidad del servicio recibido
+    -- Valores permitidos: 'EXCELENTE', 'BUENA', 'REGULAR', 'MALA', 'NO TUVE CONTACTO CON EL PERSONAL'
+
+    INFRAESTRUCTURA VARCHAR2(22), -- Evaluación de la infraestructura de la sala o espacio utilizado
+    -- Valores permitidos: 'EXCELENTE', 'BUENA', 'REGULAR', 'MALA', 'NO UTILICÉ LA SALA'
+
+    SUGERENCIAS VARCHAR2(1000), -- Comentarios o sugerencias adicionales del usuario
+
+    ID_PRESTAMO NUMBER, -- Referencia al préstamo que originó la encuesta
+
+    -- Restricciones para asegurar valores válidos y no nulos en los campos de evaluación
+    CONSTRAINT ENC_CAL_CK_NN CHECK (
+        CALIDAD_SERVICIO IS NOT NULL
+        AND CALIDAD_SERVICIO IN (
+            'EXCELENTE', 'BUENA', 'REGULAR', 'MALA', 'NO TUVE CONTACTO CON EL PERSONAL'
+        )
+    ),
+
+    CONSTRAINT ENC_FUN_CK_NN CHECK (
+        FUNCIONALIDAD IS NOT NULL
+        AND FUNCIONALIDAD IN (
+            'EXCELENTE', 'BUENO', 'REGULAR', 'MALO', 'NO UTILICÉ EQUIPO(S)'
+        )
+    ),
+
+    CONSTRAINT ENC_INF_CK_NN CHECK (
+        INFRAESTRUCTURA IN (
+            'EXCELENTE', 'BUENA', 'REGULAR', 'MALA', 'NO UTILICÉ LA SALA'
+        )
+    ),
+
+    -- Clave primaria de la tabla
+    CONSTRAINT ENC_ID_PK PRIMARY KEY (ID),
+
+    -- Llave foránea que relaciona la encuesta con un préstamo específico
+    CONSTRAINT ENC_PRE_SAL_FK FOREIGN KEY (ID_PRESTAMO) REFERENCES TECHLEND.PRESTAMO(ID),
+
+    -- Validaciones adicionales para evitar valores nulos
+    CONSTRAINT SYS_C004710 CHECK (FUNCIONALIDAD IS NOT NULL),
+    CONSTRAINT SYS_C004711 CHECK (CALIDAD_SERVICIO IS NOT NULL)
+);
+
+
+1.8. CREACION DE LA TABLA BLOQUE
+
+-- Tabla que almacena bloques de tiempo (horarios)
+
+CREATE TABLE TECHLEND.BLOQUE (
+    ID NUMBER, -- Identificador único del bloque de tiempo
+
+    HORA_INICIO DATE, -- Hora de inicio del bloque
+    -- No puede ser nulo
+    CONSTRAINT CLA_FECINI_NN CHECK (HORA_INICIO IS NOT NULL),
+
+    HORA_FIN DATE, -- Hora de fin del bloque
+    -- No puede ser nulo
+    CONSTRAINT CLA_FECFIN_NN CHECK (HORA_FIN IS NOT NULL),
+
+    -- Clave primaria que garantiza unicidad del ID
+    CONSTRAINT CLA_ID_PK PRIMARY KEY (ID)
+);
+
+
+1.9. CREACION DE LA TABLA PRESTAMO_BLOQUE
+-- Tabla intermedia que relaciona préstamos con bloques de tiempo
+
+CREATE TABLE TECHLEND.PRESTAMO_BLOQUE (
+    ID_PRESTAMO NUMBER, -- Identificador del préstamo
+    ID_BLOQUE NUMBER,   -- Identificador del bloque de tiempo
+
+    -- Restricción para asegurar que ID_PRESTAMO no sea nulo
+    CONSTRAINT SYS_C004886 CHECK (ID_PRESTAMO IS NOT NULL),
+
+    -- Restricción para asegurar que ID_BLOQUE no sea nulo
+    CONSTRAINT SYS_C004887 CHECK (ID_BLOQUE IS NOT NULL),
+
+    -- Clave primaria compuesta que asegura que la combinación de préstamo y bloque sea única
+    CONSTRAINT SYS_C004888 PRIMARY KEY (ID_PRESTAMO, ID_BLOQUE),
+
+    -- Llave foránea que referencia al ID de la tabla PRESTAMO
+    CONSTRAINT SYS_C004889 FOREIGN KEY (ID_PRESTAMO) REFERENCES TECHLEND.PRESTAMO(ID),
+
+    -- Llave foránea que referencia al ID de la tabla BLOQUE
+    CONSTRAINT SYS_C004890 FOREIGN KEY (ID_BLOQUE) REFERENCES TECHLEND.BLOQUE(ID)
+);
+
+
+2.	PROCEDIMIENTOS
+
+2.1.
+-- Procedimiento almacenado para actualizar la información de un usuario
+-- en la tabla 'usuario' según su ID, modificando todos sus datos principales.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.updateUser
+    (
+    -- Parámetro: ID del usuario a actualizar
+    v_id           usuario.id%TYPE,
+    -- Parámetro: nueva contraseña del usuario
+    v_password     usuario.password%TYPE,
+    -- Parámetro: nuevo rol del usuario
+    v_rol          usuario.rol%TYPE,
+    -- Parámetro: nuevo correo institucional del usuario
+    v_correo       usuario.correo_institucional%TYPE,
+    -- Parámetro: nuevo tipo de identificación (ej. cédula, pasaporte)
+    v_tipo_id      usuario.tipo_identificacion%TYPE,
+    -- Parámetro: nuevo número de identificación
+    v_numero_id    usuario.numero_identificacion%TYPE,
+    -- Parámetro: nuevo teléfono de contacto
+    v_telefono     usuario.telefono%TYPE,
+    -- Parámetro: nuevo programa o departamento al que pertenece el usuario
+    v_programa     usuario.programa_departamento%TYPE,
+    -- Parámetro: nuevo nombre completo del usuario
+    v_nombreCompleto       usuario.nombre_completo%TYPE
+    )
+IS
+BEGIN
+    -- Se actualiza la tabla 'usuario' con los nuevos datos recibidos en los parámetros
+    UPDATE usuario
+    SET 
+        password = v_password,                  -- Actualiza la contraseña
+        rol = v_rol,                           -- Actualiza el rol
+        correo_institucional = v_correo,       -- Actualiza el correo institucional
+        tipo_identificacion = v_tipo_id,       -- Actualiza el tipo de identificación
+        numero_identificacion = v_numero_id,   -- Actualiza el número de identificación
+        telefono = v_telefono,                  -- Actualiza el teléfono
+        programa_departamento = v_programa,    -- Actualiza el programa o departamento
+        nombre_completo = v_nombreCompleto     -- Actualiza el nombre completo
+    WHERE id = v_id;                           -- Solo actualiza el usuario cuyo id coincida con v_id
+END;
+
+
+2.2.
+-- Procedimiento almacenado para actualizar la información de una sanción
+-- en la tabla 'sancion' según su ID, modificando tipo, descripción, fecha fin, monto y estado.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.updateSancion
+    (
+    -- Parámetro: ID de la sanción a actualizar
+    v_id           sancion.id%TYPE,
+    -- Parámetro: nuevo tipo de sanción
+    v_tipoSancion  sancion.tipo_sancion%TYPE,
+    -- Parámetro: nueva descripción de la sanción
+    v_descripcion  sancion.descripcion%TYPE,
+    -- Parámetro: nueva fecha de fin de la sanción
+    v_fechaFin     sancion.fecha_fin%TYPE,
+    -- Parámetro: nuevo monto asociado a la sanción
+    v_monto        sancion.monto%TYPE,
+    -- Parámetro: nuevo estado de la sanción (ej. activa, pagada, cancelada)
+    v_estado       sancion.estado%TYPE
+    )
+IS
+BEGIN
+    -- Actualiza los datos de la sanción en la tabla 'sancion'
+    UPDATE sancion 
+    SET 
+        tipo_sancion = v_tipoSancion,    -- Actualiza el tipo de sanción
+        descripcion = v_descripcion,      -- Actualiza la descripción
+        fecha_fin = v_fechaFin,           -- Actualiza la fecha de fin
+        monto = v_monto,                  -- Actualiza el monto
+        estado = v_estado                 -- Actualiza el estado
+    WHERE id = v_id;                      -- Solo actualiza la sanción cuyo id coincida con v_id
+END;
+
+
+2.3.
+-- Procedimiento almacenado para actualizar la contraseña de un usuario
+-- en la tabla 'usuario' usando su correo institucional como identificador.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.updatePassword
+    (
+    -- Parámetro: correo institucional del usuario cuya contraseña se actualizará
+    v_correo    usuario.correo_institucional%TYPE,
+    -- Parámetro: nueva contraseña que se asignará al usuario
+    v_password  usuario.password%TYPE
+    )
+IS
+BEGIN
+    -- Actualiza la contraseña del usuario cuyo correo institucional coincida con v_correo
+    UPDATE usuario
+    SET password = v_password
+    WHERE correo_institucional = v_correo;
+END;
+
+
+2.4.
+-- Procedimiento almacenado para actualizar el estado de un préstamo
+-- en la tabla 'PRESTAMO' usando el ID del préstamo como identificador.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.updateLoanState (
+    -- Parámetro: ID del préstamo a actualizar
+    v_idPrestamo IN PRESTAMO.ID%TYPE,
+    -- Parámetro: nuevo estado del préstamo
+    v_estado      IN PRESTAMO.ESTADO%TYPE
+) IS
+BEGIN
+    -- Actualiza el campo ESTADO del préstamo cuyo ID coincide con v_idPrestamo
+    UPDATE PRESTAMO
+    SET ESTADO = v_estado
+    WHERE ID = v_idPrestamo;
+END;
+
+
+2.4.
+-- Procedimiento almacenado para insertar un nuevo usuario en la tabla 'usuario'.
+-- Genera automáticamente el ID usando la secuencia SEQ_USUARIO.NEXTVAL y asigna un estado por defecto.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.saveUser (
+    -- Parámetro: contraseña del nuevo usuario
+    v_password     usuario.password%TYPE,
+    -- Parámetro: rol del nuevo usuario
+    v_rol          usuario.rol%TYPE,
+    -- Parámetro: correo institucional del nuevo usuario
+    v_correo       usuario.correo_institucional%TYPE,
+    -- Parámetro: tipo de identificación (ej. cédula, pasaporte)
+    v_tipo_id      usuario.tipo_identificacion%TYPE,
+    -- Parámetro: número de identificación
+    v_numero_id    usuario.numero_identificacion%TYPE,
+    -- Parámetro: teléfono de contacto
+    v_telefono     usuario.telefono%TYPE,
+    -- Parámetro: programa o departamento del usuario
+    v_programa     usuario.programa_departamento%TYPE,
+    -- Parámetro: nombre completo del usuario
+    v_nombreCompleto       usuario.nombre_completo%TYPE
+)
+IS
+BEGIN
+    -- Inserta un nuevo registro en la tabla 'usuario' con los datos recibidos
+    INSERT INTO usuario (
+        id, password, rol, estado, correo_institucional,
+        tipo_identificacion, numero_identificacion, telefono,
+        programa_departamento, nombre_completo
+    )
+    VALUES (
+        SEQ_USUARIO.NEXTVAL,  -- Genera un nuevo ID usando la secuencia
+        v_password,           -- Inserta la contraseña
+        v_rol,                -- Inserta el rol
+        DEFAULT,              -- Inserta el valor por defecto para estado
+        v_correo,             -- Inserta el correo institucional
+        v_tipo_id,            -- Inserta el tipo de identificación
+        v_numero_id,          -- Inserta el número de identificación
+        v_telefono,           -- Inserta el teléfono
+        v_programa,           -- Inserta el programa o departamento
+        v_nombreCompleto      -- Inserta el nombre completo
+    );
+END;
+
+
+2.5.
+-- Procedimiento almacenado para insertar una nueva sanción en la tabla 'sancion'.
+-- Se genera automáticamente el ID usando la secuencia SEQ_SANCION_ID.NEXTVAL
+-- y se asigna un estado por defecto.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.saveSancion (
+    -- Parámetro: tipo de sanción (por ejemplo, multa, advertencia)
+    v_tipoSancion     sancion.tipo_sancion%TYPE,
+    -- Parámetro: descripción de la sanción
+    v_descripcion    sancion.descripcion%TYPE,
+    -- Parámetro: fecha de fin o vencimiento de la sanción
+    v_fechaFin       sancion.fecha_fin%TYPE,
+    -- Parámetro: monto monetario asociado a la sanción
+    v_monto          sancion.monto%TYPE,
+    -- Parámetro: ID del préstamo relacionado con la sanción
+    v_idPrestamo     sancion.id_prestamo%TYPE
+)
+IS
+BEGIN
+    -- Inserta un nuevo registro en la tabla 'sancion' con los datos recibidos
+    INSERT INTO sancion (
+        id, tipo_sancion, descripcion, fecha_fin, monto, estado, id_prestamo
+    )
+    VALUES (
+        SEQ_SANCION_ID.NEXTVAL,  -- Genera un nuevo ID con la secuencia
+        v_tipoSancion,           -- Inserta el tipo de sanción
+        v_descripcion,           -- Inserta la descripción
+        v_fechaFin,              -- Inserta la fecha de fin
+        v_monto,                 -- Inserta el monto
+        DEFAULT,                 -- Inserta el estado por defecto (ej. activo)
+        v_idPrestamo             -- Inserta el ID del préstamo relacionado
+    );
+END;
+
+
+
+2.6.
+-- Procedimiento almacenado para insertar una nueva ubicación
+-- en la tabla 'UBICACION', asignando un ID automáticamente con una secuencia.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.saveLocation (
+    -- Parámetro: nombre o código del edificio
+    v_edificio UBICACION.EDIFICIO%TYPE,
+    -- Parámetro: número o identificación del piso
+    v_piso     UBICACION.PISO%TYPE
+) IS
+BEGIN
+    -- Inserta un nuevo registro en la tabla 'UBICACION' con los datos recibidos
+    INSERT INTO UBICACION (
+        ID,        -- ID generado automáticamente
+        EDIFICIO,  -- Edificio recibido como parámetro
+        PISO       -- Piso recibido como parámetro
+    ) VALUES (
+        SEQ_UBICACION_ID.NEXTVAL,  -- Genera un nuevo ID usando la secuencia
+        v_edificio,                -- Inserta el edificio
+        v_piso                    -- Inserta el piso
+    );
+END;
+
+
+2.7.
+-- Procedimiento almacenado para insertar una relación entre préstamo y bloque
+-- en la tabla 'PRESTAMO_BLOQUE', vinculando un préstamo con un bloque específico.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.saveLoanBlocks (
+    -- Parámetro: ID del préstamo
+    v_id_prestamo PRESTAMO_BLOQUE.ID_PRESTAMO%TYPE,
+    -- Parámetro: ID del bloque
+    v_id_bloque   PRESTAMO_BLOQUE.ID_BLOQUE%TYPE
+) IS
+BEGIN
+    -- Inserta la relación préstamo-bloque en la tabla correspondiente
+    INSERT INTO PRESTAMO_BLOQUE (ID_PRESTAMO, ID_BLOQUE)
+    VALUES (v_id_prestamo, v_id_bloque);
+END;
+
+
+2.8.
+-- Procedimiento almacenado para insertar un nuevo préstamo en la tabla 'PRESTAMO'.
+-- Genera un nuevo ID usando la secuencia SEQ_PRESTAMO.NEXTVAL y devuelve el ID generado
+-- a través del parámetro OUT v_id_prestamo.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.saveLoan (
+    -- Parámetro IN: fecha del préstamo
+    v_fecha            IN  PRESTAMO.FECHA%TYPE,
+    -- Parámetro IN: especificaciones del préstamo (detalles adicionales)
+    v_especificaciones IN  PRESTAMO.ESPECIFICACIONES%TYPE,
+    -- Parámetro IN: ID de la sala relacionada con el préstamo
+    v_id_sala          IN  PRESTAMO.ID_SALA%TYPE,
+    -- Parámetro IN: ID del usuario que realiza el préstamo
+    v_id_usuario       IN  PRESTAMO.ID_USUARIO%TYPE,
+    -- Parámetro IN: ID del equipo que se presta
+    v_id_equipo        IN  PRESTAMO.ID_EQUIPO%TYPE,
+    -- Parámetro OUT: devuelve el ID generado para el nuevo préstamo
+    v_id_prestamo      OUT PRESTAMO.ID%TYPE
+) IS
+BEGIN
+    -- Obtiene un nuevo valor de ID de préstamo usando la secuencia y lo asigna a v_id_prestamo
+    SELECT SEQ_PRESTAMO.NEXTVAL INTO v_id_prestamo FROM DUAL;
+    
+    -- Inserta el nuevo registro en la tabla 'PRESTAMO' con los valores recibidos
+    INSERT INTO PRESTAMO (
+        ID, FECHA, ESPECIFICACIONES, ID_SALA, ID_USUARIO, ID_EQUIPO, ESTADO
+    ) VALUES (
+        v_id_prestamo, v_fecha, v_especificaciones, v_id_sala, v_id_usuario, v_id_equipo, DEFAULT
+    );
+END;
+
+
+2.9.
+-- Procedimiento almacenado para insertar una nueva sala en la tabla 'SALA'.
+-- El ID se genera automáticamente con la secuencia SEQ_SALA_ID.NEXTVAL,
+-- y el campo ESTADO toma su valor por defecto.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.saveHall (
+    -- Parámetro: nombre de la sala
+    v_nombre      SALA.NOMBRE%TYPE,
+    -- Parámetro: ID de la ubicación (relacionado con tabla UBICACION)
+    v_id_ubicacion  SALA.ID_UBICACION%TYPE,
+    -- Parámetro: capacidad máxima de la sala
+    v_capacidad    SALA.CAPACIDAD%TYPE,
+    -- Parámetro: estado de la sala (usualmente se usa DEFAULT)
+    v_estado       SALA.ESTADO%TYPE,
+    -- Parámetro: descripción adicional de la sala
+    v_descripcion  SALA.DESCRIPCION%TYPE
+) IS
+BEGIN
+    -- Inserta un nuevo registro en la tabla 'SALA' con los datos recibidos
+    INSERT INTO SALA (
+        ID,
+        NOMBRE,
+        ID_UBICACION,
+        CAPACIDAD,
+        ESTADO,
+        DESCRIPCION
+    ) VALUES (
+        SEQ_SALA_ID.NEXTVAL, -- Genera un nuevo ID usando la secuencia
+        v_nombre,
+        v_id_ubicacion,
+        v_capacidad,
+        DEFAULT,             -- Se usa el valor por defecto para estado
+        v_descripcion
+    );
+END;
+
+
+2.10.
+-- Procedimiento almacenado para insertar un nuevo equipo en la tabla 'equipo'.
+-- El ID se genera automáticamente con la secuencia SEQ_EQUIPO_ID.NEXTVAL,
+-- y el campo ESTADO toma su valor por defecto.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.saveEquipment (
+    -- Parámetro: nombre del equipo
+    v_nombre       equipo.nombre%TYPE,
+    -- Parámetro: categoría del equipo (ej. hardware, software)
+    v_categoria    equipo.categoria%TYPE,
+    -- Parámetro: tipo de dispositivo
+    v_tipoDispositivo equipo.tipo_dispositivo%TYPE,
+    -- Parámetro: marca del equipo
+    v_marca        equipo.marca%TYPE,
+    -- Parámetro: número de serie del equipo
+    v_numero_serie equipo.numero_serie%TYPE,
+    -- Parámetro: descripción adicional del equipo
+    v_descripcion  equipo.descripcion%TYPE,
+    -- Parámetro: ID de la sala donde está ubicado el equipo
+    v_idSala      equipo.id_sala%TYPE
+) IS
+BEGIN
+    -- Inserta un nuevo registro en la tabla 'equipo' con los datos recibidos
+    INSERT INTO equipo (
+        id, nombre, categoria, tipo_dispositivo,
+        marca, numero_serie, estado, descripcion, id_sala
+    ) VALUES (
+        SEQ_EQUIPO_ID.NEXTVAL, -- Genera un nuevo ID usando la secuencia
+        v_nombre,
+        v_categoria,
+        v_tipoDispositivo,
+        v_marca,
+        v_numero_serie,
+        DEFAULT,               -- Usa el valor por defecto para el estado
+        v_descripcion,
+        v_idSala
+    );
+END;
+
+
+2.11.
+-- Procedimiento almacenado para eliminar un usuario de la tabla 'usuario'
+-- basado en su número de identificación.
+
+CREATE OR REPLACE PROCEDURE TECHLEND.deleteUser (
+    -- Parámetro: número de identificación del usuario a eliminar
+    v_numeroId  usuario.numero_identificacion%TYPE
+) IS
+BEGIN
+    -- Elimina el registro de la tabla 'usuario' donde el número de identificación coincide
+    DELETE FROM usuario WHERE numero_identificacion = v_numeroId;
+END;
+
+
+2.12.
+-- Procedimiento para actualizar el estado de una sala en la tabla SALA
+CREATE OR REPLACE PROCEDURE TECHLEND.updateHallState (
+    v_estado IN SALA.ESTADO%TYPE,  -- Nuevo estado a asignar
+    v_id     IN SALA.ID%TYPE       -- ID de la sala a actualizar
+) IS
+BEGIN
+    UPDATE SALA
+    SET ESTADO = v_estado
+    WHERE ID = v_id;
+END;
+
+
+2.13.
+-- Procedimiento para eliminar una sanción de la tabla SANCION por su ID
+CREATE OR REPLACE PROCEDURE TECHLEND.deleteSancion (
+    v_id IN SANCION.ID%TYPE  -- ID de la sanción a eliminar
+) IS
+BEGIN
+    DELETE FROM SANCION WHERE ID = v_id;
+END;
+
+
+2.14
+-- Procedimiento para actualizar el estado de un préstamo según el ID del equipo
+CREATE OR REPLACE PROCEDURE TECHLEND.updateStateByEquipment (
+    v_estado     IN PRESTAMO.ESTADO%TYPE,       -- Nuevo estado del préstamo
+    v_id_equipo  IN PRESTAMO.ID_EQUIPO%TYPE     -- ID del equipo relacionado
+) IS
+BEGIN
+    UPDATE PRESTAMO
+    SET ESTADO = v_estado
+    WHERE ID_EQUIPO = v_id_equipo;
+END;
+
+
+2.15
+-- Procedimiento para insertar una nueva encuesta en la tabla ENCUESTA
+CREATE OR REPLACE PROCEDURE TECHLEND.saveEncuesta (
+    v_funcionalidad      ENCUESTA.FUNCIONALIDAD%TYPE,      -- Valoración de la funcionalidad
+    v_calidad_servicio   ENCUESTA.CALIDAD_SERVICIO%TYPE,   -- Valoración del servicio
+    v_infraestructura    ENCUESTA.INFRAESTRUCTURA%TYPE,    -- Valoración de la infraestructura
+    v_sugerencias        ENCUESTA.SUGERENCIAS%TYPE,        -- Sugerencias del usuario
+    v_id_prestamo        ENCUESTA.ID_PRESTAMO%TYPE         -- ID del préstamo asociado
+)
+IS
+BEGIN
+    INSERT INTO ENCUESTA (
+        ID,
+        FUNCIONALIDAD,
+        CALIDAD_SERVICIO,
+        INFRAESTRUCTURA,
+        SUGERENCIAS,
+        ID_PRESTAMO
+    ) VALUES (
+        SEQ_ENCUESTA_ID.NEXTVAL,      -- Generación automática del ID
+        v_funcionalidad,
+        v_calidad_servicio,
+        v_infraestructura,
+        v_sugerencias,
+        v_id_prestamo
+    );
+END;
+
+
+
+3.	FUNCIONES
+
+3.1.
+-- Función para obtener el rol, ID y contraseña de un usuario,
+-- dado su correo institucional. Retorna estos datos concatenados en un VARCHAR.
+
+CREATE OR REPLACE FUNCTION TECHLEND.verifyPassword (
+    -- Parámetro: correo institucional del usuario a buscar
+    v_correo usuario.correo_institucional%TYPE
+) RETURN VARCHAR IS
+    -- Variables para almacenar los datos consultados
+    v_rol      usuario.rol%TYPE;
+    v_id       usuario.id%TYPE;
+    v_password usuario.password%TYPE;
+BEGIN
+    -- Consulta para obtener rol, id y password del usuario con el correo dado
+    SELECT rol, id, password INTO v_rol, v_id, v_password
+    FROM usuario
+    WHERE correo_institucional = v_correo;
+
+    -- Retorna los datos concatenados en formato: "rol id password"
+    RETURN v_rol || ' ' || TO_CHAR(v_id) || ' ' || v_password;
+END;
+
+
+3.2.
+-- Función para verificar si existe una ubicación con un edificio y piso específicos.
+-- Retorna el ID de la ubicación si la encuentra, o falla si no existe.
+
+CREATE OR REPLACE FUNCTION TECHLEND.verifyLocation (
+    -- Parámetro: nombre o código del edificio (ignorando mayúsculas/minúsculas)
+    v_edificio  UBICACION.EDIFICIO%TYPE,
+    -- Parámetro: número o identificación del piso
+    v_piso      UBICACION.PISO%TYPE
+) RETURN UBICACION.ID%TYPE
+IS
+    -- Variable para almacenar el ID encontrado
+    v_id UBICACION.ID%TYPE;
+BEGIN
+    -- Busca el ID de la ubicación donde el edificio (en mayúsculas) coincide y el piso es igual
+    SELECT ID
+    INTO v_id
+    FROM UBICACION
+    WHERE UPPER(EDIFICIO) = UPPER(v_edificio)
+      AND PISO = v_piso;
+
+    -- Retorna el ID encontrado
+    RETURN v_id;
+END;
+
+
+3.3.
+-- Función para verificar si existe un usuario con un número de identificación dado.
+-- Retorna el ID del usuario si se encuentra, o lanza excepción si no existe.
+
+CREATE OR REPLACE FUNCTION TECHLEND.verifyId (
+    -- Parámetro: número de identificación del usuario
+    v_numeroId usuario.numero_identificacion%TYPE
+) RETURN NUMBER IS
+    -- Variable para almacenar el ID encontrado
+    v_id usuario.id%TYPE;
+BEGIN
+    -- Consulta para obtener el ID del usuario con el número de identificación dado
+    SELECT id INTO v_id
+    FROM usuario
+    WHERE numero_identificacion = v_numeroId;
+
+    -- Retorna el ID encontrado
+    RETURN v_id;
+END;
+
+
+3.4.
+-- Función para obtener el nombre completo de un usuario dado su correo institucional.
+-- Retorna el nombre completo si el correo existe en la tabla usuario.
+
+CREATE OR REPLACE FUNCTION TECHLEND.verifyEmail (
+    -- Parámetro: correo institucional del usuario a buscar
+    v_correo usuario.correo_institucional%TYPE
+) RETURN VARCHAR IS
+    -- Variable para almacenar el nombre completo consultado
+    v_nombreCompleto usuario.nombre_completo%TYPE;
+BEGIN
+    -- Consulta para obtener el nombre completo del usuario con el correo dado
+    SELECT nombre_completo INTO v_nombreCompleto
+    FROM usuario
+    WHERE correo_institucional = v_correo;
+
+    -- Retorna el nombre completo encontrado
+    RETURN v_nombreCompleto;
+END;
+
+
+3.5.
+-- Función para obtener varios datos de un usuario dado su correo institucional.
+-- Retorna los datos concatenados en un solo VARCHAR separados por '!':
+
+CREATE OR REPLACE FUNCTION TECHLEND.otherData (
+    -- Parámetro: correo institucional del usuario a buscar
+    v_correo usuario.correo_institucional%TYPE
+) RETURN VARCHAR IS
+    -- Variables para almacenar los datos consultados
+    v_tipo_id      usuario.tipo_identificacion%TYPE;
+    v_numero_id    usuario.numero_identificacion%TYPE;
+    v_telefono     usuario.telefono%TYPE;
+    v_programa     usuario.programa_departamento%TYPE;
+    v_password     usuario.password%TYPE;
+BEGIN
+    -- Consulta para obtener los datos necesarios del usuario con el correo dado
+    SELECT numero_identificacion, tipo_identificacion, password, programa_departamento, telefono
+    INTO v_numero_id, v_tipo_id, v_password, v_programa, v_telefono
+    FROM usuario
+    WHERE correo_institucional = v_correo;
+
+    -- Retorna los datos concatenados con '!' como separador
+    RETURN v_numero_id || '!' || v_tipo_id || '!' || v_password || '!' || v_programa || '!' || v_telefono;
+END;
+
+
+4.	SEQUENCIAS
+
+4.1.
+-- Secuencia para generar IDs únicos automáticos para la tabla usuario.
+-- Comienza en 1 y se incrementa de uno en uno.
+
+CREATE SEQUENCE SEQ_USUARIO
+    START WITH 1         -- Valor inicial de la secuencia
+    INCREMENT BY 1       -- Incremento en cada llamada a NEXTVAL
+    NOCACHE;             -- No se almacenan valores en caché (cada llamada genera un valor nuevo)
+
+
+4.2.
+-- Secuencia para generar IDs únicos automáticos para la tabla equipo.
+-- Comienza en 1 y se incrementa de uno en uno.
+
+CREATE SEQUENCE SEQ_EQUIPO_ID
+    START WITH 1         -- Valor inicial de la secuencia
+    INCREMENT BY 1       -- Incremento en cada llamada a NEXTVAL
+    NOCACHE;             -- No se almacenan valores en caché
+
+
+4.3.
+-- Secuencia para generar IDs únicos automáticos para la tabla PRESTAMO.
+-- Comienza en 1 y se incrementa en 1 en cada uso.
+
+CREATE SEQUENCE SEQ_PRESTAMO
+    START WITH 1         -- Valor inicial de la secuencia
+    INCREMENT BY 1       -- Incremento de uno en uno
+    NOCACHE;             -- No guarda valores en caché para uso inmediato
+
+
+4.4.
+-- Secuencia para generar IDs únicos automáticos para la tabla BLOQUE.
+-- Comienza en 1 y se incrementa de uno en uno.
+
+CREATE SEQUENCE SEQ_BLOQUE_ID
+    START WITH 1         -- Valor inicial de la secuencia
+    INCREMENT BY 1       -- Incremento en cada llamada a NEXTVAL
+    NOCACHE;             -- No se almacenan valores en caché
+
+
+4.5.
+-- Secuencia para generar IDs únicos automáticos para la tabla UBICACION.
+-- Comienza en 1 y se incrementa de uno en uno.
+
+CREATE SEQUENCE SEQ_UBICACION_ID
+    START WITH 1         -- Valor inicial de la secuencia
+    INCREMENT BY 1       -- Incremento en cada llamada a NEXTVAL
+    NOCACHE;             -- No se almacenan valores en caché
+
+
+4.6.
+-- Secuencia para generar IDs únicos automáticos para la tabla SALA.
+-- Comienza en 2 y se incrementa de uno en uno.
+
+CREATE SEQUENCE SEQ_SALA_ID
+    START WITH 2         -- Valor inicial de la secuencia (empieza desde 2)
+    INCREMENT BY 1       -- Incremento en cada llamada a NEXTVAL
+    NOCACHE;             -- No guarda valores en caché
+
+
+4.7.
+-- Secuencia para generar IDs únicos automáticos para la tabla SANCION.
+-- Comienza en 1 y se incrementa de uno en uno.
+
+CREATE SEQUENCE SEQ_SANCION_ID
+    START WITH 1         -- Valor inicial de la secuencia
+    INCREMENT BY 1       -- Incremento en cada llamada a NEXTVAL
+    NOCACHE;             -- No guarda valores en caché
+
+
+4.8.
+-- Secuencia para generar IDs únicos automáticos para la tabla ENCUESTA.
+-- Comienza en 1 y se incrementa de uno en uno.
+
+CREATE SEQUENCE SEQ_ENCUESTA_ID
+    START WITH 1         -- Valor inicial de la secuencia
+    INCREMENT BY 1       -- Incremento en cada llamada a NEXTVAL
+    NOCACHE;             -- No guarda valores en caché
+
+
+5. DISPARADORES
+
+--------------------------------------------------------------------------------
+-- TRIGGER 1: Evitar que un usuario realice un préstamo si tiene sanciones activas
+--------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER trg_no_prestamo_con_sancion
+BEFORE INSERT ON PRESTAMO
+FOR EACH ROW
+DECLARE
+    v_count NUMBER;
+BEGIN
+    -- Contar cuántas sanciones activas tiene el usuario que intenta hacer un nuevo préstamo
+    SELECT COUNT(*) INTO v_count
+    FROM SANCION
+    WHERE ID_PRESTAMO IN (
+        SELECT ID FROM PRESTAMO WHERE ID_USUARIO = :NEW.ID_USUARIO
+    )
+    AND ESTADO = 'ACTIVA';
+
+    -- Si hay al menos una sanción activa, lanzar error y bloquear el préstamo
+    IF v_count > 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'El usuario tiene sanciones activas.');
+    END IF;
+END;
+/
+
+--------------------------------------------------------------------------------
+-- TRIGGER 2: Finalizar automáticamente el préstamo cuando todos los bloques han terminado
+--------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER trg_prestamo_finalizado
+BEFORE UPDATE ON PRESTAMO
+FOR EACH ROW
+DECLARE
+    v_total    NUMBER;  -- Total de bloques asociados al préstamo
+    v_vencidos NUMBER;  -- Bloques cuya hora de fin ya pasó
+BEGIN
+    -- Contar todos los bloques vinculados al préstamo actual
+    SELECT COUNT(*) INTO v_total
+    FROM PRESTAMO_BLOQUE pb
+    JOIN BLOQUE b ON pb.ID_BLOQUE = b.ID
+    WHERE pb.ID_PRESTAMO = :NEW.ID;
+
+    -- Contar bloques vencidos (ya terminó su HORA_FIN)
+    SELECT COUNT(*) INTO v_vencidos
+    FROM PRESTAMO_BLOQUE pb
+    JOIN BLOQUE b ON pb.ID_BLOQUE = b.ID
+    WHERE pb.ID_PRESTAMO = :NEW.ID
+      AND TO_DATE(:NEW.FECHA || ' ' || b.HORA_FIN, 'YYYY-MM-DD HH24:MI') < SYSDATE;
+
+    -- Si todos los bloques han terminado y el préstamo no está ya finalizado, actualizar su estado
+    IF v_total > 0 AND v_total = v_vencidos AND :NEW.ESTADO != 'FINALIZADO' THEN
+        :NEW.ESTADO := 'FINALIZADO';
+    END IF;
+END;
+/
+
+
+
+
