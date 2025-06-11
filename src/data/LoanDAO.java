@@ -165,7 +165,7 @@ public class LoanDAO {
         return loans;
 	}
 	
-	
+	/*
 	public boolean updatesStateEquipment(String state, Long entity) {
 		String query = "UPDATE EQUIPO"
 				+ " SET ESTADO = ?"
@@ -179,7 +179,8 @@ public class LoanDAO {
 			return false;
 		}	
 		return true;
-	}
+	
+*/
 	
 	public boolean updateStateEquipment(String state, Long equipmentId) {
 	    String sql = "{CALL TECHLEND.updateStateByEquipment(?, ?)}";
@@ -196,23 +197,56 @@ public class LoanDAO {
 	    return true;
 	}
 
+	public boolean updatesStateHall(String state, Long entity) {
+		String query = "UPDATE SALA"
+				+ " SET ESTADO = ?"
+				+ " WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
+	/*
+	
+	public boolean updatesHallState(String state, Long hallId) {
+	    String sql = "{CALL TECHLEND.updateHallState(?, ?)}";
 
+	    try (CallableStatement stmt = connection.prepareCall(sql)) {
+	        stmt.setString(1, state);      
+	        stmt.setLong(2, hallId);       
 
-	public boolean updateState(Long id, String state) {
-	    String sql = "{ call TECHLEND.updateLoanState(?, ?) }";
-
-	    try (CallableStatement cstmt = connection.prepareCall(sql)) {
-	        cstmt.setLong(1, id);
-	        cstmt.setString(2, state);
-	        cstmt.execute();
+	        stmt.execute();
 	    } catch (SQLException e) {
-	        ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
-	                + "- Que el estado esté bien escrito.\n"
-	                + "- Que el ID exista.", AlertType.ERROR);
+	        ViewUtils.AlertWindow(null, null, "No se pudo actualizar el estado de la sala", AlertType.ERROR);
+	        e.printStackTrace(); 
 	        return false;
 	    }
+
 	    return true;
 	}
+	*/
+	
+	public boolean updateState(Long entity, String state) {
+		String query = "UPDATE PRESTAMO"
+				+ " SET ESTADO = ?"
+				+ " WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, "No se pudo actualizar", "Verifique los siguientes aspectos\n"
+					+ "- Qué el estado está bien escrito.", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
+	
 
 	public boolean updateHallState(String state, Long hallId) {
 	    String sql = "{CALL TECHLEND.updateHallState(?, ?)}";
