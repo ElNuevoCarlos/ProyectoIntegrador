@@ -7,10 +7,8 @@ import java.sql.SQLException;
 public class DataBase {
 	private static DataBase instance;
 	private Connection connection;
-	//private final String host = "192.168.254.215";
-	private final String host = "localhost";
-	private final String service = "xe";
-	//private final String service = "orcl";
+	private final String host = "192.168.254.215";
+	private final String service = "orcl";
 	private final String port = "1521";
 
 	private DataBase() {
