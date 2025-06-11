@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -215,7 +216,29 @@ public class LoanDAO {
 	    return true;
 	}
 
+	public void update(Date date, String specs, Long idHall, Long IdEquipment, Long id) {
+	    String sql = "UPDATE PRESTAMO SET FECHA = ?, ESPECIFICACIONES = ?, ID_SALA = ?, ID_EQUIPO = ? WHERE ID = ?";
 
+	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setDate(1, date);
+	        stmt.setString(2, specs);
+            if (idHall != null) {
+            	stmt.setLong(3, idHall);
+            } else {
+            	stmt.setNull(3, java.sql.Types.BIGINT);
+            }
+            if (IdEquipment != null) {
+            	stmt.setLong(4, IdEquipment);
+            } else {
+            	stmt.setNull(4, java.sql.Types.BIGINT);
+            }      
+	        stmt.setLong(5, id);
+
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 }
 

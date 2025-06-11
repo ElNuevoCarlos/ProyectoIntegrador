@@ -64,4 +64,30 @@ public class BlockDAO {
 
         return blocks;
 	}
+	
+	public void deleteBlock(long idLoan, long idBlock) {
+	    String sql = "DELETE FROM PRESTAMO_BLOQUE WHERE ID_PRESTAMO = ? AND ID_BLOQUE = ?";
+	    
+	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setLong(1, idLoan);
+	        stmt.setLong(2, idBlock);
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	    }
+	}
+	
+	public void saveBlock(long idLoan, long idBlock) {
+	    String sql = "INSERT INTO PRESTAMO_BLOQUE (ID_PRESTAMO, ID_BLOQUE) VALUES (?, ?)";
+
+	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setLong(1, idLoan);
+	        stmt.setLong(2, idBlock);
+	        stmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+
 }

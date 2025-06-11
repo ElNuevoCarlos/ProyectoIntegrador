@@ -96,7 +96,7 @@ public class ResourcesDAO {
             query = "SELECT s.NOMBRE, s.CAPACIDAD ,u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, s.DESCRIPCION, s.ID, s.ESTADO"
             		+ " FROM SALA s JOIN UBICACION u ON s.ID_UBICACION = u.ID "+ second;
         } else {
-            query = "SELECT NOMBRE, TIPO_DISPOSITIVO, MARCA, DESCRIPCION, ID"
+            query = "SELECT NOMBRE, TIPO_DISPOSITIVO, MARCA, DESCRIPCION, ID, ESTADO"
             		+ " FROM EQUIPO"
             		+ " WHERE ESTADO = 'Disponible' AND CATEGORIA = 'DISPOSITIVO'" + second;
         }

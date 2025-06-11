@@ -10,6 +10,7 @@ import application.Main;
 import data.BlockDAO;
 import data.DataBase;
 import data.Filter;
+import data.LoanDAO;
 import data.ResourcesDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -55,8 +56,6 @@ public class ModifyLoanController {
     @FXML private ContextMenu menuBuilding;
     @FXML private ContextMenu menuFlat;
     
-	@FXML private CheckBox enableCheck;
-	
 	@SuppressWarnings("unused")
 	private LocalDate date;
 	
@@ -66,6 +65,7 @@ public class ModifyLoanController {
 	private  ResourcesDAO resourcesDAO = new ResourcesDAO(database);
 	private Filter filter = new Filter(database);
 	private BlockDAO blockDAO = new BlockDAO(database);
+	private LoanDAO loanDAO = new LoanDAO(database);
 	
 	private Resources resource = null;
 
@@ -77,134 +77,142 @@ public class ModifyLoanController {
 	private ArrayList<Block> blocksArray;
 	private ArrayList<Block> myBlocksInitial;
 	
-	@FXML void initialize() {
+	@FXML
+	void initialize() {
 	    Object dato = Main.datoGlobal;
 	    if (dato instanceof LoanTable) {
-	    	loan = (LoanTable) dato;
+	        loan = (LoanTable) dato;
 	    }
+
 	    specs.setText(loan.getSpecs());
 	    datePicker.setValue(loan.getDate());
 	    blocksArray = blockDAO.findBlocksByLoanId(loan.getId());
 	    myBlocksInitial = new ArrayList<>(blocksArray);
 	    selectedBlocks.setAll(blocksArray);
 	    myBlocks.setItems(selectedBlocks);
+
 	    if (!"0".equals(loan.getCapacity())) {
-	    	blocksArray = blockDAO.findAvailableBlocks(loan.getDate(), "p.ID_SALA = (SELECT ID_SALA FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
-	    	String[] partsLocation = loan.getLocationType().split("-");
-	    	info.setText("Sala: " +loan.getName()+"\n"+"Fecha:" + loan.getDate() + "\n" +"Capacidad: "+ loan.getCapacity() + "\n"+ "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" + "Estado: " + loan.getState() + "\n" +"Especificaciones: " + loan.getSpecs());
-	    	buildingText.setPromptText("Edificio");
-	    	flatText.setVisible(true);
-	    	capacityText.setPromptText("Capacidad");
-	    	fillTable(resourcesDAO.ResourcesView(true, new StringBuilder()), "SALA", "CAPACIDAD","UBICACION");
-	    	contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "SALA", ""));
-	    	contextualAutocomplete(buildingText, menuBuilding, filter.Options("EDIFICIO", "UBICACION", ""));
-	    	contextualAutocomplete(capacityText, menuCapacity, filter.Options("CAPACIDAD", "SALA", ""));
-	    	
+	        blocksArray = blockDAO.findAvailableBlocks(loan.getDate(), "p.ID_SALA = (SELECT ID_SALA FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
+	        String[] partsLocation = loan.getLocationType().split("-");
+	        info.setText("Sala: " + loan.getName() + "\n" + "Fecha:" + loan.getDate() + "\n" + "Capacidad: " + loan.getCapacity() + "\n" + "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" + "Estado: " + loan.getState() + "\n" + "Especificaciones: " + loan.getSpecs());
+	        buildingText.setPromptText("Edificio");
+	        flatText.setVisible(true);
+	        capacityText.setPromptText("Capacidad");
+	        fillTable(resourcesDAO.ResourcesView(true, new StringBuilder()), "SALA", "CAPACIDAD", "UBICACION");
+	        contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "SALA", ""));
+	        contextualAutocomplete(buildingText, menuBuilding, filter.Options("EDIFICIO", "UBICACION", ""));
+	        contextualAutocomplete(capacityText, menuCapacity, filter.Options("CAPACIDAD", "SALA", ""));
 	    } else {
-	    	blocksArray = blockDAO.findAvailableBlocks(loan.getDate(), "p.ID_EQUIPO = (SELECT ID_EQUIPO FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
-	    	capacityText.setEditable(true);
-	    	buildingText.setPromptText("Tipo");
-	    	flatText.setVisible(false);
-	    	capacityText.setPromptText("Marca");
-	    	info.setText("Dispostivo: " +loan.getName()+"\n"+"Fecha:" + loan.getDate() + "\n"+ "Tipo: " + loan.getLocationType() + "\n" + "Estado: " + loan.getState() +"\n" + "Especificaciones: " + loan.getSpecs());
-	    	fillTable(resourcesDAO.ResourcesView(false, new StringBuilder()), "DISPOSITIVO", "TIPO DISPOSITIVO", "MARCA");
-	    	contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "EQUIPO", ""));
-	    	contextualAutocomplete(buildingText, menuBuilding, filter.Options("TIPO_DISPOSITIVO", "EQUIPO", ""));
-	    	contextualAutocomplete(capacityText, menuCapacity, filter.Options("MARCA", "EQUIPO", ""));
+	        blocksArray = blockDAO.findAvailableBlocks(loan.getDate(), "p.ID_EQUIPO = (SELECT ID_EQUIPO FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
+	        capacityText.setEditable(true);
+	        buildingText.setPromptText("Tipo");
+	        flatText.setVisible(false);
+	        capacityText.setPromptText("Marca");
+	        info.setText("Dispositivo: " + loan.getName() + "\n" + "Fecha:" + loan.getDate() + "\n" + "Tipo: " + loan.getLocationType() + "\n" + "Estado: " + loan.getState() + "\n" + "Especificaciones: " + loan.getSpecs());
+	        fillTable(resourcesDAO.ResourcesView(false, new StringBuilder()), "DISPOSITIVO", "TIPO DISPOSITIVO", "MARCA");
+	        contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "EQUIPO", ""));
+	        contextualAutocomplete(buildingText, menuBuilding, filter.Options("TIPO_DISPOSITIVO", "EQUIPO", ""));
+	        contextualAutocomplete(capacityText, menuCapacity, filter.Options("MARCA", "EQUIPO", ""));
 	    }
+
 	    availableBlocks.setAll(blocksArray);
 	    blocks.setItems(availableBlocks);
-	    
-	    
-    	tableResources.setRowFactory(tv -> {
-    	    TableRow<Resources> row = new TableRow<>();
 
-    	    row.setOnMouseClicked(event -> {
-    	        if (!row.isEmpty()) {
-    	        	resource = row.getItem();
+	    tableResources.setRowFactory(tv -> {
+	        TableRow<Resources> row = new TableRow<>();
 
-    	            if (event.getClickCount() == 2) {
-    	                // Doble clic
-    	            	datePicker.setValue(null);
-    	            	myBlocks.getItems().clear();
-    	            	blocks.getItems().clear();
-    	            	if (resource.getTypeResource()) {
-    	            		String[] partsLocation = resource.getLocationTrademark().split("-");
-    	            		info.setText("Sala: " + resource.getName()+"\n" + "Capacidad: "+ resource.getTypeCapacity() + "\n"+ "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" +"Descripcion: " + resource.getDescription());
-    	            	} else {
-    	            		info.setText("Dispositivo: " + resource.getName()+"\n" + "Tipo: "+ resource.getTypeCapacity() + "\n"+ "Marca: " + resource.getLocationTrademark() + "\n" +"Descripcion: " + resource.getDescription());
-    	            	}
-    	            } else {
-    	                // Clic simple
-    	                if (row.isSelected()) {
-    	                	tableResources.getSelectionModel().clearSelection();
-    	                } else {
-    	                	tableResources.getSelectionModel().select(resource);
-    	                }
-    	            }
-    	        }
-    	    });
+	        row.setOnMouseClicked(event -> {
+	            if (!row.isEmpty()) {
+	                resource = row.getItem();
 
-    	    return row;
-    	});
-    	datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                return;
-            }
+	                if (event.getClickCount() == 2) {
+	                    // Doble clic
+	                    datePicker.setValue(null);
+	                    myBlocks.getItems().clear();
+	                    blocks.getItems().clear();
+	                    selectedBlocks.clear();       // <-- limpiar internamente los bloques seleccionados
+	                    availableBlocks.clear();      // <-- limpiar internamente los bloques disponibles
 
-            if (newValue.isBefore(LocalDate.now()) || newValue.isAfter(LocalDate.now().plusDays(15))) {
-            	ViewUtils.AlertWindow(
-                    "Fecha inválida",
-                    "La fecha seleccionada no es válida",
-                    "Por favor, selecciona una fecha desde hoy hasta un máximo de 15 días en el futuro.",
-                    AlertType.WARNING
-                );
-            	datePicker.setValue(null);
-                return;
-            }
+	                    if (resource.getTypeResource()) {
+	                        String[] partsLocation = resource.getLocationTrademark().split("-");
+	                        info.setText("Sala: " + resource.getName() + "\n" + "Capacidad: " + resource.getTypeCapacity() + "\n" + "Edificio: " + partsLocation[0].trim() + "\n" + "Piso: " + partsLocation[1].trim() + "\n" + "Descripcion: " + resource.getDescription());
+	                    } else {
+	                        info.setText("Dispositivo: " + resource.getName() + "\n" + "Tipo: " + resource.getTypeCapacity() + "\n" + "Marca: " + resource.getLocationTrademark() + "\n" + "Descripcion: " + resource.getDescription());
+	                    }
+	                } else {
+	                    // Clic simple
+	                    if (row.isSelected()) {
+	                        tableResources.getSelectionModel().clearSelection();
+	                    } else {
+	                        tableResources.getSelectionModel().select(resource);
+	                    }
+	                }
+	            }
+	        });
 
-            myBlocks.getItems().clear();
-            if(resource == null) {
-            	if (!"0".equals(loan.getCapacity())) {
-            		blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_SALA = (SELECT ID_SALA FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
-            	} else {
-            		blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_EQUIPO = (SELECT ID_EQUIPO FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
-            	}
-            } else {
-                if (resource.getTypeResource()) {
-                    blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_SALA = " + resource.getIdResource());
-                } else {
-                    blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_EQUIPO = " + resource.getIdResource());
-                }
-            }
+	        return row;
+	    });
 
+	    datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+	        if (newValue == null) {
+	            return;
+	        }
 
-            ObservableList<Block> observableList = FXCollections.observableArrayList(blocksArray);
-            blocks.setItems(observableList);
-            date = newValue;
-        });
+	        if (newValue.isBefore(LocalDate.now()) || newValue.isAfter(LocalDate.now().plusDays(15))) {
+	            ViewUtils.AlertWindow(
+	                "Fecha inválida",
+	                "La fecha seleccionada no es válida",
+	                "Por favor, selecciona una fecha desde hoy hasta un máximo de 15 días en el futuro.",
+	                AlertType.WARNING
+	            );
+	            datePicker.setValue(null);
+	            return;
+	        }
 
-    	blocks.setOnMouseClicked((MouseEvent event) -> {
-    	    if (event.getClickCount() == 2) {
-    	        Block selected = blocks.getSelectionModel().getSelectedItem();
-    	        if (selected != null) {
-    	            availableBlocks.remove(selected);
-    	            selectedBlocks.add(selected);
-    	        }
-    	    }
-    	});
+	        myBlocks.getItems().clear();
+	        selectedBlocks.clear();
+	        availableBlocks.clear();
 
-    	myBlocks.setOnMouseClicked((MouseEvent event) -> {
-    	    if (event.getClickCount() == 2) {
-    	        Block selected = myBlocks.getSelectionModel().getSelectedItem();
-    	        if (selected != null) {
-    	            selectedBlocks.remove(selected);
-    	            availableBlocks.add(selected);
-    	        }
-    	    }
-    	});
-		
+	        if (resource == null) {
+	            if (!"0".equals(loan.getCapacity())) {
+	                blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_SALA = (SELECT ID_SALA FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
+	            } else {
+	                blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_EQUIPO = (SELECT ID_EQUIPO FROM PRESTAMO WHERE ID = " + loan.getId() + ")");
+	            }
+	        } else {
+	            if (resource.getTypeResource()) {
+	                blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_SALA = " + resource.getIdResource());
+	            } else {
+	                blocksArray = blockDAO.findAvailableBlocks(newValue, "p.ID_EQUIPO = " + resource.getIdResource());
+	            }
+	        }
+
+	        availableBlocks.setAll(blocksArray);
+	        blocks.setItems(availableBlocks);
+	        date = newValue;
+	    });
+
+	    blocks.setOnMouseClicked((MouseEvent event) -> {
+	        if (event.getClickCount() == 2) {
+	            Block selected = blocks.getSelectionModel().getSelectedItem();
+	            if (selected != null) {
+	                availableBlocks.remove(selected);
+	                selectedBlocks.add(selected);
+	            }
+	        }
+	    });
+
+	    myBlocks.setOnMouseClicked((MouseEvent event) -> {
+	        if (event.getClickCount() == 2) {
+	            Block selected = myBlocks.getSelectionModel().getSelectedItem();
+	            if (selected != null) {
+	                selectedBlocks.remove(selected);
+	                availableBlocks.add(selected);
+	            }
+	        }
+	    });
 	}
+
 	
 	@FXML void handleFilter() {
     	String name = nameText.getText().trim();
@@ -243,18 +251,95 @@ public class ModifyLoanController {
     	}
 	}
 	
-	@FXML void handleUpdate() {
-		if(resource == null) {
-			System.out.println(myBlocksInitial);
-			System.out.println(selectedBlocks);			
-			List<Block> newBlocks = new ArrayList<>(selectedBlocks);
-			newBlocks.removeAll(myBlocksInitial);
-			System.out.println("Nuevos "+ newBlocks);
-			List<Block> deletedBlocks = new ArrayList<>(myBlocksInitial);
-			deletedBlocks.removeAll(selectedBlocks);
-			System.out.println("Eliminados "+ deletedBlocks);
-		}
+	@FXML
+	void handleUpdate() {
+	    // Validación de fecha
+	    LocalDate selectedDate = datePicker.getValue();
+	    if (selectedDate == null) {
+	        ViewUtils.AlertWindow("Error", null, "Por favor selecciona una fecha válida.", AlertType.ERROR);
+	        return;
+	    }
+
+	    // Validación de bloques seleccionados
+	    if (selectedBlocks.isEmpty()) {
+	        ViewUtils.AlertWindow("Error", null, "El préstamo debe tener asignado al menos un bloque.", AlertType.ERROR);
+	        return;
+	    }
+
+	    // CASO 1: Sin cambiar de recurso
+	    if (resource == null) {
+	        // Detectar nuevos bloques
+	        List<Block> newBlocks = new ArrayList<>(selectedBlocks);
+	        newBlocks.removeAll(myBlocksInitial);
+
+	        // Detectar bloques eliminados
+	        List<Block> deletedBlocks = new ArrayList<>(myBlocksInitial);
+	        deletedBlocks.removeAll(selectedBlocks);
+
+	        // Guardar nuevos bloques
+	        for (Block block : newBlocks) {
+	            blockDAO.saveBlock(loan.getId(), block.getId());
+	        }
+
+	        // Eliminar bloques removidos
+	        for (Block block : deletedBlocks) {
+	            blockDAO.deleteBlock(loan.getId(), block.getId());
+	        }
+
+	        // Actualizar el préstamo (solo fecha y especificaciones)
+	        loanDAO.update(java.sql.Date.valueOf(selectedDate), specs.getText(), null, null, loan.getId());
+	        
+		    ViewUtils.AlertWindow("Actulizado", null, "El préstamo ha sido actualizado", AlertType.INFORMATION);
+		    ViewUtils.cargarGrid("/views/MyLoans.fxml", Main.rootLayout);
+
+	        // Actualizar estado inicial
+	        myBlocksInitial = new ArrayList<>(selectedBlocks);
+
+	        System.out.println("Actualización sin cambio de recurso.");
+	        System.out.println("Nuevos: " + newBlocks);
+	        System.out.println("Eliminados: " + deletedBlocks);
+	    }
+
+	    // CASO 2: Cambio de recurso (sala/dispositivo)
+	    else {
+	        // Primero eliminar todos los bloques anteriores
+	        for (Block block : myBlocksInitial) {
+	            blockDAO.deleteBlock(loan.getId(), block.getId());
+	        }
+
+	        // Guardar nuevos bloques
+	        for (Block block : selectedBlocks) {
+	            blockDAO.saveBlock(loan.getId(), block.getId());
+	        }
+
+	        // Actualizar el préstamo con nuevo recurso
+	        if ("0".equals(loan.getCapacity())) {
+	            // Recurso es dispositivo
+	            loanDAO.update(java.sql.Date.valueOf(selectedDate), specs.getText(), null, resource.getIdResource(), loan.getId());
+	        } else {
+	            // Recurso es sala
+	            loanDAO.update(java.sql.Date.valueOf(selectedDate), specs.getText(), resource.getIdResource(), null, loan.getId());
+	        }
+
+		    ViewUtils.AlertWindow("Actulizado", null, "El préstamo ha sido actualizado", AlertType.INFORMATION);
+		    ViewUtils.cargarGrid("/views/MyLoans.fxml", Main.rootLayout);
+	        // Actualizar estado inicial
+	        myBlocksInitial = new ArrayList<>(selectedBlocks);
+
+	        System.out.println("Recurso cambiado. Nuevos bloques: " + selectedBlocks);
+	    }
+	    
+	    
+
+	    
 	}
+	
+	@FXML
+	void handleVolver() {
+		ViewUtils.cargarGrid("/views/MyLoans.fxml", Main.rootLayout);
+	}
+
+
 	
     void fillTable(ArrayList<Resources> listResource, String name, String typeCapacity, String locationTrademark) {
     	tableResources.getItems().clear();

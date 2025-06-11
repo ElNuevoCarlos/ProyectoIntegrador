@@ -109,6 +109,6 @@
                </font>
             </Label>
             <ComboBox fx:id="ti" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
-            <ComboBox fx:id="role" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="5" GridPane.rowIndex="11" />
+            <ComboBox fx:id="roleCombo" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="5" GridPane.rowIndex="11" />
          </children>
       </GridPane>

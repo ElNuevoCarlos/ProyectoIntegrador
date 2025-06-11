@@ -24,6 +24,8 @@ public class MenuController {
     }
 	
 	@FXML void userInfo() {
+		Main.datoGlobal = username;
+		Main.datoGlobalTree = role;
 		ViewUtils.cargarGrid("/views/MyAccount.fxml", rootPane);
 	}
 	

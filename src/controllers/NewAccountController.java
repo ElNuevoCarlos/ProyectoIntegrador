@@ -1,8 +1,10 @@
 package controllers;
 
 import java.sql.Connection;
+import java.util.concurrent.CompletableFuture;
 
 import data.DataBase;
+import data.EmailService;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -123,7 +125,9 @@ public class NewAccountController {
         		""", FirstName);
 
 
-//        EmailService.sendMessage(Email, affair, htmlBody);
+	    CompletableFuture.runAsync(() -> {
+	        EmailService.sendMessage(Email, affair, htmlBody);
+	    });
         if (!NumIdentification.matches("\\d{6,10}")) {
         	ViewUtils.AlertWindow("Error", "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
         	return;

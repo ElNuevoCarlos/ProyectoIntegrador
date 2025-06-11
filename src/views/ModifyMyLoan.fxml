@@ -2,12 +2,16 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -71,10 +75,38 @@
       <TextField fx:id="nameText" focusTraversable="false" promptText="Nombre Sala" translateY="-10.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets />
-         </GridPane.margin></TextField>
-      <TextField fx:id="buildingText" focusTraversable="false" promptText="Edificio" translateY="-10.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <TextField fx:id="capacityText" focusTraversable="false" promptText="Capacidad" translateY="-10.0" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <TextField fx:id="flatText" focusTraversable="false" promptText="Piso" translateY="-10.0" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+         </GridPane.margin>
+         <contextMenu>
+            <ContextMenu fx:id="menuName">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+              </items>
+            </ContextMenu>
+         </contextMenu></TextField>
+      <TextField fx:id="buildingText" focusTraversable="false" promptText="Edificio" translateY="-10.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3">
+         <contextMenu>
+            <ContextMenu fx:id="menuBuilding">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+              </items>
+            </ContextMenu>
+         </contextMenu></TextField>
+      <TextField fx:id="capacityText" focusTraversable="false" promptText="Capacidad" translateY="-10.0" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="3">
+         <contextMenu>
+            <ContextMenu fx:id="menuCapacity">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+              </items>
+            </ContextMenu>
+         </contextMenu></TextField>
+      <TextField fx:id="flatText" focusTraversable="false" promptText="Piso" translateY="-10.0" GridPane.columnIndex="8" GridPane.rowIndex="3">
+         <contextMenu>
+            <ContextMenu fx:id="menuFlat">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+              </items>
+            </ContextMenu>
+         </contextMenu></TextField>
       <DatePicker fx:id="datePicker" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.rowIndex="15" />
       <Button focusTraversable="false" mnemonicParsing="false" onAction="#handleFilter" styleClass="Managerbutton" text="Filtrar" translateY="-10.0" GridPane.columnIndex="9" GridPane.rowIndex="3">
          <GridPane.margin>
@@ -85,5 +117,15 @@
       <ListView fx:id="blocks" prefHeight="200.0" prefWidth="200.0" translateX="-40.0" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.rowIndex="10" GridPane.rowSpan="4" />
       <ListView fx:id="myBlocks" prefHeight="200.0" prefWidth="200.0" translateX="-80.0" GridPane.columnIndex="9" GridPane.columnSpan="3" GridPane.rowIndex="10" GridPane.rowSpan="4" />
       <TextArea fx:id="specs" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.columnSpan="3" GridPane.rowIndex="10" GridPane.rowSpan="4" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bloques Elegidos" textAlignment="CENTER" GridPane.columnIndex="8" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bloques Disponibles" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Información" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Especificaciones" textAlignment="CENTER" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha" textAlignment="CENTER" GridPane.columnIndex="11" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="14" GridPane.valignment="BOTTOM" />
+      <ImageView fitHeight="41.0" fitWidth="34.0" onMouseClicked="#handleVolver" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/img/volver-flecha.png" />
+         </image>
+      </ImageView>
    </children>
 </GridPane>

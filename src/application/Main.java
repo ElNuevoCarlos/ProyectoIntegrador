@@ -7,11 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
 	public static Object datoGlobal;
 	public static boolean datoGlobalTwo;
+	public static Text datoGlobalTree;
 	public static boolean isSuperManager;
 	public static Pane pane;
 	public static BorderPane rootLayout;

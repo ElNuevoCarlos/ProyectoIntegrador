@@ -18,13 +18,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import model.User;
 import utils.SecurityUtils;
 import utils.ViewUtils;
 
 public class MyAccountController {
 	@FXML private Pane pane;
-	@FXML private Hyperlink editUser;
+	@FXML private Text username, role;
 	
 	@FXML private GridPane grip;
 	
@@ -35,7 +36,7 @@ public class MyAccountController {
 	@FXML private TextField name, numIdentification, email, 
 	phone, pro_dep, password1, password2;
 	
-	@FXML private ComboBox<String> ti, role;
+	@FXML private ComboBox<String> ti, roleCombo;
 	
 	@FXML private Button save;
 	
@@ -47,15 +48,16 @@ public class MyAccountController {
 	private String encryptedPassword;
 	
 	@FXML void initialize() {
-	    Object dato = Main.datoGlobal;
+	    Object globalUsername = Main.datoGlobal;
+	    role = Main.datoGlobalTree;
 	    pane = Main.pane;
-	    if (dato instanceof Hyperlink) {
-	    	editUser = (Hyperlink) dato;
+	    if (globalUsername instanceof Text) {
+	    	username = (Text) globalUsername;
 	    }
 		ObservableList<String> itemsTi = FXCollections.observableArrayList("CC", "CE");
 		ti.setItems(itemsTi);
 		ObservableList<String> itemsRole = FXCollections.observableArrayList("DOCENTE", "ADMINISTRATIVO");
-		role.setItems(itemsRole);
+		roleCombo.setItems(itemsRole);
 		otherData = userDao.otherData(sessionManager.getEmail()).split("!", 5);
 		
         try {
@@ -70,7 +72,7 @@ public class MyAccountController {
 		ti.setValue(otherData[1]);
 		email.setText(sessionManager.getEmail());
 		phone.setText(otherData[4]);
-		role.setValue(sessionManager.getRole());
+		roleCombo.setValue(sessionManager.getRole());
 		password1.setText(decryptedPassword);
 		password2.setText(decryptedPassword);
 		pro_dep.setText(otherData[3]);
@@ -83,7 +85,7 @@ public class MyAccountController {
 		String Pro_dep = pro_dep.getText().trim();
 		String Phone = phone.getText().trim();
 		String Email = email.getText().trim();
-		String Role = role.getValue() != null ? role.getValue().trim() : "";
+		String Role = roleCombo.getValue() != null ? roleCombo.getValue().trim() : "";
 		String Password1 = password1.getText().trim();
 		String Password2 = password2.getText().trim();
 
@@ -160,14 +162,17 @@ public class MyAccountController {
 						otherData[2] = Password1;
 						otherData[3] = Pro_dep;
 						otherData[4] = Phone;
+						String[] partesUptate = Name.split("\\s+");
+						username.setText(partesUptate[0] + " " + partesUptate[1]);
+						role.setText(Role);
 						
-						if (!(editUser == null)) {
-							String[] partesUptate = Name.split("\\s+");
-							editUser.setText(partesUptate[0] + " " + partesUptate[1] + "\n" + Role);
-							Platform.runLater(() -> {
-							    editUser.setLayoutX((pane.getWidth() - editUser.getWidth()) / 2);
-							});
-						}
+//						if (!(editUser == null)) {
+//							String[] partesUptate = Name.split("\\s+");
+//							editUser.setText(partesUptate[0] + " " + partesUptate[1] + "\n" + Role);
+//							Platform.runLater(() -> {
+//							    editUser.setLayoutX((pane.getWidth() - editUser.getWidth()) / 2);
+//							});
+//						}
 						
 					} else {
 						ViewUtils.AlertWindow("Cancelado", "Actualización cancelada", "No se realizaron cambios", AlertType.INFORMATION);
