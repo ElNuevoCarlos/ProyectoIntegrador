@@ -165,6 +165,22 @@ public class LoanDAO {
         return loans;
 	}
 	
+	
+	public boolean updatesStateEquipment(String state, Long entity) {
+		String query = "UPDATE EQUIPO"
+				+ " SET ESTADO = ?"
+				+ " WHERE ID = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, state);
+			pstmt.setLong(2, entity);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
+			return false;
+		}	
+		return true;
+	}
+	
 	public boolean updateStateEquipment(String state, Long equipmentId) {
 	    String sql = "{CALL TECHLEND.updateStateByEquipment(?, ?)}";
 
