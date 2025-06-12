@@ -3,7 +3,7 @@ package controllers.manager;
 import java.sql.Connection;
 import java.time.LocalDate;
 import application.Main;
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.LoanDAO;
 import data.ResourcesDAO;
 import data.SanctionDAO;
@@ -30,6 +30,7 @@ import model.Equipment;
 import model.EqupmentInfo;
 import model.Sanction;
 import model.User;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class EquipmentController {
@@ -48,10 +49,12 @@ public class EquipmentController {
     private FilteredList<Equipment> listaFiltradaDisponible;
     private FilteredList<EqupmentInfo> listaFiltradaPrestados;
     
-    private Connection database = DataBase.getInstance().getConnection();
-    private ResourcesDAO resourcesDao = new ResourcesDAO(database);
-    private LoanDAO loanDao = new LoanDAO(database);
-    private SanctionDAO sanctionDao = new SanctionDAO(database);
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private ResourcesDAO resourcesDao = new ResourcesDAO(connection);
+    private LoanDAO loanDao = new LoanDAO(connection);
+    private SanctionDAO sanctionDao = new SanctionDAO(connection);
     
     @FXML void initialize() {
 		// ------------------------------- Equipos Disponibles

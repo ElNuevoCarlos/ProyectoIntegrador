@@ -3,7 +3,7 @@ package controllers.manager;
 import java.sql.Connection;
 import java.time.LocalDate;
 import application.Main;
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.LoanDAO;
 import data.ResourcesDAO;
 import data.SanctionDAO;
@@ -32,6 +32,7 @@ import model.Location;
 import model.Resources;
 import model.Sanction;
 import model.User;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class LoandController {
@@ -49,10 +50,14 @@ public class LoandController {
     private FilteredList<Resources> listaFiltradaDisponible;
     private FilteredList<Loans> listaFiltradaPrestados;
     
-    private Connection database = DataBase.getInstance().getConnection();
-    private ResourcesDAO resourcesDao = new ResourcesDAO(database);
-    private LoanDAO loanDao = new LoanDAO(database);
-    private SanctionDAO sanctionDao = new SanctionDAO(database);
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private ResourcesDAO resourcesDao = new ResourcesDAO(connection);
+    private LoanDAO loanDao = new LoanDAO(connection);
+    private SanctionDAO sanctionDao = new SanctionDAO(connection);
+    
+    private Long id_location;
     
     @FXML void initialize() {
 		// ------------------------------- Salas Disponibles
@@ -249,10 +254,12 @@ public class LoandController {
                 String floorString = floorField.getText().trim();
                 
                 if (!resourcesDao.AuthenticateBuildingFloor(Locate, floorString)) {
-                	resourcesDao.saveLocation(new Location(null, Locate, floorString));
+                	id_location = resourcesDao.saveLocation(new Location(null, Locate, floorString));
+                } else {
+                	id_location = resourcesDao.verifyLocation(Locate, floorString);
                 }
 
-                Long id_location = resourcesDao.verifyLocation(Locate, floorString);
+                
                 
                 resourcesDao.saveHall(new Hall(null, Name, id_location, String.valueOf(Capacity), Description, State));
                 

@@ -2,7 +2,8 @@ package controllers.manager;
 
 import java.sql.Connection;
 import java.util.Optional;
-import data.DataBase;
+
+import data.DBConnectionFactory;
 import data.SanctionDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.SanctionInfo;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class SanctionController {
@@ -34,8 +36,10 @@ public class SanctionController {
     
     private FilteredList<SanctionInfo> listaFiltrada;
     
-    private Connection database = DataBase.getInstance().getConnection();
-    private SanctionDAO sanctionDao = new SanctionDAO(database);
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private SanctionDAO sanctionDao = new SanctionDAO(connection);
 
     @FXML public void initialize() {
 		ObservableList<SanctionInfo> sanctions = FXCollections.observableArrayList();

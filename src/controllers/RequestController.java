@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import application.Main;
 import data.BlockDAO;
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.LoanDAO;
 import data.UserDAO;
 import javafx.collections.FXCollections;
@@ -44,12 +44,13 @@ public class RequestController {
 
     private Resources resource;
 
-    private Connection database = DataBase.getInstance().getConnection();
-    @SuppressWarnings("exports")
-    public UserSession userSession = UserSession.getInstance();
-    private BlockDAO blockDAO = new BlockDAO(database);
-    private LoanDAO loanDAO = new LoanDAO(database);
-    private UserDAO userDao = new UserDAO(database);
+	@SuppressWarnings("exports")
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private BlockDAO blockDAO = new BlockDAO(connection);
+    private LoanDAO loanDAO = new LoanDAO(connection);
+    private UserDAO userDao = new UserDAO(connection);
     private LocalDate  date;
 
     @FXML void initialize() {

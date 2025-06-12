@@ -158,7 +158,7 @@ public class UserDAO {
 	
 	public ArrayList<User> fetch() {
         ArrayList<User> users = new ArrayList<>();
-        String query = "SELECT * FROM USUARIO";
+        String query = "SELECT * FROM TECHLEND.USUARIO";
         
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {

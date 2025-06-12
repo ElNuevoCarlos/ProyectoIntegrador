@@ -3,6 +3,7 @@ package controllers.teacher;
 import java.sql.Connection;
 
 import application.Main;
+import data.DBConnectionFactory;
 import data.DataBase;
 import data.ResourcesDAO;
 import javafx.collections.FXCollections;
@@ -15,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Equipment;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class EquipmentController {
@@ -25,8 +27,10 @@ public class EquipmentController {
     
     private FilteredList<Equipment> listaFiltradaDisponible;
     
-    private Connection database = DataBase.getInstance().getConnection();
-    private ResourcesDAO resourcesDao = new ResourcesDAO(database);
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private ResourcesDAO resourcesDao = new ResourcesDAO(connection);
     
     @FXML void initialize() {
 		// ------------------------------- Equipos Disponibles

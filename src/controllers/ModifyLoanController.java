@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import application.Main;
 import data.BlockDAO;
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.Filter;
 import data.LoanDAO;
 import data.ResourcesDAO;
@@ -33,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import model.Block;
 import model.LoanTable;
 import model.Resources;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class ModifyLoanController {
@@ -60,11 +61,12 @@ public class ModifyLoanController {
 	
 	LoanTable loan;
 	
-	private Connection database = DataBase.getInstance().getConnection();
-	private  ResourcesDAO resourcesDAO = new ResourcesDAO(database);
-	private Filter filter = new Filter(database);
-	private BlockDAO blockDAO = new BlockDAO(database);
-	private LoanDAO loanDAO = new LoanDAO(database);
+    public String userRol = UserSession.getInstance().getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+	private  ResourcesDAO resourcesDAO = new ResourcesDAO(connection);
+	private Filter filter = new Filter(connection);
+	private BlockDAO blockDAO = new BlockDAO(connection);
+	private LoanDAO loanDAO = new LoanDAO(connection);
 	
 	private Resources resource = null;
 

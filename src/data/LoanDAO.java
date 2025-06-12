@@ -29,12 +29,12 @@ public class LoanDAO {
         
         if (type) {
             query = "SELECT p.ID, s.NOMBRE, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, p.ESTADO, p.ESPECIFICACIONES, s.CAPACIDAD "
-                  + "FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
-                  + "JOIN UBICACION u ON s.ID_UBICACION = u.ID "
+                  + "FROM TECHLEND.PRESTAMO p JOIN TECHLEND.SALA s ON p.ID_SALA = s.ID "
+                  + "JOIN TECHLEND.UBICACION u ON s.ID_UBICACION = u.ID "
                   + "WHERE p.ID_USUARIO = ?" + second;
         } else {
             query = "SELECT p.ID, e.NOMBRE, p.FECHA, e.TIPO_DISPOSITIVO, p.ESTADO, p.ESPECIFICACIONES, NULL "
-                  + "FROM PRESTAMO p JOIN EQUIPO e ON p.ID_EQUIPO = e.ID "
+                  + "FROM TECHLEND.PRESTAMO p JOIN TECHLEND.EQUIPO e ON p.ID_EQUIPO = e.ID "
                   + "WHERE p.ID_USUARIO = ?" + second;
         }
 
@@ -128,9 +128,9 @@ public class LoanDAO {
         ArrayList<Loans> loans = new ArrayList<>();
         String query = "SELECT p.ID, s.NOMBRE, us.CORREO_INSTITUCIONAL, p.FECHA, u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION,"
         		+ " p.ESTADO, p.ESPECIFICACIONES"
-        		+ " FROM PRESTAMO p JOIN SALA s ON p.ID_SALA = s.ID "
-        		+ " JOIN USUARIO us ON p.ID_USUARIO = us.ID\r\n"
-        		+ " JOIN UBICACION u ON s.ID_UBICACION = u.ID";
+        		+ " FROM TECHLEND.PRESTAMO p JOIN TECHLEND.SALA s ON p.ID_SALA = s.ID "
+        		+ " JOIN TECHLEND.USUARIO us ON p.ID_USUARIO = us.ID\r\n"
+        		+ " JOIN TECHLEND.UBICACION u ON s.ID_UBICACION = u.ID";
 
         	if (teacher != null) {
         	    query += " WHERE p.ID_USUARIO = " + teacher;
@@ -166,22 +166,7 @@ public class LoanDAO {
         return loans;
 	}
 	
-	/*
-	public boolean updatesStateEquipment(String state, Long entity) {
-		String query = "UPDATE EQUIPO"
-				+ " SET ESTADO = ?"
-				+ " WHERE ID = ?";
-		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-			pstmt.setString(1, state);
-			pstmt.setLong(2, entity);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			ViewUtils.AlertWindow(null, null, "No se pudo actualizar", AlertType.ERROR);
-			return false;
-		}	
-		return true;
-	
-*/
+
 	
 	public boolean updateStateEquipment(String state, Long equipmentId) {
 	    String sql = "{CALL TECHLEND.updateStateByEquipment(?, ?)}";
@@ -199,7 +184,7 @@ public class LoanDAO {
 	}
 
 	public boolean updatesStateHall(String state, Long entity) {
-		String query = "UPDATE SALA"
+		String query = "UPDATE TECHLEND.SALA"
 				+ " SET ESTADO = ?"
 				+ " WHERE ID = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -233,7 +218,7 @@ public class LoanDAO {
 	*/
 	
 	public boolean updateState(Long entity, String state) {
-		String query = "UPDATE PRESTAMO"
+		String query = "UPDATE TECHLEND.PRESTAMO"
 				+ " SET ESTADO = ?"
 				+ " WHERE ID = ?";
 		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -267,7 +252,7 @@ public class LoanDAO {
 	}
 
 	public void update(Date date, String specs, Long idHall, Long IdEquipment, Long id) {
-	    String sql = "UPDATE PRESTAMO SET FECHA = ?, ESPECIFICACIONES = ?, ID_SALA = ?, ID_EQUIPO = ? WHERE ID = ?";
+	    String sql = "UPDATE TECHLEND.PRESTAMO SET FECHA = ?, ESPECIFICACIONES = ?, ID_SALA = ?, ID_EQUIPO = ? WHERE ID = ?";
 
 	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 	        stmt.setDate(1, date);

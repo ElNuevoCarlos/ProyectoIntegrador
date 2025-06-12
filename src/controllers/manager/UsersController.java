@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.Optional;
 
 import application.Main;
+import data.DBConnectionFactory;
 import data.DataBase;
 import data.UserDAO;
 import javafx.collections.FXCollections;
@@ -28,6 +29,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.User;
+import model.UserSession;
+import utils.SecurityUtils;
 import utils.ViewUtils;
 
 
@@ -43,8 +46,12 @@ public class UsersController {
     
     private FilteredList<User> listaFiltrada;
   
-    private Connection database = DataBase.getInstance().getConnection();
-    private UserDAO userDao = new UserDAO(database);
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private UserDAO userDao = new UserDAO(connection);
+    
+    private ObservableList<String> itemsRol;
 
     @FXML public void initialize() {
 		ObservableList<User> teacher = FXCollections.observableArrayList();
@@ -224,9 +231,17 @@ public class UsersController {
 	    
 	    ComboBox<String> roleField = new ComboBox<>();
 	    
-	    ObservableList<String> itemsRol = FXCollections.observableArrayList(
-		        "DOCENTE", "ADMINISTRATIVO"
-		    );
+
+    	if(Main.isSuperManager) {
+    		itemsRol = FXCollections.observableArrayList(
+    		        "DOCENTE", "ADMINISTRATIVO", "ENCARGADO"
+    		    );
+    	} else {
+    		itemsRol = FXCollections.observableArrayList(
+    		        "DOCENTE", "ADMINISTRATIVO"
+    		    );
+    	}
+
 	    roleField.setPromptText("Seleccione su rol");
 	    roleField.setPrefWidth(155);
 		roleField.setItems(itemsRol);
@@ -263,67 +278,72 @@ public class UsersController {
         
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
-        		String Name = nombreField.getText().trim();
-        		String LastName = apellidoField.getText().trim();
-        		String TI = tiField.getValue() != null ? tiField.getValue().trim() : "";
-        		String NumIdentification = numeroField.getText().trim();
-        		String Pro_dep = proDeField.getText().trim();
-        		String Phone = telefonoField.getText().trim();
-        		String Email = correoField.getText().trim();
-        		String Role = roleField.getValue() != null ? roleField.getValue().trim() : "";
-        		String Password1 = contraseñaField.getText().trim();
-        		String Password2 = conVerField.getText().trim();
-        		
-                if (Name.isEmpty() || 
-                		LastName.isEmpty() || 
-                		TI.isEmpty() || 
-                		NumIdentification.isEmpty() || 
-                		Pro_dep.isEmpty() || 
-                		Phone.isEmpty() || 
-                		Email.isEmpty() || 
-                		Role.isEmpty() || 
-                		Password1.isEmpty() || 
-                		Password2.isEmpty()){
-                	
-                	ViewUtils.AlertWindow(null, "Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
+                String Name = nombreField.getText().trim();
+                String LastName = apellidoField.getText().trim();
+                String TI = tiField.getValue() != null ? tiField.getValue().trim() : "";
+                String NumIdentification = numeroField.getText().trim();
+                String Pro_dep = proDeField.getText().trim();
+                String Phone = telefonoField.getText().trim();
+                String Email = correoField.getText().trim();
+                String Role = roleField.getValue() != null ? roleField.getValue().trim() : "";
+                String Password1 = contraseñaField.getText().trim();
+                String Password2 = conVerField.getText().trim();
+
+                if (Name.isEmpty() || LastName.isEmpty() || TI.isEmpty() || NumIdentification.isEmpty() ||
+                    Pro_dep.isEmpty() || Phone.isEmpty() || Email.isEmpty() || Role.isEmpty() ||
+                    Password1.isEmpty() || Password2.isEmpty()) {
+                    ViewUtils.AlertWindow(null, "Campos vacíos", "Por favor, complete todos los campos.", AlertType.ERROR);
                     return null;
                 }
+
                 String regexEmail = "^[a-zA-Z0-9._%+-]+@udi\\.edu\\.co$";
                 if (!Email.matches(regexEmail)) {
-                	ViewUtils.AlertWindow(null, "Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
-                	return null;
+                    ViewUtils.AlertWindow(null, "Correo inválido", "El correo debe tener el formato usuario@udi.edu.co", AlertType.ERROR);
+                    return null;
                 }
+
                 if (!NumIdentification.matches("\\d{6,10}")) {
-                	ViewUtils.AlertWindow(null, "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
-                	return null;
+                    ViewUtils.AlertWindow(null, "Número inválido", "Debe ingresar entre 6 y 10 dígitos numéricos.", AlertType.ERROR);
+                    return null;
                 }
+
                 if (!Phone.matches("\\d{10}")) {
-                	ViewUtils.AlertWindow(null, "Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
-                	return null;
+                    ViewUtils.AlertWindow(null, "Número inválido", "Debe ingresar exactamente 10 dígitos numéricos.", AlertType.ERROR);
+                    return null;
                 }
-                if (Password1.equals(Password2)) {
-                	if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
-                		ViewUtils.AlertWindow(null, "Contraseña insegura", 
-                                "La contraseña debe tener:\n" +
-                                "- Entre 8 y 20 caracteres\n" +
-                                "- Al menos una letra mayúscula\n" +
-                                "- Al menos una letra minúscula\n" +
-                                "- Al menos un número\n" +
-                                "- Al menos un carácter especial (@#$%^&+=!)", AlertType.ERROR);
-                            return null;
-                	} else {
-                		String fullName = Name +" "+ LastName;
-                		User newUser = new User(fullName, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, Password1, null);
-                		userDao.save(newUser);
-                		return newUser;
-                	}
-                } else {
-                	ViewUtils.AlertWindow(null, "Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
-                	return null;
+
+                if (!Password1.equals(Password2)) {
+                    ViewUtils.AlertWindow(null, "Contraseñas no coinciden", "Las contraseñas ingresadas no son iguales. Por favor, verifíquelas.", AlertType.ERROR);
+                    return null;
                 }
+
+                if (!Password1.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
+                    ViewUtils.AlertWindow(null, "Contraseña insegura", 
+                        "La contraseña debe tener:\n" +
+                        "- Entre 8 y 20 caracteres\n" +
+                        "- Al menos una letra mayúscula\n" +
+                        "- Al menos una letra minúscula\n" +
+                        "- Al menos un número\n" +
+                        "- Al menos un carácter especial (@#$%^&+=!)", AlertType.ERROR);
+                    return null;
+                }
+
+                String fullName = Name + " " + LastName;
+                User newUser = null; 
+                try {
+                    String encryptedPassword = SecurityUtils.encrypt(Password1);
+                    newUser = new User(fullName, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, encryptedPassword, null);
+                    userDao.save(newUser);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ViewUtils.AlertWindow("Error", "Cifrado fallido", "Ocurrió un error al procesar la contraseña. Inténtalo de nuevo.", AlertType.ERROR);
+                }
+
+                return newUser;
             }
             return null;
         });
+
         dialog.showAndWait();
         initialize();
     }

@@ -3,7 +3,7 @@ package controllers;
 import java.sql.Connection;
 import java.util.ArrayList;
 import application.Main;
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,11 +37,13 @@ public class MyAccountController {
 	@FXML private ComboBox<String> ti, roleCombo;
 	
 	@FXML private Button save;
-	
-	private Connection database = DataBase.getInstance().getConnection();
-	private UserDAO userDao = new UserDAO(database);
 	@SuppressWarnings("exports")
 	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+
+	private UserDAO userDao = new UserDAO(connection);
+	
 	private String[] otherData;
 	private String decryptedPassword;
 	private String encryptedPassword;
@@ -164,14 +166,6 @@ public class MyAccountController {
 						String[] partesUptate = Name.split("\\s+");
 						username.setText(partesUptate[0] + " " + partesUptate[1]);
 						role.setText(Role);
-						
-//						if (!(editUser == null)) {
-//							String[] partesUptate = Name.split("\\s+");
-//							editUser.setText(partesUptate[0] + " " + partesUptate[1] + "\n" + Role);
-//							Platform.runLater(() -> {
-//							    editUser.setLayoutX((pane.getWidth() - editUser.getWidth()) / 2);
-//							});
-//						}
 						
 					} else {
 						ViewUtils.AlertWindow("Cancelado", "Actualización cancelada", "No se realizaron cambios", AlertType.INFORMATION);

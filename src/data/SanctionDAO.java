@@ -49,7 +49,7 @@ public class SanctionDAO {
         ArrayList<Sanction> sanctions = new ArrayList<>();
         String query = "SELECT s.ID, s.TIPO_SANCION, s.DESCRIPCION,"
         		+" s.FECHA_FIN, s.MONTO, s.ESTADO, s.ID_PRESTAMO"
-                + " FROM SANCION s JOIN PRESTAMO p ON s.ID_PRESTAMO = p.ID JOIN USUARIO u ON p.ID_USUARIO = u.ID"
+                + " FROM TECHLEND.SANCION s JOIN TECHLEND.PRESTAMO p ON s.ID_PRESTAMO = p.ID JOIN TECHLEND.USUARIO u ON p.ID_USUARIO = u.ID"
                 + " WHERE u.ID = ?";
  
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -81,8 +81,8 @@ public class SanctionDAO {
 	public ArrayList<SanctionInfo> fetch(String more) {
         ArrayList<SanctionInfo> sanctions = new ArrayList<>();
         String query = "SELECT S.TIPO_SANCION, S.DESCRIPCION, S.ESTADO, P.FECHA, S.FECHA_FIN, S.MONTO, U.CORREO_INSTITUCIONAL, S.ID"
-                + " FROM SANCION S JOIN PRESTAMO P ON S.ID_PRESTAMO = P.ID"
-                + " JOIN USUARIO U ON P.ID_USUARIO = U.ID"+more;
+                + " FROM TECHLEND.SANCION S JOIN TECHLEND.PRESTAMO P ON S.ID_PRESTAMO = P.ID"
+                + " JOIN TECHLEND.USUARIO U ON P.ID_USUARIO = U.ID"+more;
 
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {

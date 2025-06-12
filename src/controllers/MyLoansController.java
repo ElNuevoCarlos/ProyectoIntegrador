@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import application.Main;
+import data.DBConnectionFactory;
 import data.DataBase;
 import data.Filter;
 import data.LoanDAO;
@@ -62,11 +63,12 @@ public class MyLoansController {
     
     @FXML private Button filterButton;
     
-	private Connection database = DataBase.getInstance().getConnection();
-	private LoanDAO loanDAO = new LoanDAO(database);
-	private Filter filter = new Filter(database);
 	@SuppressWarnings("exports")
 	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+	private LoanDAO loanDAO = new LoanDAO(connection);
+	private Filter filter = new Filter(connection);
 
     ObservableList<LoanTable> Loans = FXCollections.observableArrayList();
 

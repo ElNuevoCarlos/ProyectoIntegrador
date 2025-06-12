@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.util.Optional;
 import application.Main;
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.SanctionDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.SanctionInfo;
 import model.User;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class SanctionUser {
@@ -39,9 +40,11 @@ public class SanctionUser {
     @FXML private TableColumn<SanctionInfo, Integer> monto;
     @FXML private TableColumn<SanctionInfo, String> estado;
     @FXML private GridPane gridPane;
-  
-    private Connection database = DataBase.getInstance().getConnection();
-    private SanctionDAO sanctionDao = new SanctionDAO(database);
+    
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private SanctionDAO sanctionDao = new SanctionDAO(connection);
     
     User user;
 

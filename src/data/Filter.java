@@ -17,7 +17,7 @@ public class Filter {
     
     public List<String> Options(String column, String table, String building) {
     	List<String> listOptions = new ArrayList<>();
-    	String query = "SELECT DISTINCT " + column +" FROM " + table;
+    	String query = "SELECT DISTINCT " + column +" FROM TECHLEND." + table;
     	if (column.equals("PISO")) {
     		query += " WHERE EDIFICIO = '" + building + "'";
     	}

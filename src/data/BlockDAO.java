@@ -23,8 +23,8 @@ public class BlockDAO {
 				+ " FROM BLOQUE b"
 				+ " WHERE b.ID NOT IN ("
 				+ " SELECT pb.ID_BLOQUE"
-				+ " FROM PRESTAMO_BLOQUE pb"
-				+ " JOIN PRESTAMO p ON pb.ID_PRESTAMO = p.ID"
+				+ " FROM TECHLEND.PRESTAMO_BLOQUE pb"
+				+ " JOIN TECHLEND.PRESTAMO p ON pb.ID_PRESTAMO = p.ID"
 				+ " WHERE TRUNC(p.FECHA) = ? AND " + hallDevice + ")";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
         	pstmt.setDate(1, java.sql.Date.valueOf(date));
@@ -46,8 +46,8 @@ public class BlockDAO {
 	
 	public ArrayList<Block> findBlocksByLoanId(long idLoan) {
 		ArrayList<Block> blocks = new ArrayList<>();
-		String query = "SELECT b.ID, b.HORA_INICIO, b.HORA_FIN FROM BLOQUE b"
-				+ " WHERE b.ID IN (SELECT pb.ID_BLOQUE FROM PRESTAMO_BLOQUE pb WHERE pb.ID_PRESTAMO = ?)";
+		String query = "SELECT b.ID, b.HORA_INICIO, b.HORA_FIN FROM TECHLEND.BLOQUE b"
+				+ " WHERE b.ID IN (SELECT pb.ID_BLOQUE FROM TECHLEND.PRESTAMO_BLOQUE pb WHERE pb.ID_PRESTAMO = ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setLong(1, idLoan);
             ResultSet rs = pstmt.executeQuery();
@@ -66,7 +66,7 @@ public class BlockDAO {
 	}
 	
 	public void deleteBlock(long idLoan, long idBlock) {
-	    String sql = "DELETE FROM PRESTAMO_BLOQUE WHERE ID_PRESTAMO = ? AND ID_BLOQUE = ?";
+	    String sql = "DELETE FROM TECHLEND.PRESTAMO_BLOQUE WHERE ID_PRESTAMO = ? AND ID_BLOQUE = ?";
 	    
 	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 	        stmt.setLong(1, idLoan);
@@ -78,7 +78,7 @@ public class BlockDAO {
 	}
 	
 	public void saveBlock(long idLoan, long idBlock) {
-	    String sql = "INSERT INTO PRESTAMO_BLOQUE (ID_PRESTAMO, ID_BLOQUE) VALUES (?, ?)";
+	    String sql = "INSERT INTO TECHLEND.PRESTAMO_BLOQUE (ID_PRESTAMO, ID_BLOQUE) VALUES (?, ?)";
 
 	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 	        stmt.setLong(1, idLoan);

@@ -3,7 +3,7 @@ package controllers;
 import java.sql.Connection;
 import java.util.concurrent.CompletableFuture;
 
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.EmailService;
 import data.UserDAO;
 import javafx.collections.FXCollections;
@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.User;
+import model.UserSession;
 import utils.SecurityUtils;
 import utils.ViewUtils;
 
@@ -27,8 +28,9 @@ public class NewAccountController {
     @FXML private Hyperlink login;
     @FXML private Button newAccount;
     
-    private Connection database = DataBase.getInstance().getConnection();
-    private UserDAO userDao = new UserDAO(database);
+    public String userRol = UserSession.getInstance().getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private UserDAO userDao = new UserDAO(connection);
 	
 	@FXML void initialize() {
 		rootPane.setOnMouseClicked(event -> rootPane.requestFocus());

@@ -52,6 +52,7 @@ public class MenuController {
     }
     @FXML void goToBack() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
+        Main.isSuperManager = false;
         currentStage.close();
     	UserSession.getInstance();
     	UserSession.destroy();

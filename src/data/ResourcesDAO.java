@@ -28,7 +28,7 @@ public class ResourcesDAO {
         ArrayList<Equipment> equipments = new ArrayList<>();
         
         String query = "SELECT ID, NOMBRE, TIPO_DISPOSITIVO, CATEGORIA, MARCA, NUMERO_SERIE, ESTADO, DESCRIPCION "
-            		+ " FROM EQUIPO";
+            		+ " FROM TECHLEND.EQUIPO";
 
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
@@ -56,8 +56,8 @@ public class ResourcesDAO {
         ArrayList<EqupmentInfo> equipments = new ArrayList<>();
         
         String query = "SELECT P.ID, E.NOMBRE, E.DESCRIPCION, U.CORREO_INSTITUCIONAL, P.ESPECIFICACIONES, E.NUMERO_SERIE, P.FECHA, P.ESTADO, E.TIPO_DISPOSITIVO, E.MARCA"
-            		+ " FROM EQUIPO E JOIN PRESTAMO P ON P.ID_EQUIPO = E.ID"
-            		+ " JOIN USUARIO U ON P.ID_USUARIO = U.ID";
+            		+ " FROM TECHLEND.EQUIPO E JOIN TECHLEND.PRESTAMO P ON P.ID_EQUIPO = E.ID"
+            		+ " JOIN TECHLEND.USUARIO U ON P.ID_USUARIO = U.ID";
 
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
@@ -94,10 +94,10 @@ public class ResourcesDAO {
 
         if (type) {
             query = "SELECT s.NOMBRE, s.CAPACIDAD ,u.EDIFICIO || ' - ' || u.PISO AS LOCALIZACION, s.DESCRIPCION, s.ID, s.ESTADO"
-            		+ " FROM SALA s JOIN UBICACION u ON s.ID_UBICACION = u.ID "+ second;
+            		+ " FROM TECHLEND.SALA s JOIN TECHLEND.UBICACION u ON s.ID_UBICACION = u.ID "+ second;
         } else {
             query = "SELECT NOMBRE, TIPO_DISPOSITIVO, MARCA, DESCRIPCION, ID, ESTADO"
-            		+ " FROM EQUIPO"
+            		+ " FROM TECHLEND.EQUIPO"
             		+ " WHERE ESTADO = 'Disponible' AND CATEGORIA = 'DISPOSITIVO'" + second;
         }
 
@@ -122,7 +122,7 @@ public class ResourcesDAO {
     }
 	public ArrayList<Location> LocationView() {
         ArrayList<Location> list = new ArrayList<>();
-        String query = "SELECT id, edificio, piso FROM UBICACION";
+        String query = "SELECT id, edificio, piso FROM TECHLEND.UBICACION";
 
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
@@ -142,7 +142,7 @@ public class ResourcesDAO {
     }
 	public ArrayList<Hall> HallView() {
         ArrayList<Hall> list = new ArrayList<>();
-        String query = "SELECT id, nombre, id_ubicacion, capacidad, estado, descripcion FROM SALA";
+        String query = "SELECT id, nombre, id_ubicacion, capacidad, estado, descripcion FROM TECHLEND.SALA";
 
         try (Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
@@ -192,7 +192,7 @@ public class ResourcesDAO {
 	}
 	
     public void saveHall(Hall hall) {
-    	String sql = "{call saveHall(?, ?, ?, ?)}";
+    	String sql = "{call TECHLEND.saveHall(?, ?, ?, ?)}";
 
     	try (CallableStatement cstmt = connection.prepareCall(sql)) {
     	    cstmt.setString(1, hall.getName());
@@ -215,24 +215,40 @@ public class ResourcesDAO {
 
     }
     
-    public void saveLocation(Location location) {
-    	String sql = "{call saveLocation(?, ?)}";
+    public Long saveLocation(Location location) {
+        String sqlCall = "{call TECHLEND.saveLocation(?, ?)}";
+        String sqlCurrval = "SELECT SEQ_UBICACION_ID.CURRVAL FROM dual";
 
-    	try (CallableStatement cstmt = connection.prepareCall(sql)) {
-    	    cstmt.setString(1, location.getBuilding());
-    	    cstmt.setString(2, location.getFloor());
+        try (
+            CallableStatement cstmt = connection.prepareCall(sqlCall);
+            Statement stmt = connection.createStatement()
+        ) {
+            // Ejecutar procedimiento
+            cstmt.setString(1, location.getBuilding());
+            cstmt.setString(2, location.getFloor());
+            cstmt.execute();
 
-    	    cstmt.execute();
-    	} catch (SQLException e) {
-    		ViewUtils.AlertWindow(null, "Ocurrió un error", e.getMessage(), AlertType.INFORMATION);
-    	}
+            // Obtener ID generado
+            try (ResultSet rs = stmt.executeQuery(sqlCurrval)) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                } else {
+                    throw new SQLException("No se pudo obtener CURRVAL de SEQ_UBICACION_ID");
+                }
+            }
 
+        } catch (SQLException e) {
+            ViewUtils.AlertWindow(null, "Error al guardar ubicación", e.getMessage(), AlertType.ERROR);
+            throw new RuntimeException("Error al guardar ubicación", e);
+        }
     }
+
     
 	
 	public Long verifyLocation(String name, String floor) {
 	    Long id = null;
-	    String sql = "{ ? = call verifyLocation(?, ?) }";
+	    String sql = "{ ? = call TECHLEND.verifyLocation(?, ?) }";
+
 
 	    try (CallableStatement cstmt = connection.prepareCall(sql)) {
 	        cstmt.registerOutParameter(1, Types.BIGINT);

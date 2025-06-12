@@ -3,7 +3,7 @@ package controllers;
 import java.sql.Connection;
 import java.util.concurrent.CompletableFuture;
 
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.EmailService;
 import java.security.SecureRandom;
 import data.UserDAO;
@@ -25,11 +25,12 @@ public class PasswordRecoveryController {
 	@FXML private Button button;
 	@FXML private Hyperlink forward, returnLogin; 
 	
-    private Connection database = DataBase.getInstance().getConnection();
+	@SuppressWarnings("exports")
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
     
-    @SuppressWarnings("exports")
-    public UserSession userSession = UserSession.getInstance();
-    private UserDAO userDao = new UserDAO(database);
+    private UserDAO userDao = new UserDAO(connection);
     
     private String Name, Email, generatedCode, password1, password2;
     

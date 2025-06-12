@@ -3,7 +3,7 @@ package controllers.teacher;
 import java.sql.Connection;
 
 import application.Main;
-import data.DataBase;
+import data.DBConnectionFactory;
 import data.LoanDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,9 +26,11 @@ public class MyHallsController {
     
     private FilteredList<Loans> listaFiltradaDisponible;
     
-    private Connection database = DataBase.getInstance().getConnection();
-    public UserSession userSession = UserSession.getInstance();
-    private LoanDAO loanDao = new LoanDAO(database);
+
+	public UserSession userSession = UserSession.getInstance();
+    public String userRol = userSession.getRole();
+    private Connection connection = DBConnectionFactory.getConnectionByRole(userRol).getConnection();
+    private LoanDAO loanDao = new LoanDAO(connection);
     
     @FXML void initialize() {
 		// ------------------------------- Salas Disponibles
