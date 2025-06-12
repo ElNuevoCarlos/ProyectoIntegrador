@@ -175,7 +175,12 @@ public class ResourcesDAO {
 	    		stmt.setString(4, equipment.getBrand());
 	    		stmt.setString(5, equipment.getSerialNumber());
 	    		stmt.setString(6, equipment.getDescription());
-	    		stmt.setLong(7, equipment.getIdHall());
+                if (equipment.getIdHall() != null) {
+                	stmt.setLong(7, equipment.getIdHall());
+                } else {
+                	stmt.setNull(7, java.sql.Types.BIGINT);
+                }
+	    		
 	            
 	            int rowsAffected = stmt.executeUpdate();
 	            if (rowsAffected > 0) {
@@ -215,9 +220,8 @@ public class ResourcesDAO {
 
     }
     
-    public Long saveLocation(Location location) {
+    public void saveLocation(Location location) {
         String sqlCall = "{call TECHLEND.saveLocation(?, ?)}";
-        String sqlCurrval = "SELECT SEQ_UBICACION_ID.CURRVAL FROM dual";
 
         try (
             CallableStatement cstmt = connection.prepareCall(sqlCall);
@@ -229,13 +233,7 @@ public class ResourcesDAO {
             cstmt.execute();
 
             // Obtener ID generado
-            try (ResultSet rs = stmt.executeQuery(sqlCurrval)) {
-                if (rs.next()) {
-                    return rs.getLong(1);
-                } else {
-                    throw new SQLException("No se pudo obtener CURRVAL de SEQ_UBICACION_ID");
-                }
-            }
+
 
         } catch (SQLException e) {
             ViewUtils.AlertWindow(null, "Error al guardar ubicación", e.getMessage(), AlertType.ERROR);

@@ -197,9 +197,10 @@ public class LoanDAO {
 		}	
 		return true;
 	}
-	/*
+
 	
 	public boolean updatesHallState(String state, Long hallId) {
+		System.out.println(state);
 	    String sql = "{CALL TECHLEND.updateHallState(?, ?)}";
 
 	    try (CallableStatement stmt = connection.prepareCall(sql)) {
@@ -215,7 +216,7 @@ public class LoanDAO {
 
 	    return true;
 	}
-	*/
+
 	
 	public boolean updateState(Long entity, String state) {
 		String query = "UPDATE TECHLEND.PRESTAMO"

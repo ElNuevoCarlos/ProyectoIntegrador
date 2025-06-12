@@ -254,10 +254,10 @@ public class LoandController {
                 String floorString = floorField.getText().trim();
                 
                 if (!resourcesDao.AuthenticateBuildingFloor(Locate, floorString)) {
-                	id_location = resourcesDao.saveLocation(new Location(null, Locate, floorString));
-                } else {
-                	id_location = resourcesDao.verifyLocation(Locate, floorString);
+                	resourcesDao.saveLocation(new Location(null, Locate, floorString));
                 }
+                
+                id_location = resourcesDao.verifyLocation(Locate, floorString);
 
                 
                 
@@ -279,7 +279,7 @@ public class LoandController {
     		}
     		if (ViewUtils.showConfirmation("Confirmación", "¿Está seguro que desea eliminar la sala "+resource.getName()+"?\nAl eliminarla, todas las salas prestadas seran canceladas.")) {
     			if (loanDao.updatesStateHall("No Disponible", resource.getIdResource())) {
-        			loanDao.updatesStateHall("CANCELADO", resource.getIdResource());
+        			loanDao.updatesHallState("En Mantenimiento", resource.getIdResource());
         			initialize();
         			ViewUtils.AlertWindow(null, "Sala Eliminada", "La sala "+resource.getName()+" fue eliminada con éxito.", AlertType.INFORMATION);
     			}
