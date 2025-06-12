@@ -12,7 +12,6 @@ import application.Main;
 import data.DataBase;
 import data.Filter;
 import data.LoanDAO;
-import data.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import model.LoanTable;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class MyLoansController {
@@ -65,7 +65,8 @@ public class MyLoansController {
 	private Connection database = DataBase.getInstance().getConnection();
 	private LoanDAO loanDAO = new LoanDAO(database);
 	private Filter filter = new Filter(database);
-    private SessionManager sessionManager = SessionManager.getInstance();
+	@SuppressWarnings("exports")
+	public UserSession userSession = UserSession.getInstance();
 
     ObservableList<LoanTable> Loans = FXCollections.observableArrayList();
 
@@ -102,7 +103,7 @@ public class MyLoansController {
     	typeText.setVisible(false);
     	title.setText("MIS PRESTAMOS\n(SALAS)");
     	visble();
-    	fillTable(loanDAO.MyLoansView(sessionManager.getId(), true, new StringBuilder()), "SALA", "UBICACION");
+    	fillTable(loanDAO.MyLoansView(userSession.getId(), true, new StringBuilder()), "SALA", "UBICACION");
     	contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "SALA", ""));
     	contextualAutocomplete(buildingText, menuBuilding, filter.Options("EDIFICIO", "UBICACION", ""));
     	contextualAutocomplete(stateText, menuState, filter.Options("ESTADO", "PRESTAMO", ""));
@@ -129,7 +130,7 @@ public class MyLoansController {
     	typeText.setVisible(true);
     	title.setText("MIS PRESTAMOS\n(DISPOSITIVOS)");
     	visble();
-    	fillTable(loanDAO.MyLoansView(sessionManager.getId(), false, new StringBuilder()), "DISPOSITIVO", "TIPO DISPOSITIVO");
+    	fillTable(loanDAO.MyLoansView(userSession.getId(), false, new StringBuilder()), "DISPOSITIVO", "TIPO DISPOSITIVO");
     	contextualAutocomplete(nameText, menuName, filter.Options("NOMBRE", "EQUIPO", ""));
     	contextualAutocomplete(typeText, menuType, filter.Options("TIPO_DISPOSITIVO", "EQUIPO", ""));
     	
@@ -223,7 +224,7 @@ public class MyLoansController {
             }
 
             if (query.length() > 0) {
-            	fillTable(loanDAO.MyLoansView(sessionManager.getId(), true, query),  "SALA", "UBICACION");
+            	fillTable(loanDAO.MyLoansView(userSession.getId(), true, query),  "SALA", "UBICACION");
             } else {
             	
             }
@@ -237,7 +238,7 @@ public class MyLoansController {
                 query.append(" AND e.TIPO_DISPOSITIVO = '").append(type).append("'");
             }
             if (query.length() > 0) {
-            	fillTable(loanDAO.MyLoansView(sessionManager.getId(), false, query),  "DISPOSITIVO", "TIPO DISPOSITIVO");
+            	fillTable(loanDAO.MyLoansView(userSession.getId(), false, query),  "DISPOSITIVO", "TIPO DISPOSITIVO");
             } 
     	}
     }

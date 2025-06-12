@@ -14,6 +14,7 @@ import model.User;
 
 public class UserDAO {
     private Connection connection;
+    
 
     public UserDAO(Connection connection) {
         this.connection = connection;
@@ -93,7 +94,6 @@ public class UserDAO {
 	            role = parts[0];
 	            id = Long.parseLong(parts[1]);
 	            String decryptedPassword = SecurityUtils.decrypt(parts[2]);
-
 	            if (password.equals(decryptedPassword)) {
 	                verification = true;
 	            }

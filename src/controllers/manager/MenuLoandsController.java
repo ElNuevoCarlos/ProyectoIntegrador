@@ -1,14 +1,14 @@
 package controllers.manager;
 
 import application.Main;
-import data.SessionManager;
 import javafx.fxml.FXML;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class MenuLoandsController {
-	private SessionManager sessionManager = SessionManager.getInstance();
+	public UserSession userSession = UserSession.getInstance();
     @FXML void equipos() {
-    	if (sessionManager.getRole().equals("ENCARGADO") || sessionManager.getRole().equals("SUPERENCARGADO")) {
+    	if (userSession.getRole().equals("ENCARGADO") || userSession.getRole().equals("SUPERENCARGADO")) {
 			ViewUtils.cargarGrid("/views/Manager/EquipmentLoan.fxml", Main.rootLayout);
     	} else {
     		// Si es true, me manda al apartado de mis equipos
@@ -21,7 +21,7 @@ public class MenuLoandsController {
     }
 
     @FXML void salas() {
-    	if (sessionManager.getRole().equals("ENCARGADO") || sessionManager.getRole().equals("SUPERENCARGADO")) {
+    	if (userSession.getRole().equals("ENCARGADO") || userSession.getRole().equals("SUPERENCARGADO")) {
 			ViewUtils.cargarGrid("/views/Manager/Loans.fxml", Main.rootLayout);
     	} else {
     		// Si es true, me manda al apartado de mis prestamos

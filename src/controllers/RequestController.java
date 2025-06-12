@@ -8,7 +8,6 @@ import application.Main;
 import data.BlockDAO;
 import data.DataBase;
 import data.LoanDAO;
-import data.SessionManager;
 import data.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +29,7 @@ import javafx.scene.image.Image;
 import model.Block;
 import model.Loan;
 import model.Resources;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class RequestController {
@@ -45,7 +45,8 @@ public class RequestController {
     private Resources resource;
 
     private Connection database = DataBase.getInstance().getConnection();
-    private SessionManager sessionManager = SessionManager.getInstance();
+    @SuppressWarnings("exports")
+    public UserSession userSession = UserSession.getInstance();
     private BlockDAO blockDAO = new BlockDAO(database);
     private LoanDAO loanDAO = new LoanDAO(database);
     private UserDAO userDao = new UserDAO(database);
@@ -125,7 +126,7 @@ public class RequestController {
     	if (ViewUtils.showConfirmation("Confirmación", "¿Desea hacer la reserva de " + resource.getName() + ", en los horarios " + myBlocksArray + "?")) {
         	Loan loan;
 
-        	if (sessionManager.getRole().equals("ENCARGADO") || sessionManager.getRole().equals("SUPERENCARGADO")) {
+        	if (userSession.getRole().equals("ENCARGADO") || userSession.getRole().equals("SUPERENCARGADO")) {
     	        Dialog<Long> dialog = new Dialog<>();
     	        
     	        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
@@ -173,7 +174,7 @@ public class RequestController {
     	        });
     	        return;
         	} else {
-        		loan = new Loan(null, resource.getIdResource(), sessionManager.getId(), null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
+        		loan = new Loan(null, resource.getIdResource(), userSession.getId(), null, date, specsText.getText().trim(), "SOLICITADO", myBlocksArray);
         	}
 
         	loanDAO.save(loan);

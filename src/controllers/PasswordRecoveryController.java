@@ -6,7 +6,6 @@ import java.util.concurrent.CompletableFuture;
 import data.DataBase;
 import data.EmailService;
 import java.security.SecureRandom;
-import data.SessionManager;
 import data.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class PasswordRecoveryController {
@@ -26,6 +26,9 @@ public class PasswordRecoveryController {
 	@FXML private Hyperlink forward, returnLogin; 
 	
     private Connection database = DataBase.getInstance().getConnection();
+    
+    @SuppressWarnings("exports")
+    public UserSession userSession = UserSession.getInstance();
     private UserDAO userDao = new UserDAO(database);
     
     private String Name, Email, generatedCode, password1, password2;
@@ -37,8 +40,8 @@ public class PasswordRecoveryController {
     }
     
 	@FXML void initialize() {
-		this.Name = SessionManager.getInstance().getName();
-		this.Email = SessionManager.getInstance().getEmail();
+		this.Name = userSession.getName();
+		this.Email = userSession.getEmail();
 		name.setText(Name);
 	}
 	

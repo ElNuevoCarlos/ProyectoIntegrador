@@ -4,22 +4,20 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import application.Main;
 import data.DataBase;
-import data.SessionManager;
 import data.UserDAO;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import model.User;
+import model.UserSession;
 import utils.SecurityUtils;
 import utils.ViewUtils;
 
@@ -42,7 +40,8 @@ public class MyAccountController {
 	
 	private Connection database = DataBase.getInstance().getConnection();
 	private UserDAO userDao = new UserDAO(database);
-	private SessionManager sessionManager = SessionManager.getInstance();
+	@SuppressWarnings("exports")
+	public UserSession userSession = UserSession.getInstance();
 	private String[] otherData;
 	private String decryptedPassword;
 	private String encryptedPassword;
@@ -58,7 +57,7 @@ public class MyAccountController {
 		ti.setItems(itemsTi);
 		ObservableList<String> itemsRole = FXCollections.observableArrayList("DOCENTE", "ADMINISTRATIVO");
 		roleCombo.setItems(itemsRole);
-		otherData = userDao.otherData(sessionManager.getEmail()).split("!", 5);
+		otherData = userDao.otherData(userSession.getEmail()).split("!", 5);
 		
         try {
             decryptedPassword = SecurityUtils.decrypt(otherData[2]);
@@ -67,12 +66,12 @@ public class MyAccountController {
             e.printStackTrace();
             ViewUtils.AlertWindow("Error", "Descifrado fallido", "Ocurrió un error al descifrar la contraseña. Inténtalo de nuevo.", AlertType.ERROR);
         }
-		name.setText(sessionManager.getName());
+		name.setText(userSession.getName());
 		numIdentification.setText(otherData[0]);
 		ti.setValue(otherData[1]);
-		email.setText(sessionManager.getEmail());
+		email.setText(userSession.getEmail());
 		phone.setText(otherData[4]);
-		roleCombo.setValue(sessionManager.getRole());
+		roleCombo.setValue(userSession.getRole());
 		password1.setText(decryptedPassword);
 		password2.setText(decryptedPassword);
 		pro_dep.setText(otherData[3]);
@@ -117,7 +116,7 @@ public class MyAccountController {
 				return;
 			} else {
 				ArrayList<String> modifiedData = new ArrayList<>();
-				if (!Name.equals(sessionManager.getName())) {
+				if (!Name.equals(userSession.getName())) {
 					modifiedData.add(nameText.getText());
 				}
 				if (!TI.equals(otherData[1])) {
@@ -132,10 +131,10 @@ public class MyAccountController {
 				if (!Phone.equals(otherData[4])) {
 					modifiedData.add(phoneText.getText());
 				}
-				if (!Email.equals(sessionManager.getEmail())) {
+				if (!Email.equals(userSession.getEmail())) {
 					modifiedData.add(emailText.getText());
 				}
-				if (!Role.equals(sessionManager.getRole())) {
+				if (!Role.equals(userSession.getRole())) {
 					modifiedData.add(roleText.getText());
 				}
 				if (!Password1.equals(decryptedPassword)) {
@@ -150,8 +149,8 @@ public class MyAccountController {
 	        		    e.printStackTrace();
 	        		    ViewUtils.AlertWindow("Error", "Cifrado fallido", "Ocurrió un error al procesar la contraseña. Inténtalo de nuevo.", AlertType.ERROR);
 	        		}
-					User newUser = new User(Name, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, encryptedPassword, sessionManager.getId());
-					sessionManager.setUser(sessionManager.getId(), Name, Role, Email);
+					User newUser = new User(Name, NumIdentification, TI, Email, Pro_dep, Phone, "ACTIVA", Role, encryptedPassword, userSession.getId());
+					userSession = UserSession.getInstance(userSession.getId(), Name, Role, Email);
 					if (ViewUtils.showConfirmation("Confirmación", "¿Desea actualizar " + modifiedData + "?")) {
 						userDao.update(newUser); 
 						ViewUtils.AlertWindow("Actualizado", "Información actualizada",

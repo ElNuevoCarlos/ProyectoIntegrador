@@ -1,25 +1,24 @@
 package controllers.teacher;
 import application.Main;
-import data.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class MenuController {
 	@FXML private Text username, role;
 	@FXML private BorderPane rootPane;
-	
-	private SessionManager sessionManager = SessionManager.getInstance();
-	
+	public UserSession userSession = UserSession.getInstance();
+	public String userRol = userSession.getRole();	
     @FXML void initialize() {
-	    String[] partes = sessionManager.getName().split(" ");
+	    String[] partes = userSession.getName().split(" ");
 	    String primerNombre = partes[0];
 	    String primerApellido = partes.length > 2 ? partes[partes.length - 2] : partes[1];
         
     	username.setText(primerNombre + " " +primerApellido);
-    	role.setText(sessionManager.getRole());
+    	role.setText(userSession.getRole());
     	Main.rootLayout = rootPane;
     }
 	

@@ -5,7 +5,6 @@ import java.sql.Connection;
 import application.Main;
 import data.DataBase;
 import data.LoanDAO;
-import data.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -16,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Loans;
+import model.UserSession;
 import utils.ViewUtils;
 
 public class MyHallsController {
@@ -27,7 +27,7 @@ public class MyHallsController {
     private FilteredList<Loans> listaFiltradaDisponible;
     
     private Connection database = DataBase.getInstance().getConnection();
-    private SessionManager sessionManager = SessionManager.getInstance();
+    public UserSession userSession = UserSession.getInstance();
     private LoanDAO loanDao = new LoanDAO(database);
     
     @FXML void initialize() {
@@ -35,7 +35,7 @@ public class MyHallsController {
     	
 		ObservableList<Loans> myList = FXCollections.observableArrayList();
 		
-		for (Loans loan : loanDao.fetchLoan(sessionManager.getId(), new StringBuilder())) { 
+		for (Loans loan : loanDao.fetchLoan(userSession.getId(), new StringBuilder())) { 
 			myList.add(loan);
 		}
 

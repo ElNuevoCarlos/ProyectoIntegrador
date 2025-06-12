@@ -1,7 +1,6 @@
 package controllers.manager;
 
 import application.Main;
-import data.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -10,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User;
+import model.UserSession;
 import utils.ViewUtils;
 
 
@@ -25,17 +25,17 @@ public class MenuController {
     @FXML private TableColumn<User, String> identificacion;
     @FXML private TableColumn<User, String> contacto;
 
-	private SessionManager sessionManager = SessionManager.getInstance();
+    public UserSession userSession = UserSession.getInstance();
 
     @FXML void initialize() {
         rootPane.setOnMouseClicked(event -> rootPane.requestFocus());
 
-	    String[] partes = sessionManager.getName().split(" ");
+	    String[] partes = userSession.getName().split(" ");
 	    String primerNombre = partes[0];
 	    String primerApellido = partes.length > 2 ? partes[partes.length - 2] : partes[1];
         
     	username.setText(primerNombre + " " +primerApellido);
-    	role.setText(sessionManager.getRole());
+    	role.setText(userSession.getRole());
     	Main.rootLayout = rootPane;
     }
     @FXML void userInfo() {
@@ -53,6 +53,8 @@ public class MenuController {
     @FXML void goToBack() {
         Stage currentStage = (Stage) rootPane.getScene().getWindow();
         currentStage.close();
+    	UserSession.getInstance();
+    	UserSession.destroy();
         ViewUtils.loadView("/views/Login.fxml");
     }
 
